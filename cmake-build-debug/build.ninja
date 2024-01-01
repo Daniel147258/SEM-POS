@@ -51,15 +51,15 @@ build cmake_object_order_depends_target_Sem: phony || CMakeFiles/Sem.dir
 
 build CMakeFiles/Sem.dir/main.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/main.cpp || cmake_object_order_depends_target_Sem
   DEP_FILE = CMakeFiles\Sem.dir\main.cpp.obj.d
-  FLAGS = -Duser.language=sk -Duser.region=SK -g -fdiagnostics-color=always
+  FLAGS = -Duser.language=sk -Duser.region=SK -g -std=gnu++20 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\Sem.dir
   OBJECT_FILE_DIR = CMakeFiles\Sem.dir
 
-build CMakeFiles/Sem.dir/Table.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/Table.cpp || cmake_object_order_depends_target_Sem
-  DEP_FILE = CMakeFiles\Sem.dir\Table.cpp.obj.d
-  FLAGS = -Duser.language=sk -Duser.region=SK -g -fdiagnostics-color=always
+build CMakeFiles/Sem.dir/server/Table/Table.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/server/Table/Table.cpp || cmake_object_order_depends_target_Sem
+  DEP_FILE = CMakeFiles\Sem.dir\server\Table\Table.cpp.obj.d
+  FLAGS = -Duser.language=sk -Duser.region=SK -g -std=gnu++20 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\Sem.dir
-  OBJECT_FILE_DIR = CMakeFiles\Sem.dir
+  OBJECT_FILE_DIR = CMakeFiles\Sem.dir\server\Table
 
 
 # =============================================================================
@@ -69,7 +69,7 @@ build CMakeFiles/Sem.dir/Table.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Us
 #############################################
 # Link the executable Sem.exe
 
-build Sem.exe: CXX_EXECUTABLE_LINKER__Sem_Debug CMakeFiles/Sem.dir/main.cpp.obj CMakeFiles/Sem.dir/Table.cpp.obj
+build Sem.exe: CXX_EXECUTABLE_LINKER__Sem_Debug CMakeFiles/Sem.dir/main.cpp.obj CMakeFiles/Sem.dir/server/Table/Table.cpp.obj
   FLAGS = -Duser.language=sk -Duser.region=SK -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Sem.dir
