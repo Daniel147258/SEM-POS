@@ -1,3 +1,4 @@
 # ninja log v5
-0	384	7258239715449772	CMakeFiles/Sem.dir/main.cpp.obj	132529a1ddffb826
-385	507	7258239716636108	Sem.exe	537b179ddadba379
+4	463	7258304629754849	CMakeFiles/Sem.dir/main.cpp.obj	a79b2336a52edfb8
+463	542	7258304630516266	Sem.exe	d071e6ea9d01a5b1
+8	61	7258304192790358	CMakeFiles/Sem.dir/Table.cpp.obj	707e109bf7571a2
