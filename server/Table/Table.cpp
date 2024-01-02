@@ -3,34 +3,52 @@
 #include <vector>
 #include <optional>
 #include <stdexcept>
+#include <chrono>
 
-// Base class for TableColumn
 class TableColumnBase {
-public:
+private:
     std::string name;
     bool notNull;
     bool primaryKey;
+
+public:
 
     TableColumnBase(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
             : name(columnName), notNull(isNotNull), primaryKey(isPrimaryKey) {}
 
     virtual ~TableColumnBase() {}
 
+    std::string getName() const {
+        return name;
+    }
+
+    bool isPrimaryKey(){
+        return primaryKey;
+    }
+
+    bool isNotNullColumn(){
+        return notNull;
+    }
+
     virtual void printHeader() const = 0;
     virtual void printValue(size_t rowIndex) const = 0;
     virtual void addValue(const std::string& value) = 0;
+    virtual void uploadValue(const std::string& value){
+
+    }
 };
 
-// TableColumn for int
+
 class IntColumn : public TableColumnBase {
-public:
+private:
     std::vector<std::optional<int>> values;
 
+public:
     IntColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
             : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
 
     void printHeader() const override {
-        std::cout << name << " (int)\t";
+        std::cout << getName() << " (int)\t";
     }
 
     void printValue(size_t rowIndex) const override {
@@ -42,10 +60,10 @@ public:
     }
 
     void addValue(const std::string& value) override {
-        if (value.empty() && notNull) {
+        if (value.empty() && isNotNullColumn()) {
             throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
         }
-        if((value.empty() && !notNull) || value.size() <= 0){
+        if((value.empty() && !isNotNullColumn()) || value.size() <= 0){
             values.push_back(std::nullopt);
         } else{
             values.push_back(std::stoi(value));
@@ -53,16 +71,16 @@ public:
     }
 };
 
-// TableColumn for double
-class DoubleColumn : public TableColumnBase {
-public:
-    std::vector<std::optional<double>> values;
 
+class DoubleColumn : public TableColumnBase {
+private:
+    std::vector<std::optional<double>> values;
+public:
     DoubleColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
             : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
 
     void printHeader() const override {
-        std::cout << name << " (double)\t";
+        std::cout << getName() << " (double)\t";
     }
 
     void printValue(size_t rowIndex) const override {
@@ -74,27 +92,28 @@ public:
     }
 
     void addValue(const std::string& value) override {
-        if (value.empty() && notNull) {
+        if (value.empty() && isNotNullColumn()) {
             throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
         }
-        if((value.empty() && !notNull) || value.size() <= 0){
+        if((value.empty() && !isNotNullColumn()) || value.size() <= 0){
             values.push_back(std::nullopt);
         } else{
-            values.push_back(std::stoi(value));
+            values.push_back(std::stod(value));
         }
     }
 };
 
-// TableColumn for string
+
 class StringColumn : public TableColumnBase {
-public:
+private:
     std::vector<std::string> values;
 
+public:
     StringColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
             : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
 
     void printHeader() const override {
-        std::cout << name << " (string)\t";
+        std::cout << getName() << " (string)\t";
     }
 
     void printValue(size_t rowIndex) const override {
@@ -102,10 +121,10 @@ public:
     }
 
     void addValue(const std::string& value) override {
-        if (value.empty() && notNull) {
+        if (value.empty() && isNotNullColumn()) {
             throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
         }
-        if((value.empty() && !notNull) || value.size() <= 0){
+        if((value.empty() && !isNotNullColumn()) || value.size() <= 0){
             std::string value1 = "NULL";
             values.push_back(value1);
         } else{
@@ -114,16 +133,17 @@ public:
     }
 };
 
-// TableColumn for bool
+
 class BoolColumn : public TableColumnBase {
-public:
+private:
     std::vector<std::optional<bool>> values;
 
+public:
     BoolColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
             : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
 
     void printHeader() const override {
-        std::cout << name << " (bool)\t";
+        std::cout << getName() << " (bool)\t";
     }
 
     void printValue(size_t rowIndex) const override {
@@ -135,10 +155,10 @@ public:
     }
 
     void addValue(const std::string& value) override {
-        if (value.empty() && notNull) {
+        if (value.empty() && isNotNullColumn()) {
             throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
         }
-        if((value.empty() && !notNull) || value == "NULL"){
+        if((value.empty() && !isNotNullColumn()) || value == "NULL"){
             values.push_back(std::nullopt);
         } else{
             values.push_back(value == "true" ? true : false);
@@ -146,7 +166,34 @@ public:
     }
 };
 
-// Table class containing a vector of TableColumnBase
+class DateColumn : public TableColumnBase {
+public:
+    std::vector<std::string> values;
+
+    DateColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
+            : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
+
+    void printHeader() const override {
+        std::cout << getName() << " (date)\t";
+    }
+
+    void printValue(size_t rowIndex) const override {
+        std::cout << values[rowIndex] << "\t\t";
+    }
+
+    void addValue(const std::string& value) override {
+        if (value.empty() && isNotNullColumn()) {
+            throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
+        }
+        if((value.empty() && !isNotNullColumn()) || value.size() <= 0){
+            std::string value1 = "NULL";
+            values.push_back(value1);
+        } else{
+            values.push_back(value);
+        }
+    }
+};
+
 class Table {
 private:
     std::string tableName;
@@ -204,29 +251,33 @@ public:
         }
         std::cout << std::endl;
     }
+
+    void pritnAllRows(){
+        for (int i = 0; i < columns.size() - 1 ; ++i) {
+            this->printRow(i);
+        }
+    }
 };
 
 int main() {
     Table myTable("SampleTable");
 
-    // Add columns of different types with attributes
+
     myTable.addColumn(new IntColumn("ID", true, true));
     myTable.addColumn(new StringColumn("Name", true, false));
     myTable.addColumn(new DoubleColumn("Salary", false, false));
     myTable.addColumn(new BoolColumn("Active", false, false));
+    myTable.addColumn(new DateColumn("Date", false, false));
 
-    // Add rows with different types
+
     myTable.addRow({"1", "John", "50000.0", "true"});
-    myTable.addRow({"2", "Lopata", "60000.0", "false"});  // This row will trigger a NOT NULL error
-    myTable.addRow({"3", "Doe"});    // This row will trigger a NOT NULL error
-
-    // Print table header
+    myTable.addRow({"2", "Lopata", "60000.1", "false"});
+    myTable.addRow({"3", "Doe","25.4",""});
+    myTable.addRow({"4","Dan","","","25.4.2023"});
     myTable.printHeader();
 
-    // Print rows
-    for (size_t i = 0; i < 3; ++i) {
-        myTable.printRow(i);
-    }
+    myTable.pritnAllRows();
+
 
     return 0;
 }
