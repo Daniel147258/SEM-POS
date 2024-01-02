@@ -259,25 +259,25 @@ public:
     }
 };
 
-int main() {
-    Table myTable("SampleTable");
-
-
-    myTable.addColumn(new IntColumn("ID", true, true));
-    myTable.addColumn(new StringColumn("Name", true, false));
-    myTable.addColumn(new DoubleColumn("Salary", false, false));
-    myTable.addColumn(new BoolColumn("Active", false, false));
-    myTable.addColumn(new DateColumn("Date", false, false));
-
-
-    myTable.addRow({"1", "John", "50000.0", "true"});
-    myTable.addRow({"2", "Lopata", "60000.1", "false"});
-    myTable.addRow({"3", "Doe","25.4",""});
-    myTable.addRow({"4","Dan","","","25.4.2023"});
-    myTable.printHeader();
-
-    myTable.pritnAllRows();
-
-
-    return 0;
-}
+//int main() {
+//    Table myTable("SampleTable");
+//
+//
+//    myTable.addColumn(new IntColumn("ID", true, true));
+//    myTable.addColumn(new StringColumn("Name", true, false));
+//    myTable.addColumn(new DoubleColumn("Salary", false, false));
+//    myTable.addColumn(new BoolColumn("Active", false, false));
+//    myTable.addColumn(new DateColumn("Date", false, false));
+//
+//
+//    myTable.addRow({"1", "John", "50000.0", "true"});
+//    myTable.addRow({"2", "Lopata", "60000.1", "false"});
+//    myTable.addRow({"3", "Doe","25.4",""});
+//    myTable.addRow({"4","Dan","","","25.4.2023"});
+//    myTable.printHeader();
+//
+//    myTable.pritnAllRows();
+//
+//
+//    return 0;
+//}

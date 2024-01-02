@@ -3,6 +3,6 @@ project(Sem)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Sem main.cpp
+add_executable(Sem server/main.cpp
         server/Table/Table.cpp
 )
