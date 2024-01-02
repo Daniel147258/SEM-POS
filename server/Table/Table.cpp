@@ -12,10 +12,11 @@ private:
     bool primaryKey;
 
 public:
-
     TableColumnBase(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
             : name(columnName), notNull(isNotNull), primaryKey(isPrimaryKey) {
-
+        if(primaryKey){
+            notNull = true;
+        }
     }
 
     virtual ~TableColumnBase() {}
@@ -40,6 +41,7 @@ public:
     virtual int getSize() = 0;
     virtual bool containsValue(const std::string& value) = 0;
     virtual void deleteValue(size_t rowIndex) = 0;
+    virtual std::string getValue(size_t rowIndex) const = 0;
 };
 
 class IntColumn : public TableColumnBase {
@@ -129,6 +131,14 @@ public:
         }
     }
 
+    std::string getValue(size_t rowIndex) const override {
+        if (values[rowIndex].has_value()) {
+            return std::to_string(values[rowIndex].value());
+        } else {
+            return "NULL";
+        }
+    }
+
 
 };
 
@@ -215,6 +225,13 @@ public:
             std::cerr << "Invalid row index." << std::endl;
         }
     }
+    std::string getValue(size_t rowIndex) const override {
+        if (values[rowIndex].has_value()) {
+            return std::to_string(values[rowIndex].value());
+        } else {
+            return "NULL";
+        }
+    }
 
 };
 
@@ -298,6 +315,13 @@ public:
         }
     }
 
+    std::string getValue(size_t rowIndex) const override {
+        if (!values[rowIndex].empty()) {
+            return values[rowIndex];
+        } else {
+            return "NULL";
+        }
+    }
 };
 
 class BoolColumn : public TableColumnBase {
@@ -383,6 +407,13 @@ public:
             std::cerr << "Invalid row index." << std::endl;
         }
     }
+    std::string getValue(size_t rowIndex) const override {
+        if (values[rowIndex].has_value()) {
+            return std::to_string(values[rowIndex].value());
+        } else {
+            return "NULL";
+        }
+    }
 
 };
 
@@ -465,6 +496,13 @@ public:
             std::cerr << "Invalid row index." << std::endl;
         }
     }
+    std::string getValue(size_t rowIndex) const override {
+        if (!values[rowIndex].empty()) {
+            return values[rowIndex];
+        } else {
+            return "NULL";
+        }
+    }
 };
 
 
@@ -474,12 +512,13 @@ class Table {
 private:
     std::string tableName;
     std::vector<TableColumnBase*> columns;
-
+    int countRows;
 public:
-    Table(const std::string& name) : tableName(name) {}
+    Table(const std::string& name) : tableName(name) {
+        countRows = 0;
+    }
 
     ~Table() {
-
         for (auto column : columns) {
             delete column;
         }
@@ -522,6 +561,7 @@ public:
             }
         }
         if (!containPK) {
+            ++countRows;
             for (size_t i = 0; i < columns.size() ; ++i) {
                 if (i >= row.size()) {
                         addColumnValue(i, "");
@@ -557,15 +597,8 @@ public:
     }
 
     void pritnAllRows() {
-        size_t maxRowCount = 0;
 
-        // Nájdi maximálny počet riadkov pre všetky stĺpce
-        for (const auto& column : columns) {
-            maxRowCount = std::max(maxRowCount, static_cast<size_t>(column->getSize()));
-        }
-
-        // Vypíš všetky riadky
-        for (size_t i = 0; i < maxRowCount; ++i) {
+        for (size_t i = 0; i < countRows; ++i) {
             for (const auto& column : columns) {
                 if (i < column->getSize()) {
                     column->printValue(i);
@@ -596,22 +629,47 @@ public:
 
     void deleteRow(size_t rowIndex) {
         rowIndex -= 1;
-        if (rowIndex <= columns.size() && rowIndex>= 0) {
+        if (rowIndex <= columns.size() && rowIndex > 0) {
             for (auto& column : columns) {
                 column->deleteValue(rowIndex);
             }
             std::cout << "Row at index " << rowIndex + 1 << " deleted." << std::endl;
+            --countRows;
         } else {
             std::cerr << "Invalid row index." << std::endl;
         }
 
     }
 
+    void deleteRowsByValue(size_t columnIndex, const std::string& value) {
+        columnIndex -= 1;
+        int numberOfDeleted = 0;
+
+        if (columnIndex < columns.size() && columnIndex >= 0) {
+            for (size_t rowIndex = 0; rowIndex < columns[columnIndex]->getSize(); ++rowIndex) {
+                if (columns[columnIndex]->getValue(rowIndex) == value) {
+                    // Odstráň hodnoty z všetkých stĺpcov pre daný riadok
+                    for (auto& column : columns) {
+                        column->deleteValue(rowIndex);
+                    }
+                    numberOfDeleted++;
+                }
+            }
+
+            std::cout << numberOfDeleted << " rows deleted where value in column " << columnIndex + 1 << " is '" << value << "'." << std::endl;
+        } else {
+            std::cerr << "Invalid column index." << std::endl;
+        }
+    }
+
+    int getCountRows(){
+        return countRows;
+    }
+
 };
 
 int main() {
     Table myTable("SampleTable");
-
 
     myTable.addColumn(new IntColumn("ID", true, true));
     myTable.addColumn(new StringColumn("Name", true, false));
@@ -626,15 +684,16 @@ int main() {
     myTable.addRow({"4","ASDads","25.1","false", "25.4.2023"});
     myTable.addRow({"5","Mali","","","28.4.223"});
     myTable.addRow({"6","SMali","50","true",""});
+    myTable.addRow({"6","SMali","50","true",""});
     myTable.printHeader();
     myTable.pritnAllRows();
     myTable.uploadAllColumnValues(1,"John","Jozo");
     myTable.printHeader();
     myTable.pritnAllRows();;
-    myTable.deleteRow(2);
-    myTable.addRow({"10","Msdaali","","","8.4.223"});
-    myTable.deleteRow(4);
-    myTable.deleteRow(2);
+    myTable.deleteRow(6);
+    myTable.printHeader();
+    myTable.pritnAllRows();
+    myTable.deleteRowsByValue(2,"Lopata");
     myTable.printHeader();
     myTable.pritnAllRows();
     return 0;
