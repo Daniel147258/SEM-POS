@@ -513,6 +513,7 @@ private:
     std::string tableName;
     std::vector<TableColumnBase*> columns;
     int countRows;
+
 public:
     Table(const std::string& name) : tableName(name) {
         countRows = 0;
@@ -664,6 +665,10 @@ public:
 
     int getCountRows(){
         return countRows;
+    }
+
+    std::string getName(){
+        return tableName;
     }
 
 };

@@ -4,7 +4,6 @@ project(Sem)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(Sem main.cpp
-#        server/Table/Table.cpp
         server/server.cpp
         server/Database.cpp
         server/Table/Table.cpp

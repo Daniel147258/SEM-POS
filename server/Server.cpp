@@ -54,13 +54,12 @@ public:
 
     bool vypisMoznosti1(int clientSocket){
         bool odpojilSa = false;
+        const char *optionsMessage = "Select one option\n1. "
+                                    "Select table\n2. Create table\n3. Delete table\n9. Quit\n"
+                                    "Choose your option: ";
+        send(clientSocket, optionsMessage, strlen(optionsMessage), 0);
         while (true){
-            // Poslať možnosti klientovi
-            const char *optionsMessage = "Select one option\n1. "
-                                         "Select table\n2. Create table\n3. Delete table\n9. Quit\n";
-            send(clientSocket, optionsMessage, strlen(optionsMessage), 0);
 
-            // Prijímanie odpovede od klienta
             char buffer[1024];
             memset(buffer, 0, sizeof(buffer));
             int bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
@@ -85,13 +84,19 @@ public:
                     //function
                     break;
                 case 9:
-                    std::cout << "Client disconnected\n";
-                    closeClient(clientSocket);
                     odpojilSa = true;
+                    closeClient(clientSocket);
                     break;
                 default:
-                    const char *invalidOptionMessage = "Invalid option\n";
+                    const char *invalidOptionMessage = "Invalid option\n"
+                                                       "Select one option\n"
+                                                       "1. Select table\n"
+                                                       "2. Create table\n"
+                                                       "3. Delete table\n"
+                                                       "9. Quit\n"
+                                                       "Choose your option: ";
                     send(clientSocket, invalidOptionMessage, strlen(invalidOptionMessage), 0);
+                    break;
             }
         }
         return odpojilSa;
@@ -130,7 +135,7 @@ public:
 
 
             std::thread clientThread(&Server::handleClient, this, clientSocket);
-            clientThread.join();
+            clientThread.detach();
         }
     }
 

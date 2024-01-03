@@ -1,7 +1,11 @@
 # ninja log v5
 3	73	7258334769420834	CMakeFiles/Sem.dir/main.cpp.obj	c05e6d2d4d99c816
-4	1719	7259987906301532	CMakeFiles/Sem.dir/server/Server.cpp.obj	91898e0d2d46f04f
-1719	1813	7259987907208594	Sem.exe	55bd0b1e160300b4
+1960	2071	7260016645978422	Sem.exe	ab4cfd035b20ffbd
+3	1959	7260016644942161	CMakeFiles/Sem.dir/server/Server.cpp.obj	91898e0d2d46f04f
 8	61	7258304192790358	CMakeFiles/Sem.dir/Table.cpp.obj	707e109bf7571a2
-1	144	7259989365578558	build.ninja	bc86afeee8f9c650
-0	2664	7259836972890078	CMakeFiles/Sem.dir/server/Table/Table.cpp.obj	25c8509cb61f7969
+3	2488	7260048066697847	CMakeFiles/Sem.dir/server/Table/Table.cpp.obj	25c8509cb61f7969
+0	149	7260049567548931	build.ninja	bc86afeee8f9c650
+3	926	7260048739200626	CMakeFiles/Sem.dir/server/Database.cpp.obj	d7b7c090ff096d9d
+1	158	7260049567548931	build.ninja	bc86afeee8f9c650
+3	2658	7260049707386299	CMakeFiles/Sem.dir/server/Server.cpp.obj	91898e0d2d46f04f
+2659	3095	7260049711718608	Sem.exe	ab4cfd035b20ffbd
