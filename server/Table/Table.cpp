@@ -668,33 +668,35 @@ public:
 
 };
 
-int main() {
-    Table myTable("SampleTable");
+//int main() {
+//    Table myTable("SampleTable");
+//
+//    myTable.addColumn(new IntColumn("ID", true, true));
+//    myTable.addColumn(new StringColumn("Name", true, false));
+//    myTable.addColumn(new DoubleColumn("Salary", false, false));
+//    myTable.addColumn(new BoolColumn("Active", false, false));
+//    myTable.addColumn(new DateColumn("Date", false, false));
+//
+//
+//    myTable.addRow({"1", "John", "50000.0", "true", "25.5.1245"});
+//    myTable.addRow({"2", "Lopata", "60000.1", "false",""});
+//    myTable.addRow({"3", "Doe","25.4","",""});
+//    myTable.addRow({"4","ASDads","25.1","false", "25.4.2023"});
+//    myTable.addRow({"5","Mali","","","28.4.223"});
+//    myTable.addRow({"6","SMali","50","true",""});
+//    myTable.addRow({"6","SMali","50","true",""});
+//    myTable.printHeader();
+//    myTable.pritnAllRows();
+//    myTable.uploadAllColumnValues(1,"John","Jozo");
+//    myTable.printHeader();
+//    myTable.pritnAllRows();;
+//    myTable.deleteRow(6);
+//    myTable.printHeader();
+//    myTable.pritnAllRows();
+//    myTable.deleteRowsByValue(2,"Lopata");
+//    myTable.printHeader();
+//    myTable.pritnAllRows();
+//    return 0;
+//}
 
-    myTable.addColumn(new IntColumn("ID", true, true));
-    myTable.addColumn(new StringColumn("Name", true, false));
-    myTable.addColumn(new DoubleColumn("Salary", false, false));
-    myTable.addColumn(new BoolColumn("Active", false, false));
-    myTable.addColumn(new DateColumn("Date", false, false));
 
-
-    myTable.addRow({"1", "John", "50000.0", "true", "25.5.1245"});
-    myTable.addRow({"2", "Lopata", "60000.1", "false",""});
-    myTable.addRow({"3", "Doe","25.4","",""});
-    myTable.addRow({"4","ASDads","25.1","false", "25.4.2023"});
-    myTable.addRow({"5","Mali","","","28.4.223"});
-    myTable.addRow({"6","SMali","50","true",""});
-    myTable.addRow({"6","SMali","50","true",""});
-    myTable.printHeader();
-    myTable.pritnAllRows();
-    myTable.uploadAllColumnValues(1,"John","Jozo");
-    myTable.printHeader();
-    myTable.pritnAllRows();;
-    myTable.deleteRow(6);
-    myTable.printHeader();
-    myTable.pritnAllRows();
-    myTable.deleteRowsByValue(2,"Lopata");
-    myTable.printHeader();
-    myTable.pritnAllRows();
-    return 0;
-}
