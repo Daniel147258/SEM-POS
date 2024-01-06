@@ -1,707 +1,264 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <optional>
-#include <stdexcept>
-#include <chrono>
+#include "Table.h"
+#include "StringColumn.h"
+#include "DoubleColumn.h"
 
-class TableColumnBase {
-private:
-    std::string name;
-    bool notNull;
-    bool primaryKey;
 
-public:
-    TableColumnBase(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
-            : name(columnName), notNull(isNotNull), primaryKey(isPrimaryKey) {
-        if(primaryKey){
-            notNull = true;
-        }
+Table::Table(const std::string& name, User* creator) : tableName(name) {
+    countRows = 0;
+    this->creator = creator;
+}
+
+// uprava zavolat desktruktor na zmazanie udajov v column
+Table::~Table() {
+    for (auto column : columns) {
+        delete column;
     }
+}
 
-    virtual ~TableColumnBase() {}
+void Table::addColumn(TableColumnBase* column) {
+    columns.push_back(column);
+}
 
-    std::string getName() const {
-        return name;
+bool Table::containsPK(size_t columnIndex, const std::string& value) {
+    if (columns[columnIndex]->isPrimaryKey()) {
+        return columns[columnIndex]->containsValue(value);
     }
+    return false;
+}
 
-    bool isPrimaryKey(){
-        return primaryKey;
+void Table::addColumnValue(size_t columnIndex, const std::string& value) {
+    if (columnIndex < columns.size()) {
+        columns[columnIndex]->addValue(value);
+    } else {
+        std::cerr << "Invalid column index." << std::endl;
     }
+}
 
-    bool isNotNullColumn(){
-        return notNull;
+void Table::addRow(const std::vector<std::string>& row) {
+    if (row.size() > columns.size()) {
+        std::cerr << "Too many elements in the row. Ignoring extra values." << std::endl;
     }
+    bool containPK = false;
 
-    virtual void printHeader() const = 0;
-    virtual void printValue(size_t rowIndex) const = 0;
-    virtual void addValue(const std::string& value) = 0;
-    virtual void uploadValue(size_t rowIndex, const std::string& value) = 0;
-    virtual void uploadAllValues(const std::string& oldValue, const std::string& newValue) = 0;
-    virtual int getSize() = 0;
-    virtual bool containsValue(const std::string& value) = 0;
-    virtual void deleteValue(size_t rowIndex) = 0;
-    virtual std::string getValue(size_t rowIndex) const = 0;
-};
-
-class IntColumn : public TableColumnBase {
-private:
-    std::vector<std::optional<int>> values;
-
-public:
-    IntColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
-            : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
-
-    void printHeader() const override {
-        std::cout << getName() << " (int)\t";
-    }
-
-    void printValue(size_t rowIndex) const override {
-        if (values[rowIndex].has_value()) {
-            std::cout << values[rowIndex].value() << "\t\t";
+    for (size_t i = 0; i < columns.size(); ++i) {
+        if (i >= row.size()) {
+            addColumnValue(i, "");
         } else {
-            std::cout << "NULL\t\t";
-        }
-    }
-
-    void addValue(const std::string& value) override {
-        if (value.empty() && isNotNullColumn()) {
-            throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
-        }
-        if((value.empty() && !isNotNullColumn()) || value.size() <= 0){
-            values.push_back(std::nullopt);
-        } else{
-            values.push_back(std::stoi(value));
-        }
-    }
-
-    void uploadValue(size_t rowIndex, const std::string& value) override {
-        if (value.empty() && isNotNullColumn()) {
-            throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
-        }
-
-        if((value.empty() && !isNotNullColumn()) || value.size() <= 0){
-            values[rowIndex] = std::nullopt;
-        } else{
-            values[rowIndex] = std::stoi(value);
-        }
-    }
-    void uploadAllValues(const std::string& oldValue, const std::string& newValue) override{
-        if (oldValue.empty()) {
-            throw std::invalid_argument("Old value cannot be empty.");
-        }
-
-        int newIntValue = std::stoi(newValue);
-
-        for (size_t i = 0; i < values.size(); ++i) {
-            if (values[i].has_value() && values[i].value() == std::stoi(oldValue)) {
-                values[i] = newIntValue;
-            }
-        }
-    }
-
-    int getSize() override{
-        return values.size();
-    }
-
-    bool containsValue(const std::string& value) override{
-        int number = std::stoi(value);
-        for(const auto val : values ){
-            if(number == val){
-                return true;
+            if (containsPK(i, row[i])) {
+                std::cout << "Primary key with this value " << row[i] << " exists!!!" << std::endl;
+                containPK = true;
                 break;
             }
         }
-        return false;
     }
-
-    void deleteValue(size_t rowIndex) override {
-        if (rowIndex < values.size()) {
-            std::vector<std::optional<int>> tempValues;
-            for (size_t i = 0; i < values.size(); ++i) {
-                if (i != rowIndex) {
-                    tempValues.push_back(values[i]);
-                }
-            }
-            values.clear();
-            values = tempValues;
-            tempValues.clear();
-        } else {
-            std::cerr << "Invalid row index." << std::endl;
-        }
-    }
-
-    std::string getValue(size_t rowIndex) const override {
-        if (values[rowIndex].has_value()) {
-            return std::to_string(values[rowIndex].value());
-        } else {
-            return "NULL";
-        }
-    }
-
-
-};
-
-class DoubleColumn : public TableColumnBase {
-private:
-    std::vector<std::optional<double>> values;
-public:
-    DoubleColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
-            : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
-
-    void printHeader() const override {
-        std::cout << getName() << " (double)\t";
-    }
-
-    void printValue(size_t rowIndex) const override {
-        if (values[rowIndex].has_value()) {
-            std::cout << values[rowIndex].value() << "\t\t";
-        } else {
-            std::cout << "NULL\t\t";
-        }
-    }
-
-    void addValue(const std::string& value) override {
-        if (value.empty() && isNotNullColumn()) {
-            throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
-        }
-        if((value.empty() && !isNotNullColumn()) || value.size() <= 0){
-            values.push_back(std::nullopt);
-        } else{
-            values.push_back(std::stod(value));
-        }
-    }
-    void uploadValue(size_t rowIndex, const std::string& value) override {
-        if (value.empty() && isNotNullColumn()) {
-            throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
-        }
-
-        if((value.empty() && !isNotNullColumn()) || value.size() <= 0){
-            values[rowIndex] = std::nullopt;
-        } else{
-            values[rowIndex] = std::stod(value);
-        }
-    }
-    void uploadAllValues(const std::string& oldValue, const std::string& newValue) override{
-        if (oldValue.empty()) {
-            throw std::invalid_argument("Old value cannot be empty.");
-        }
-
-        int newValue2 = std::stod(newValue);
-
-        for (size_t i = 0; i < values.size(); ++i) {
-            if (values[i].has_value() && values[i].value() == std::stod(oldValue)) {
-                values[i] = newValue2;
-            }
-        }
-    }
-    int getSize() override{
-        return values.size();
-    }
-
-    bool containsValue(const std::string& value) override{
-        int number = std::stod(value);
-        for(const auto val : values ){
-            if(number == val){
-                return true;
-                break;
-            }
-        }
-        return false;
-    }
-
-    void deleteValue(size_t rowIndex) override {
-        if (rowIndex < values.size()) {
-            std::vector<std::optional<double>> tempValues;
-            for (size_t i = 0; i < values.size(); ++i) {
-                if (i != rowIndex) {
-                    tempValues.push_back(values[i]);
-                }
-            }
-            values.clear();
-            values = tempValues;
-            tempValues.clear();
-        } else {
-            std::cerr << "Invalid row index." << std::endl;
-        }
-    }
-    std::string getValue(size_t rowIndex) const override {
-        if (values[rowIndex].has_value()) {
-            return std::to_string(values[rowIndex].value());
-        } else {
-            return "NULL";
-        }
-    }
-
-};
-
-class StringColumn : public TableColumnBase {
-private:
-    std::vector<std::string> values;
-
-public:
-    StringColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
-            : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
-
-    void printHeader() const override {
-        std::cout << getName() << " (string)\t";
-    }
-
-    void printValue(size_t rowIndex) const override {
-        std::cout << values[rowIndex] << "\t\t";
-    }
-
-    void addValue(const std::string& value) override {
-        if (value.empty() && isNotNullColumn()) {
-            throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
-        }
-        if((value.empty() && !isNotNullColumn()) || value.size() <= 0){
-            std::string value1 = "NULL";
-            values.push_back(value1);
-        } else{
-            values.push_back(value);
-        }
-    }
-
-    void uploadValue(size_t rowIndex, const std::string& value) override {
-        if (value.empty() && isNotNullColumn()) {
-            throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
-        }
-
-        if((value.empty() && !isNotNullColumn()) || value.size() <= 0){
-            std::string value1 = "NULL";
-            values[rowIndex] = value1;
-        } else{
-            values[rowIndex] = value;
-        }
-    }
-
-    void uploadAllValues(const std::string& oldValue, const std::string& newValue) override{
-        if (oldValue.empty()) {
-            throw std::invalid_argument("Old value cannot be empty.");
-        }
-
-        for (size_t i = 0; i < values.size(); ++i) {
-            if (!values[i].empty() && values[i] == oldValue) {
-                values[i] = newValue;
-            }
-        }
-    }
-    int getSize() override{
-        return values.size();
-    }
-    bool containsValue(const std::string& value) override{
-        for(const auto val : values ){
-            if(value == val){
-                return true;
-                break;
-            }
-        }
-        return false;
-    }
-    void deleteValue(size_t rowIndex) override {
-        if (rowIndex < values.size()) {
-            std::vector<std::string> tempValues;
-            for (size_t i = 0; i < values.size(); ++i) {
-                if (i != rowIndex) {
-                    tempValues.push_back(values[i]);
-                }
-            }
-            values.clear();
-            values = tempValues;
-            tempValues.clear();
-        } else {
-            std::cerr << "Invalid row index." << std::endl;
-        }
-    }
-
-    std::string getValue(size_t rowIndex) const override {
-        if (!values[rowIndex].empty()) {
-            return values[rowIndex];
-        } else {
-            return "NULL";
-        }
-    }
-};
-
-class BoolColumn : public TableColumnBase {
-private:
-    std::vector<std::optional<bool>> values;
-
-public:
-    BoolColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
-            : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
-
-    void printHeader() const override {
-        std::cout << getName() << " (bool)\t";
-    }
-
-    void printValue(size_t rowIndex) const override {
-        if (values[rowIndex].has_value()) {
-            std::cout << (values[rowIndex] == 1 ? "true" : "false") << "\t\t";
-        } else {
-            std::cout << "NULL\t\t";
-        }
-    }
-
-    void addValue(const std::string& value) override {
-        if (value.empty() && isNotNullColumn()) {
-            throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
-        }
-        if((value.empty() && !isNotNullColumn()) || value == "NULL"){
-            values.push_back(std::nullopt);
-        } else{
-            values.push_back(value == "true" ? true : false);
-        }
-    }
-    void uploadValue(size_t rowIndex, const std::string& value) override {
-        if (value.empty() && isNotNullColumn()) {
-            throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
-        }
-
-        if((value.empty() && !isNotNullColumn()) || value == "NULL"){
-            values[rowIndex] = std::nullopt;
-        } else{
-            values[rowIndex] = (value == "true");
-        }
-    }
-    void uploadAllValues(const std::string& oldValue, const std::string& newValue) override{
-        if (oldValue.empty()) {
-            throw std::invalid_argument("Old value cannot be empty.");
-        }
-
-        bool newValue2 =(newValue == "true" ? true : false) ;
-        bool oldValue2 = (oldValue == "true" ? true: false);
-        for (size_t i = 0; i < values.size(); ++i) {
-            if (values[i].has_value() && values[i].value() == oldValue2) {
-                values[i] = newValue2;
-            }
-        }
-    }
-    int getSize() override{
-        return values.size();
-    }
-
-    bool containsValue(const std::string& value) override{
-        bool number = (value == "true" ? true : false);
-        for(const auto val : values ){
-            if(number == val){
-                return true;
-                break;
-            }
-        }
-        return false;
-    }
-    void deleteValue(size_t rowIndex) override {
-        if (rowIndex < values.size()) {
-            std::vector<std::optional<bool>> tempValues;
-            for (size_t i = 0; i < values.size(); ++i) {
-                if (i != rowIndex) {
-                    tempValues.push_back(values[i]);
-                }
-            }
-            values.clear();
-            values = tempValues;
-            tempValues.clear();
-        } else {
-            std::cerr << "Invalid row index." << std::endl;
-        }
-    }
-    std::string getValue(size_t rowIndex) const override {
-        if (values[rowIndex].has_value()) {
-            return std::to_string(values[rowIndex].value());
-        } else {
-            return "NULL";
-        }
-    }
-
-};
-
-class DateColumn : public TableColumnBase {
-public:
-    std::vector<std::string> values;
-
-    DateColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
-            : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
-
-    void printHeader() const override {
-        std::cout << getName() << " (date)\t";
-    }
-
-    void printValue(size_t rowIndex) const override {
-        std::cout << values[rowIndex] << "\t\t";
-    }
-
-
-    void addValue(const std::string& value) override {
-        if (value.empty() && isNotNullColumn()) {
-            throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
-        }
-        if((value.empty() && !isNotNullColumn()) || value.size() <= 0){
-            std::string value1 = "NULL";
-            values.push_back(value1);
-        } else{
-            values.push_back(value);
-        }
-    }
-
-    void uploadValue(size_t rowIndex, const std::string& value) override {
-        if (value.empty() && isNotNullColumn()) {
-            throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
-        }
-
-        if((value.empty() && !isNotNullColumn()) || value.size() <= 0){
-            std::string value1 = "NULL";
-            values[rowIndex] = value1;
-        } else{
-            values[rowIndex] = value;
-        }
-    }
-
-    void uploadAllValues(const std::string& oldValue, const std::string& newValue) override{
-        if (oldValue.empty()) {
-            throw std::invalid_argument("Old value cannot be empty.");
-        }
-
-        for (size_t i = 0; i < values.size(); ++i) {
-            if (!values[i].empty() && values[i] == oldValue) {
-                values[i] = newValue;
-            }
-        }
-    }
-    int getSize() override{
-        return values.size();
-    }
-    bool containsValue(const std::string& value) override{
-        for(const auto val : values ){
-            if(value == val){
-                return true;
-                break;
-            }
-        }
-        return false;
-    }
-    void deleteValue(size_t rowIndex) override {
-        if (rowIndex < values.size()) {
-            std::vector<std::string> tempValues;
-            for (size_t i = 0; i < values.size(); ++i) {
-                if (i != rowIndex) {
-                    tempValues.push_back(values[i]);
-                }
-            }
-            values.clear();
-            values = tempValues;
-            tempValues.clear();
-        } else {
-            std::cerr << "Invalid row index." << std::endl;
-        }
-    }
-    std::string getValue(size_t rowIndex) const override {
-        if (!values[rowIndex].empty()) {
-            return values[rowIndex];
-        } else {
-            return "NULL";
-        }
-    }
-};
-
-
-
-
-class Table {
-private:
-    std::string tableName;
-    std::vector<TableColumnBase*> columns;
-    int countRows;
-
-public:
-    Table(const std::string& name) : tableName(name) {
-        countRows = 0;
-    }
-
-    ~Table() {
-        for (auto column : columns) {
-            delete column;
-        }
-    }
-
-    void addColumn(TableColumnBase* column) {
-        columns.push_back(column);
-    }
-
-    bool containsPK(size_t columnIndex,const std::string& value){
-        if(columns[columnIndex]->isPrimaryKey()) {
-            return columns[columnIndex]->containsValue(value);
-        }
-        return false;
-    }
-
-    void addColumnValue(size_t columnIndex, const std::string& value) {
-        if (columnIndex < columns.size()) {
-            columns[columnIndex]->addValue(value);
-        } else {
-            std::cerr << "Invalid column index." << std::endl;
-        }
-    }
-
-    void addRow(const std::vector<std::string>& row) {
-        if (row.size() > columns.size()) {
-            std::cerr << "Too many elements in the row. Ignoring extra values." << std::endl;
-        }
-        bool containPK = false;
-
-        for (size_t i = 0; i < columns.size() ; ++i) {
+    if (!containPK) {
+        ++countRows;
+        for (size_t i = 0; i < columns.size(); ++i) {
             if (i >= row.size()) {
                 addColumnValue(i, "");
             } else {
-                if (containsPK(i, row[i])) {
-                    std::cout << "Primary key with this value " << row[i] << " exists!!!" << std::endl;
-                    containPK = true;
-                    break;
-                }
+                addColumnValue(i, row[i]);
             }
         }
-        if (!containPK) {
-            ++countRows;
-            for (size_t i = 0; i < columns.size() ; ++i) {
-                if (i >= row.size()) {
-                        addColumnValue(i, "");
-                } else {
-                        addColumnValue(i, row[i]);
+    }
+}
+
+void Table::printHeader() const {
+    for (const auto& column : columns) {
+        column->printHeader();
+    }
+    std::cout << std::endl;
+}
+
+void Table::printIndexingColumns() const {
+    int i = 0;
+    for (const auto& column : columns) {
+        std::cout << column->getName() << ": Index: " << i + 1 << std::endl;
+        ++i;
+    }
+    std::cout << std::endl;
+}
+
+void Table::printRow(size_t rowIndex) const {
+    for (const auto& column : columns) {
+        column->printValue(rowIndex);
+    }
+    std::cout << std::endl;
+}
+
+void Table::pritnAllRows() {
+    for (size_t i = 0; i < countRows; ++i) {
+        for (const auto& column : columns) {
+            if (i < column->getSize()) {
+                column->printValue(i);
+            } else {
+                std::cout << "\t\t";
+            }
+        }
+        std::cout << std::endl;
+    }
+}
+
+void Table::uploadColumnValue(size_t columnIndex, size_t rowIndex, const std::string& value) {
+    columnIndex -= 1;
+    rowIndex -= 1;
+    if (columnIndex < columns.size()) {
+        columns[columnIndex]->uploadValue(rowIndex, value);
+    } else {
+        std::cerr << "Invalid column index." << std::endl;
+    }
+}
+
+int Table::uploadAllColumnValues(size_t columnIndex, const std::string& oldValue, const std::string& newValue) {
+    int uptadetRows = 0;
+    if (columnIndex < columns.size()) {
+        uptadetRows = columns[columnIndex]->uploadAllValues(oldValue, newValue);
+    } else {
+        std::cerr << "Invalid column index." << std::endl;
+    }
+    return uptadetRows;
+}
+
+void Table::deleteRow(size_t rowIndex) {
+    rowIndex -= 1;
+    if (rowIndex < columns.size() && rowIndex >= 0) {
+        for (auto& column : columns) {
+            column->deleteValue(rowIndex);
+        }
+        std::cout << "Row at index " << rowIndex + 1 << " deleted." << std::endl;
+        --countRows;
+    } else {
+        std::cerr << "Invalid row index." << std::endl;
+    }
+}
+
+int Table::deleteRowsByValue(size_t columnIndex, const std::string& value) {
+    columnIndex -= 1;
+    int numberOfDeleted = 0;
+
+    if (columnIndex < columns.size() && columnIndex >= 0) {
+        for (size_t rowIndex = 0; rowIndex < columns[columnIndex]->getSize(); ++rowIndex) {
+            if (columns[columnIndex]->getValue(rowIndex) == value) {
+                // Odstráň hodnoty z všetkých stĺpcov pre daný riadok
+                for (auto& column : columns) {
+                    column->deleteValue(rowIndex);
                 }
+                numberOfDeleted++;
             }
         }
 
+        std::cout << numberOfDeleted << " rows deleted where value in column " << columnIndex + 1 << " is '" << value << "'." << std::endl;
+    } else {
+        std::cerr << "Invalid column index." << std::endl;
     }
+    return numberOfDeleted;
+}
 
-    void printHeader() const {
-        for (const auto& column : columns) {
-            column->printHeader();
-        }
-        std::cout << std::endl;
-    }
+int Table::getCountRows() {
+    return countRows;
+}
 
-    void printIndexingColumns() const{
-        int i = 0;
-        for (const auto& column : columns) {
-            std::cout << column->getName() << ": Index: " << i + 1<< std::endl;
-            ++i;
-        }
-        std::cout << std::endl;
-    }
+std::string Table::getName() {
+    return tableName;
+}
 
-    void printRow(size_t rowIndex) const {
-        for (const auto& column : columns) {
-            column->printValue(rowIndex);
-        }
-        std::cout << std::endl;
-    }
+User* Table::getCreator() {
+    return creator;
+}
 
-    void pritnAllRows() {
 
+
+std::string Table::getAllRows(){
+    std::string a = "No rows in this table";
+    if(columns[0]->getSize() != 0){
+        a = "";
         for (size_t i = 0; i < countRows; ++i) {
             for (const auto& column : columns) {
                 if (i < column->getSize()) {
-                    column->printValue(i);
+                    a += column->getValue(i) + "\t\t";
                 } else {
-                    std::cout << "\t\t";
+                    a += "\t\t";
                 }
             }
-            std::cout << std::endl;
+            a += "\n";
         }
     }
-    void uploadColumnValue(size_t columnIndex, size_t rowIndex, const std::string& value) {
-        columnIndex -=1;
-        rowIndex -= 1;
-        if (columnIndex < columns.size()) {
-            columns[columnIndex]->uploadValue(rowIndex, value);
-        } else {
-            std::cerr << "Invalid column index." << std::endl;
-        }
-    }
+    return a;
+}
 
-    void uploadAllColumnValues(size_t columnIndex, const std::string& oldValue, const std::string& newValue) {
-        if (columnIndex < columns.size()) {
-            columns[columnIndex]->uploadAllValues(oldValue, newValue);
-        } else {
-            std::cerr << "Invalid column index." << std::endl;
-        }
-    }
-
-    void deleteRow(size_t rowIndex) {
-        rowIndex -= 1;
-        if (rowIndex <= columns.size() && rowIndex > 0) {
-            for (auto& column : columns) {
-                column->deleteValue(rowIndex);
-            }
-            std::cout << "Row at index " << rowIndex + 1 << " deleted." << std::endl;
-            --countRows;
-        } else {
-            std::cerr << "Invalid row index." << std::endl;
-        }
-
-    }
-
-    void deleteRowsByValue(size_t columnIndex, const std::string& value) {
-        columnIndex -= 1;
-        int numberOfDeleted = 0;
-
-        if (columnIndex < columns.size() && columnIndex >= 0) {
-            for (size_t rowIndex = 0; rowIndex < columns[columnIndex]->getSize(); ++rowIndex) {
-                if (columns[columnIndex]->getValue(rowIndex) == value) {
-                    // Odstráň hodnoty z všetkých stĺpcov pre daný riadok
-                    for (auto& column : columns) {
-                        column->deleteValue(rowIndex);
-                    }
-                    numberOfDeleted++;
-                }
-            }
-
-            std::cout << numberOfDeleted << " rows deleted where value in column " << columnIndex + 1 << " is '" << value << "'." << std::endl;
-        } else {
-            std::cerr << "Invalid column index." << std::endl;
-        }
-    }
-
-    int getCountRows(){
-        return countRows;
-    }
-
-    std::string getName(){
-        return tableName;
-    }
-
+bool Table::existsColumnIndex(int index){
+    return columns.size() <= index;
 };
 
-//int main() {
-//    Table myTable("SampleTable");
-//
-//    myTable.addColumn(new IntColumn("ID", true, true));
-//    myTable.addColumn(new StringColumn("Name", true, false));
-//    myTable.addColumn(new DoubleColumn("Salary", false, false));
-//    myTable.addColumn(new BoolColumn("Active", false, false));
-//    myTable.addColumn(new DateColumn("Date", false, false));
-//
-//
-//    myTable.addRow({"1", "John", "50000.0", "true", "25.5.1245"});
-//    myTable.addRow({"2", "Lopata", "60000.1", "false",""});
-//    myTable.addRow({"3", "Doe","25.4","",""});
-//    myTable.addRow({"4","ASDads","25.1","false", "25.4.2023"});
-//    myTable.addRow({"5","Mali","","","28.4.223"});
-//    myTable.addRow({"6","SMali","50","true",""});
-//    myTable.addRow({"6","SMali","50","true",""});
-//    myTable.printHeader();
-//    myTable.pritnAllRows();
-//    myTable.uploadAllColumnValues(1,"John","Jozo");
-//    myTable.printHeader();
-//    myTable.pritnAllRows();;
-//    myTable.deleteRow(6);
-//    myTable.printHeader();
-//    myTable.pritnAllRows();
-//    myTable.deleteRowsByValue(2,"Lopata");
-//    myTable.printHeader();
-//    myTable.pritnAllRows();
-//    return 0;
-//}
+std::string Table::getColumnsIndexes(){
+    int i = 0;
+    std::string a = "None index";
+    if(!columns.empty()) {
+        a = "";
+        for (const auto &column: columns) {
+            a += column->getName() + ": Index " + std::to_string(i+1) + "\n";
+            ++i;
+        }
+    }
+    return a;
+}
 
+int Table::getNumberOfColumns(){
+    return columns.size();
+}
 
+std::string Table::getColumnDescription(int index){
+    std::string a = "This column dont exist";
+    if(index > -1 && index <= columns.size()){
+        a = columns[index]->getDescription();
+    }
+    return a;
+}
+
+bool Table::isColumnNullAble(int index){
+    if(index >= 0 && index <= columns.size()){
+        return columns[index]->isNotNullColumn();
+    }
+    return false;
+}
+
+std::string Table::getColumnType(int index){
+    if(index >= 0 && index <= columns.size()){
+        return columns[index]->getTypea();
+    }
+    return "";
+}
+
+bool Table::existsInTablePrimaryKey(){
+    for(const auto& column : columns) {
+        if(column->isPrimaryKey()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::string Table::getRow(int index){
+    std::string a;
+    for(auto col: columns) {
+        if(col->getSize() == 0){
+            a = "Wrong size of index!!";
+            break;
+        }
+        else {
+            a += col->getValue(index - 1) + "\t\t";
+        }
+    }
+    return a;
+}
+
+int main(){
+    User* usera = new User("Jozo", "12345");
+    Table* table = new Table("name",usera);
+    table->addColumn(new StringColumn("Name", true, true));
+    table->addColumn(new DoubleColumn("Value", false, false));
+    table->addRow({"Jozo", });
+    std::cout << table->getColumnsIndexes() << "\n";
+    std::cout <<  table->getAllRows() << "\n";
+    std::cout << table->getRow(1) << "\n";
+}
