@@ -1,3 +1,0 @@
-/home/rmtk/CLionProjects/SEM-POS/cmake-build-debug/CMakeFiles/Sem.dir
-/home/rmtk/CLionProjects/SEM-POS/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/rmtk/CLionProjects/SEM-POS/cmake-build-debug/CMakeFiles/rebuild_cache.dir
