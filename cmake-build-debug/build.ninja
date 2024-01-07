@@ -55,8 +55,62 @@ build CMakeFiles/Sem.dir/main.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Use
   OBJECT_DIR = CMakeFiles\Sem.dir
   OBJECT_FILE_DIR = CMakeFiles\Sem.dir
 
+build CMakeFiles/Sem.dir/server/Server.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/server/Server.cpp || cmake_object_order_depends_target_Sem
+  DEP_FILE = CMakeFiles\Sem.dir\server\Server.cpp.obj.d
+  FLAGS = -Duser.language=sk -Duser.region=SK -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Sem.dir
+  OBJECT_FILE_DIR = CMakeFiles\Sem.dir\server
+
+build CMakeFiles/Sem.dir/server/User.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/server/User.cpp || cmake_object_order_depends_target_Sem
+  DEP_FILE = CMakeFiles\Sem.dir\server\User.cpp.obj.d
+  FLAGS = -Duser.language=sk -Duser.region=SK -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Sem.dir
+  OBJECT_FILE_DIR = CMakeFiles\Sem.dir\server
+
 build CMakeFiles/Sem.dir/server/Table/Table.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/server/Table/Table.cpp || cmake_object_order_depends_target_Sem
   DEP_FILE = CMakeFiles\Sem.dir\server\Table\Table.cpp.obj.d
+  FLAGS = -Duser.language=sk -Duser.region=SK -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Sem.dir
+  OBJECT_FILE_DIR = CMakeFiles\Sem.dir\server\Table
+
+build CMakeFiles/Sem.dir/server/Table/IntColumn.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/server/Table/IntColumn.cpp || cmake_object_order_depends_target_Sem
+  DEP_FILE = CMakeFiles\Sem.dir\server\Table\IntColumn.cpp.obj.d
+  FLAGS = -Duser.language=sk -Duser.region=SK -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Sem.dir
+  OBJECT_FILE_DIR = CMakeFiles\Sem.dir\server\Table
+
+build CMakeFiles/Sem.dir/server/Table/DoubleColumn.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/server/Table/DoubleColumn.cpp || cmake_object_order_depends_target_Sem
+  DEP_FILE = CMakeFiles\Sem.dir\server\Table\DoubleColumn.cpp.obj.d
+  FLAGS = -Duser.language=sk -Duser.region=SK -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Sem.dir
+  OBJECT_FILE_DIR = CMakeFiles\Sem.dir\server\Table
+
+build CMakeFiles/Sem.dir/server/Table/StringColumn.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/server/Table/StringColumn.cpp || cmake_object_order_depends_target_Sem
+  DEP_FILE = CMakeFiles\Sem.dir\server\Table\StringColumn.cpp.obj.d
+  FLAGS = -Duser.language=sk -Duser.region=SK -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Sem.dir
+  OBJECT_FILE_DIR = CMakeFiles\Sem.dir\server\Table
+
+build CMakeFiles/Sem.dir/server/Table/BoolColumn.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/server/Table/BoolColumn.cpp || cmake_object_order_depends_target_Sem
+  DEP_FILE = CMakeFiles\Sem.dir\server\Table\BoolColumn.cpp.obj.d
+  FLAGS = -Duser.language=sk -Duser.region=SK -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Sem.dir
+  OBJECT_FILE_DIR = CMakeFiles\Sem.dir\server\Table
+
+build CMakeFiles/Sem.dir/server/Table/DateColumn.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/server/Table/DateColumn.cpp || cmake_object_order_depends_target_Sem
+  DEP_FILE = CMakeFiles\Sem.dir\server\Table\DateColumn.cpp.obj.d
+  FLAGS = -Duser.language=sk -Duser.region=SK -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Sem.dir
+  OBJECT_FILE_DIR = CMakeFiles\Sem.dir\server\Table
+
+build CMakeFiles/Sem.dir/server/Database.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/server/Database.cpp || cmake_object_order_depends_target_Sem
+  DEP_FILE = CMakeFiles\Sem.dir\server\Database.cpp.obj.d
+  FLAGS = -Duser.language=sk -Duser.region=SK -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Sem.dir
+  OBJECT_FILE_DIR = CMakeFiles\Sem.dir\server
+
+build CMakeFiles/Sem.dir/server/Table/TableColumnBase.cpp.obj: CXX_COMPILER__Sem_unscanned_Debug C$:/Users/Daniel/CLionProjects/Sem/server/Table/TableColumnBase.cpp || cmake_object_order_depends_target_Sem
+  DEP_FILE = CMakeFiles\Sem.dir\server\Table\TableColumnBase.cpp.obj.d
   FLAGS = -Duser.language=sk -Duser.region=SK -g -std=gnu++20 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\Sem.dir
   OBJECT_FILE_DIR = CMakeFiles\Sem.dir\server\Table
@@ -69,9 +123,9 @@ build CMakeFiles/Sem.dir/server/Table/Table.cpp.obj: CXX_COMPILER__Sem_unscanned
 #############################################
 # Link the executable Sem.exe
 
-build Sem.exe: CXX_EXECUTABLE_LINKER__Sem_Debug CMakeFiles/Sem.dir/main.cpp.obj CMakeFiles/Sem.dir/server/Table/Table.cpp.obj
+build Sem.exe: CXX_EXECUTABLE_LINKER__Sem_Debug CMakeFiles/Sem.dir/main.cpp.obj CMakeFiles/Sem.dir/server/Server.cpp.obj CMakeFiles/Sem.dir/server/User.cpp.obj CMakeFiles/Sem.dir/server/Table/Table.cpp.obj CMakeFiles/Sem.dir/server/Table/IntColumn.cpp.obj CMakeFiles/Sem.dir/server/Table/DoubleColumn.cpp.obj CMakeFiles/Sem.dir/server/Table/StringColumn.cpp.obj CMakeFiles/Sem.dir/server/Table/BoolColumn.cpp.obj CMakeFiles/Sem.dir/server/Table/DateColumn.cpp.obj CMakeFiles/Sem.dir/server/Database.cpp.obj CMakeFiles/Sem.dir/server/Table/TableColumnBase.cpp.obj
   FLAGS = -Duser.language=sk -Duser.region=SK -g
-  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = -lws2_32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Sem.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
