@@ -85,6 +85,7 @@ public:
             }
             std::string option = buffer;
             bool existUsername = false;
+            //Login
             if (option == "1") {
                 message = "Select user name: ";
                 send(clientSocket, message, strlen(message), 0);
@@ -101,7 +102,7 @@ public:
                     }
                     if (database->existUsername(buffer)) {
                         existUsername = true;
-                        std::string name = buffer;
+                        std::string name(buffer,bytesRead);
                         message = "Select password: ";
                         send(clientSocket, message, strlen(message), 0);
                         while (true) {
@@ -137,6 +138,7 @@ public:
                 continue;
             }
 
+            //Register
             if (option == "2") {
                 message = "Select user name: ";
                 send(clientSocket, message, strlen(message), 0);
@@ -156,7 +158,7 @@ public:
                                   "Select user name: ";
                         send(clientSocket, message, strlen(message), 0);
                     } else {
-                        std::string name = buffer;
+                        std::string name(buffer,bytesRead);
                         existUsername = true;
                         message = "(Password must have 5 length) Select password:";
                         send(clientSocket, message, strlen(message), 0);
@@ -172,11 +174,19 @@ public:
                             }
                             std::string heslo(buffer, bytesRead);
                             if (heslo.length() >= 5) {
-                                client = new User(name, heslo);
-                                database->addUser(name, heslo);
-                                message = "Registration successful click ENTER";
-                                send(clientSocket, message, strlen(message), 0);
-                                break;
+                                if(!database->existUsername(name)) {
+                                    client = new User(name, heslo);
+                                    database->addUser(name, heslo);
+                                    message = "Registration successful click ENTER";
+                                    send(clientSocket, message, strlen(message), 0);
+                                    break;
+                                }else{
+                                    message = "dont response";
+                                    send(clientSocket, message, strlen(message),0);
+                                    message = "User with this name was added when you was registring try it again!!";
+                                    send(clientSocket, message, strlen(message),0);
+                                    break;
+                                }
                             } else {
                                 message = "Invalid password!!!\n"
                                           "(Password must have 5 length) Select password: ";
@@ -200,6 +210,7 @@ public:
         }
 
         //Zvysok moznosti pre klienta
+        std::cout << client->getMeno()<<"\n";
         if(client != nullptr) {
             bool odpojilSa = false;
             const char *dontResponse = "Dont response";
@@ -209,6 +220,7 @@ public:
                                          "3. Delete table\n"
                                          "4. Print all my Tables\n"
                                          "5. Print tables with rights to me\n"
+                                         "6. Add user right to table\n"
                                          "9. Quit\n"
                                          "Choose your option: ";
             send(clientSocket, optionsMessage, strlen(optionsMessage), 0);
@@ -267,63 +279,9 @@ public:
                                     }
                                     std::string a(buffer, bytesRead);
                                     if (a == "1") {
-                                        while (!odpojilSa) {
-                                            messageToSend = "Select index of row:";
-                                            send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                            bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
-                                            if (bytesRead <= 0) {
-                                                std::cout << "Client disconnected\n";
-                                                closeClient(clientSocket);
-                                                odpojilSa = true;
-                                                break;
-                                            }
-                                            if (std::string(buffer, bytesRead) == "@") {
-                                                break;
-                                            }
-                                            a = std::string(buffer, bytesRead);
-                                            try {
-                                                int index = std::stoi(a);
-                                                send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                                if (index != 0) {
-                                                    std::string message = database->getRowByIndex(tableName, index);
-                                                    send(clientSocket, message.c_str(), message.size(), 0);
-                                                } else {
-                                                    messageToSend = "Wrong index!!\n";
-                                                    send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                                }
-                                            } catch (const std::invalid_argument &e) {
-                                                send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                                messageToSend = "Invalid index format. Please provide a valid integer.\n";
-                                                send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                            }
-                                        }
-                                        continue;
-                                    }
-                                    if (a == "2") {
-                                        send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                        std::string message = database->getAllRows(tableName);
-                                        send(clientSocket, message.c_str(), message.size(), 0);
-                                        continue;
-                                    }
-                                    if (a == "3") {
-                                        messageToSend = "Select one option:\n"
-                                                        "1. Select index of column\n"
-                                                        "2. Show index of columns\n"
-                                                        "Choose option: ";
-                                        send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                        bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
-                                        if (bytesRead <= 0) {
-                                            std::cout << "Client disconnected\n";
-                                            closeClient(clientSocket);
-                                            odpojilSa = true;
-                                            break;
-                                        }
-                                        if (std::string(buffer, bytesRead) == "@") {
-                                            break;
-                                        }
-                                        if (std::string(buffer, bytesRead) == "1") {
+                                        if (database->getTable(tableName)->canUserSelect(client)) {
                                             while (!odpojilSa) {
-                                                messageToSend = "Select index of column: ";
+                                                messageToSend = "Select index of row:";
                                                 send(clientSocket, messageToSend, strlen(messageToSend), 0);
                                                 bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
                                                 if (bytesRead <= 0) {
@@ -336,13 +294,434 @@ public:
                                                     break;
                                                 }
                                                 a = std::string(buffer, bytesRead);
+                                                try {
+                                                    int index = std::stoi(a);
+                                                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                    if (index != 0) {
+                                                        std::string message = database->getRowByIndex(tableName, index);
+                                                        send(clientSocket, message.c_str(), message.size(), 0);
+                                                    } else {
+                                                        messageToSend = "Wrong index!!\n";
+                                                        send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                                    }
+                                                } catch (const std::invalid_argument &e) {
+                                                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                    messageToSend = "Invalid index format. Please provide a valid integer.\n";
+                                                    send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                                    continue;
+                                                }
+                                            }
+                                        } else {
+                                            send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                            messageToSend = "You dont have right to select";
+                                            send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                        }
+                                        continue;
+                                    }
+                                    if (a == "2") {
+                                            if(database->getTable(tableName)->canUserSelect(client)) {
+                                                send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                std::string message = database->getAllRows(tableName);
+                                                send(clientSocket, message.c_str(), message.size(), 0);
+                                                continue;
+                                            } else{
+                                                send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                messageToSend = "You dont have right to select";
+                                                send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                            }
+                                        }
+                                    if (a == "3") {
+                                        if (database->getTable(tableName)->canUserUpdate(client)){
+                                            while(!odpojilSa) {
+                                                messageToSend = "Select one option:\n"
+                                                                "1. Select index of column\n"
+                                                                "2. Show index of columns\n"
+                                                                "Choose option: ";
+                                                send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                                bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
+                                                if (bytesRead <= 0) {
+                                                    std::cout << "Client disconnected\n";
+                                                    closeClient(clientSocket);
+                                                    odpojilSa = true;
+                                                    break;
+                                                }
+                                                if (std::string(buffer, bytesRead) == "@") {
+                                                    break;
+                                                }
+                                                if (std::string(buffer, bytesRead) == "1") {
+                                                    while (!odpojilSa) {
+                                                        messageToSend = "Select index of column: ";
+                                                        send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                                        bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
+                                                        if (bytesRead <= 0) {
+                                                            std::cout << "Client disconnected\n";
+                                                            closeClient(clientSocket);
+                                                            odpojilSa = true;
+                                                            break;
+                                                        }
+                                                        if (std::string(buffer, bytesRead) == "@") {
+                                                            break;
+                                                        }
+                                                        a = std::string(buffer, bytesRead);
 
-                                                if (std::stoi(a)) {
-                                                    int index = std::stoi(a) - 1;
-                                                    if (database->existsColumnIndex(tableName, index)) {
-                                                        if (!database->getTable(tableName)->isColumnPrimaryKer(index)) {
+                                                        if (std::stoi(a)) {
+                                                            int index = std::stoi(a) - 1;
+                                                            if (database->existsColumnIndex(tableName, index)) {
+                                                                if (!database->getTable(tableName)->isColumnPrimaryKer(
+                                                                        index)) {
+                                                                    while (!odpojilSa) {
+                                                                        messageToSend = "Select value which you want change: ";
+                                                                        send(clientSocket, messageToSend,
+                                                                             strlen(messageToSend),
+                                                                             0);
+                                                                        bytesRead = recv(clientSocket, buffer,
+                                                                                         sizeof(buffer),
+                                                                                         0);
+                                                                        if (bytesRead <= 0) {
+                                                                            std::cout << "Client disconnected\n";
+                                                                            closeClient(clientSocket);
+                                                                            odpojilSa = true;
+                                                                            break;
+                                                                        }
+                                                                        if (std::string(buffer, bytesRead) == "@") {
+                                                                            break;
+                                                                        }
+                                                                        while (!odpojilSa) {
+                                                                            std::string oldValue(buffer, bytesRead);
+                                                                            messageToSend = "Select new value: ";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend),
+                                                                                 0);
+                                                                            bytesRead = recv(clientSocket, buffer,
+                                                                                             sizeof(buffer),
+                                                                                             0);
+                                                                            if (bytesRead <= 0) {
+                                                                                std::cout << "Client disconnected\n";
+                                                                                closeClient(clientSocket);
+                                                                                odpojilSa = true;
+                                                                                break;
+                                                                            }
+                                                                            if (std::string(buffer, bytesRead) == "@") {
+                                                                                break;
+                                                                            }
+                                                                            std::string newValue(buffer, bytesRead);
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse),
+                                                                                 0);
+                                                                            std::string l = "Number of uptades rows: " +
+                                                                                            std::to_string(
+                                                                                                    database->getTable(
+                                                                                                            tableName)->uploadAllColumnValues(
+                                                                                                            index,
+                                                                                                            oldValue,
+                                                                                                            newValue));
+                                                                            send(clientSocket, l.c_str(), l.size(),
+                                                                                 0);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                    continue;
+                                                                } else {
+                                                                    send(clientSocket, dontResponse,
+                                                                         strlen(dontResponse),
+                                                                         0);
+                                                                    messageToSend = "Column is primary key you cant change value of primary key!!!";
+                                                                    send(clientSocket, messageToSend,
+                                                                         strlen(messageToSend),
+                                                                         0);
+                                                                }
+                                                            } else {
+                                                                send(clientSocket, dontResponse, strlen(dontResponse),
+                                                                     0);
+                                                                messageToSend = "Wrong index!!";
+                                                                send(clientSocket, messageToSend, strlen(messageToSend),
+                                                                     0);
+                                                            }
+                                                        }
+                                                    }
+                                                    continue;
+                                                }
+                                                if (std::string(buffer, bytesRead) == "2") {
+                                                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                    std::string message = database->getColumnsIndexes(tableName);
+                                                    send(clientSocket, message.c_str(), message.size(), 0);
+                                                    continue;
+                                                } else {
+                                                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                    messageToSend = "Wrong option!!";
+                                                    send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                                }
+                                            }
+                                        } else{
+                                            send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                            messageToSend = "You dont have right to update !!";
+                                            send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                        }
+                                        continue;
+                                    }
+                                    bool odisiel = false;
+                                    if (a == "4") {
+                                        if (database->getTable(tableName)->canUserAdd(client)){
+                                            while (!odisiel) {
+                                                int numberColumns = database->getNumberOfColumns(tableName);
+                                                std::vector<std::string> values;
+                                                for (int i = 0; i < numberColumns; ++i) {
+                                                    while (!odisiel) {
+                                                        send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                        std::string message = database->getColumnDescription(tableName,
+                                                                                                             i);
+                                                        send(clientSocket, message.c_str(), message.size(), 0);
+                                                        messageToSend = "Select Value: ";
+                                                        send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                                        bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
+                                                        if (bytesRead <= 0) {
+                                                            std::cout << "Client disconnected\n";
+                                                            closeClient(clientSocket);
+                                                            odpojilSa = true;
+                                                            odisiel = true;
+                                                            break;
+                                                        }
+                                                        if (std::string(buffer, bytesRead) == "@") {
+                                                            odisiel = true;
+                                                            break;
+                                                        }
+                                                        std::string value1(buffer, bytesRead);
+                                                        bool isNullable = !database->isColumnNullAble(tableName, i);
+                                                        if (isNullable) {
+                                                            if (value1 == "NULL" || value1 == "" || value1 == " " ||
+                                                                value1 == "null" || value1 == "Null" ||
+                                                                value1 == "nullptr") {
+                                                                value1 = "";
+                                                                values.push_back(value1);
+                                                                break;
+                                                            } else {
+                                                                std::string type = database->getTypeOfColumn(tableName,
+                                                                                                             i);
+                                                                if (!type.empty()) {
+                                                                    if (type == "int") {
+                                                                        try {
+                                                                            int intValue = std::stoi(value1);
+                                                                            values.push_back(value1);
+                                                                            break;
+                                                                        } catch (const std::invalid_argument &e) {
+                                                                            // Handle invalid argument exception (e.g., when value1 is not a valid integer)
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse), 0);
+                                                                            messageToSend = "Wrong value for int!!";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend), 0);
+                                                                            continue;
+                                                                        } catch (const std::out_of_range &e) {
+                                                                            // Handle out-of-range exception (e.g., when the converted value is too large)
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse), 0);
+                                                                            messageToSend = "Value out of range for int!!";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend), 0);
+                                                                            continue;
+                                                                        }
+                                                                    } else if (type == "string") {
+                                                                        values.push_back(value1);
+                                                                    } else if (type == "double") {
+                                                                        try {
+                                                                            double doubleValue = std::stod(value1);
+                                                                            values.push_back(value1);
+                                                                            break;
+                                                                        } catch (const std::invalid_argument &e) {
+                                                                            // Handle invalid argument exception (e.g., when value1 is not a valid double)
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse), 0);
+                                                                            messageToSend = "Wrong value for double!!";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend), 0);
+                                                                            continue;
+                                                                        } catch (const std::out_of_range &e) {
+                                                                            // Handle out-of-range exception (e.g., when the converted value is too large)
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse), 0);
+                                                                            messageToSend = "Value out of range for double!!";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend), 0);
+                                                                            continue;
+                                                                        }
+                                                                    } else if (type == "date") {
+                                                                        std::regex dateRegex(R"(\d{4}-\d{2}-\d{2})");
+                                                                        if (std::regex_match(value1, dateRegex)) {
+                                                                            values.push_back(value1);
+                                                                        } else {
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse), 0);
+                                                                            messageToSend = "Wrong value for type of this column!!";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend), 0);
+                                                                        }
+                                                                    } else if (type == "bool") {
+                                                                        if (value1 == "true" || value1 == "false") {
+                                                                            values.push_back(value1);
+                                                                            break;
+                                                                        } else {
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse), 0);
+                                                                            messageToSend = "Wrong value for bool!!";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend), 0);
+                                                                            continue;
+                                                                        }
+                                                                    } else {
+                                                                        send(clientSocket, dontResponse,
+                                                                             strlen(dontResponse), 0);
+                                                                        messageToSend = "Problem with getting type of column!!";
+                                                                        send(clientSocket, messageToSend,
+                                                                             strlen(messageToSend), 0);
+                                                                        break;
+                                                                    }
+                                                                }
+                                                            }
+                                                        } else {
+                                                            std::string type = database->getTypeOfColumn(tableName, i);
+                                                            if (value1 == "NULL" || value1 == "" || value1 == " " ||
+                                                                value1 == "null" || value1 == "Null" ||
+                                                                value1 == "nullptr") {
+                                                                send(clientSocket, dontResponse, strlen(dontResponse),
+                                                                     0);
+                                                                messageToSend = "Wrong value for this column!!";
+                                                                send(clientSocket, messageToSend, strlen(messageToSend),
+                                                                     0);
+                                                            } else {
+                                                                if (!type.empty()) {
+                                                                    if (type == "int") {
+                                                                        try {
+                                                                            int intValue = std::stoi(value1);
+                                                                            values.push_back(value1);
+                                                                            break;
+                                                                        } catch (const std::invalid_argument &e) {
+                                                                            // Handle invalid argument exception (e.g., when value1 is not a valid integer)
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse), 0);
+                                                                            messageToSend = "Wrong value for int!!";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend), 0);
+                                                                            continue;
+                                                                        } catch (const std::out_of_range &e) {
+                                                                            // Handle out-of-range exception (e.g., when the converted value is too large)
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse), 0);
+                                                                            messageToSend = "Value out of range for int!!";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend), 0);
+                                                                            continue;
+                                                                        }
+                                                                    } else if (type == "string") {
+                                                                        values.push_back(value1);
+                                                                    } else if (type == "double") {
+                                                                        try {
+                                                                            double doubleValue = std::stod(value1);
+                                                                            values.push_back(value1);
+                                                                            break;
+                                                                        } catch (const std::invalid_argument &e) {
+                                                                            // Handle invalid argument exception (e.g., when value1 is not a valid double)
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse), 0);
+                                                                            messageToSend = "Wrong value for double!!";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend), 0);
+                                                                            continue;
+                                                                        } catch (const std::out_of_range &e) {
+                                                                            // Handle out-of-range exception (e.g., when the converted value is too large)
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse), 0);
+                                                                            messageToSend = "Value out of range for double!!";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend), 0);
+                                                                            continue;
+                                                                        }
+                                                                    } else if (type == "date") {
+                                                                        std::regex dateRegex(R"(\d{4}-\d{2}-\d{2})");
+                                                                        if (std::regex_match(value1, dateRegex)) {
+                                                                            values.push_back(value1);
+                                                                        } else {
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse), 0);
+                                                                            messageToSend = "Wrong value for type of this column!!";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend), 0);
+                                                                        }
+                                                                    } else if (type == "bool") {
+                                                                        if (value1 == "true" || value1 == "false") {
+                                                                            values.push_back(value1);
+                                                                            break;
+                                                                        } else {
+                                                                            send(clientSocket, dontResponse,
+                                                                                 strlen(dontResponse), 0);
+                                                                            messageToSend = "Wrong value for bool!!";
+                                                                            send(clientSocket, messageToSend,
+                                                                                 strlen(messageToSend), 0);
+                                                                            continue;
+                                                                        }
+                                                                    } else {
+                                                                        send(clientSocket, dontResponse,
+                                                                             strlen(dontResponse), 0);
+                                                                        messageToSend = "Problem with getting type of column!!";
+                                                                        send(clientSocket, messageToSend,
+                                                                             strlen(messageToSend), 0);
+                                                                        break;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                    if (odisiel) {
+                                                        break;
+                                                    }
+                                                }
+                                                database->addRow(tableName, values);
+                                                break;
+                                            }
+                                        continue;
+                                        } else{
+                                            send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                            messageToSend = "You dont have premission add !!";
+                                            send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                        }
+                                    }
+                                    if (a == "5") {
+                                        if(database->getTable(tableName)->canUserDelete(client)){
+                                            while (!odpojilSa) {
+                                                messageToSend = "Choose one option:\n"
+                                                                "1. Select index of column\n"
+                                                                "2. Write index of columns\n"
+                                                                "Choose option: ";
+                                                send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                                bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
+                                                if (bytesRead <= 0) {
+                                                    std::cout << "Client disconnected\n";
+                                                    closeClient(clientSocket);
+                                                    odpojilSa = true;
+                                                    break;
+                                                }
+                                                if (std::string(buffer, bytesRead) == "@") {
+                                                    break;
+                                                }
+                                                if (std::string(buffer, bytesRead) == "1") {
+                                                    while (!odpojilSa) {
+                                                        messageToSend = "Select index: ";
+                                                        send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                                        bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
+                                                        if (bytesRead <= 0) {
+                                                            std::cout << "Client disconnected\n";
+                                                            closeClient(clientSocket);
+                                                            odpojilSa = true;
+                                                            break;
+                                                        }
+                                                        if (std::string(buffer, bytesRead) == "@") {
+                                                            break;
+                                                        }
+                                                        std::string valo(buffer, bytesRead);
+                                                        if (std::stoi(valo)) {
+                                                            int index = std::stoi(valo);
                                                             while (!odpojilSa) {
-                                                                messageToSend = "Select value which you want change: ";
+                                                                messageToSend = "Select value which you want remove: ";
                                                                 send(clientSocket, messageToSend, strlen(messageToSend),
                                                                      0);
                                                                 bytesRead = recv(clientSocket, buffer, sizeof(buffer),
@@ -356,358 +735,49 @@ public:
                                                                 if (std::string(buffer, bytesRead) == "@") {
                                                                     break;
                                                                 }
-                                                                while (!odpojilSa) {
-                                                                    std::string oldValue(buffer, bytesRead);
-                                                                    messageToSend = "Select new value: ";
-                                                                    send(clientSocket, messageToSend,
-                                                                         strlen(messageToSend),
-                                                                         0);
-                                                                    bytesRead = recv(clientSocket, buffer,
-                                                                                     sizeof(buffer),
-                                                                                     0);
-                                                                    if (bytesRead <= 0) {
-                                                                        std::cout << "Client disconnected\n";
-                                                                        closeClient(clientSocket);
-                                                                        odpojilSa = true;
-                                                                        break;
-                                                                    }
-                                                                    if (std::string(buffer, bytesRead) == "@") {
-                                                                        break;
-                                                                    }
-                                                                    std::string newValue(buffer, bytesRead);
-                                                                    send(clientSocket, dontResponse,
-                                                                         strlen(dontResponse),
-                                                                         0);
-                                                                    std::string l = "Number of uptades rows: " +
-                                                                                    std::to_string(database->getTable(
-                                                                                            tableName)->uploadAllColumnValues(
-                                                                                            index, oldValue, newValue));
-                                                                    send(clientSocket, l.c_str(), l.size(),
-                                                                         0);
-                                                                }
+                                                                send(clientSocket, dontResponse, strlen(dontResponse),
+                                                                     0);
+                                                                std::string sd = "Deleted rows: " + std::to_string(
+                                                                        database->DeleteRow(tableName, index,
+                                                                                            std::string(buffer,
+                                                                                                        bytesRead)));
+                                                                messageToSend = sd.c_str();
+                                                                send(clientSocket, messageToSend, strlen(messageToSend),
+                                                                     0);
                                                                 break;
                                                             }
-                                                            continue;
                                                         } else {
                                                             send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                                            messageToSend = "Column is primary key you cant change value of primary key!!!";
+                                                            messageToSend = "Wrong value for index!!";
                                                             send(clientSocket, messageToSend, strlen(messageToSend), 0);
                                                         }
                                                     }
-                                                    else{
-                                                        send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                                        messageToSend = "Wrong index!!";
-                                                        send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                                    }
                                                 }
-                                            }
-                                            continue;
-                                        }
-                                        if (std::string(buffer, bytesRead) == "2") {
-                                            send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                            std::string message = database->getColumnsIndexes(tableName);
-                                            send(clientSocket, message.c_str(), message.size(), 0);
-                                            continue;
-                                        } else {
-                                            send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                            messageToSend = "Wrong option!!";
-                                            send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                        }
-                                        continue;
-                                    }
-                                    bool odisiel = false;
-                                    if (a == "4") {
-                                        while (!odisiel) {
-                                            int numberColumns = database->getNumberOfColumns(tableName);
-                                            std::vector<std::string> values;
-                                            for (int i = 0; i < numberColumns; ++i) {
-                                                while (!odisiel) {
+                                                if (std::string(buffer, bytesRead) == "2") {
                                                     send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                                    std::string message = database->getColumnDescription(tableName, i);
-                                                    send(clientSocket, message.c_str(), message.size(), 0);
-                                                    messageToSend = "Select Value: ";
+                                                    messageToSend = database->getColumnsIndexes(tableName).c_str();
                                                     send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                                    bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
-                                                    if (bytesRead <= 0) {
-                                                        std::cout << "Client disconnected\n";
-                                                        closeClient(clientSocket);
-                                                        odpojilSa = true;
-                                                        odisiel = true;
-                                                        break;
-                                                    }
-                                                    if (std::string(buffer, bytesRead) == "@") {
-                                                        odisiel = true;
-                                                        break;
-                                                    }
-                                                    std::string value1(buffer, bytesRead);
-                                                    bool isNullable = !database->isColumnNullAble(tableName, i);
-                                                    if (isNullable) {
-                                                        if (value1 == "NULL" || value1 == "" || value1 == " " ||
-                                                            value1 == "null" || value1 == "Null" ||
-                                                            value1 == "nullptr") {
-                                                            value1 = "";
-                                                            values.push_back(value1);
-                                                            break;
-                                                        } else {
-                                                            std::string type = database->getTypeOfColumn(tableName, i);
-                                                            if (!type.empty()) {
-                                                                if (type == "int") {
-                                                                    try {
-                                                                        int intValue = std::stoi(value1);
-                                                                        values.push_back(value1);
-                                                                        break;
-                                                                    } catch (const std::invalid_argument &e) {
-                                                                        // Handle invalid argument exception (e.g., when value1 is not a valid integer)
-                                                                        send(clientSocket, dontResponse,
-                                                                             strlen(dontResponse), 0);
-                                                                        messageToSend = "Wrong value for int!!";
-                                                                        send(clientSocket, messageToSend,
-                                                                             strlen(messageToSend), 0);
-                                                                        continue;
-                                                                    } catch (const std::out_of_range &e) {
-                                                                        // Handle out-of-range exception (e.g., when the converted value is too large)
-                                                                        send(clientSocket, dontResponse,
-                                                                             strlen(dontResponse), 0);
-                                                                        messageToSend = "Value out of range for int!!";
-                                                                        send(clientSocket, messageToSend,
-                                                                             strlen(messageToSend), 0);
-                                                                        continue;
-                                                                    }
-                                                                } else if (type == "string") {
-                                                                    values.push_back(value1);
-                                                                } else if (type == "double") {
-                                                                    try {
-                                                                        double doubleValue = std::stod(value1);
-                                                                        values.push_back(value1);
-                                                                        break;
-                                                                    } catch (const std::invalid_argument &e) {
-                                                                        // Handle invalid argument exception (e.g., when value1 is not a valid double)
-                                                                        send(clientSocket, dontResponse,
-                                                                             strlen(dontResponse), 0);
-                                                                        messageToSend = "Wrong value for double!!";
-                                                                        send(clientSocket, messageToSend,
-                                                                             strlen(messageToSend), 0);
-                                                                        continue;
-                                                                    } catch (const std::out_of_range &e) {
-                                                                        // Handle out-of-range exception (e.g., when the converted value is too large)
-                                                                        send(clientSocket, dontResponse,
-                                                                             strlen(dontResponse), 0);
-                                                                        messageToSend = "Value out of range for double!!";
-                                                                        send(clientSocket, messageToSend,
-                                                                             strlen(messageToSend), 0);
-                                                                        continue;
-                                                                    }
-                                                                } else if (type == "date") {
-                                                                    std::regex dateRegex(R"(\d{4}-\d{2}-\d{2})");
-                                                                    if (std::regex_match(value1, dateRegex)) {
-                                                                        values.push_back(value1);
-                                                                    } else {
-                                                                        send(clientSocket, dontResponse,
-                                                                             strlen(dontResponse), 0);
-                                                                        messageToSend = "Wrong value for type of this column!!";
-                                                                        send(clientSocket, messageToSend,
-                                                                             strlen(messageToSend), 0);
-                                                                    }
-                                                                } else if (type == "bool") {
-                                                                    if (value1 == "true" || value1 == "false") {
-                                                                        values.push_back(value1);
-                                                                        break;
-                                                                    } else {
-                                                                        send(clientSocket, dontResponse,
-                                                                             strlen(dontResponse), 0);
-                                                                        messageToSend = "Wrong value for bool!!";
-                                                                        send(clientSocket, messageToSend,
-                                                                             strlen(messageToSend), 0);
-                                                                        continue;
-                                                                    }
-                                                                } else {
-                                                                    send(clientSocket, dontResponse,
-                                                                         strlen(dontResponse), 0);
-                                                                    messageToSend = "Problem with getting type of column!!";
-                                                                    send(clientSocket, messageToSend,
-                                                                         strlen(messageToSend), 0);
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                    } else {
-                                                        std::string type = database->getTypeOfColumn(tableName, i);
-                                                        if (value1 == "NULL" || value1 == "" || value1 == " " ||
-                                                            value1 == "null" || value1 == "Null" ||
-                                                            value1 == "nullptr") {
-                                                            send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                                            messageToSend = "Wrong value for this column!!";
-                                                            send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                                        } else {
-                                                            if (!type.empty()) {
-                                                                if (type == "int") {
-                                                                    try {
-                                                                        int intValue = std::stoi(value1);
-                                                                        values.push_back(value1);
-                                                                        break;
-                                                                    } catch (const std::invalid_argument &e) {
-                                                                        // Handle invalid argument exception (e.g., when value1 is not a valid integer)
-                                                                        send(clientSocket, dontResponse,
-                                                                             strlen(dontResponse), 0);
-                                                                        messageToSend = "Wrong value for int!!";
-                                                                        send(clientSocket, messageToSend,
-                                                                             strlen(messageToSend), 0);
-                                                                        continue;
-                                                                    } catch (const std::out_of_range &e) {
-                                                                        // Handle out-of-range exception (e.g., when the converted value is too large)
-                                                                        send(clientSocket, dontResponse,
-                                                                             strlen(dontResponse), 0);
-                                                                        messageToSend = "Value out of range for int!!";
-                                                                        send(clientSocket, messageToSend,
-                                                                             strlen(messageToSend), 0);
-                                                                        continue;
-                                                                    }
-                                                                } else if (type == "string") {
-                                                                    values.push_back(value1);
-                                                                } else if (type == "double") {
-                                                                    try {
-                                                                        double doubleValue = std::stod(value1);
-                                                                        values.push_back(value1);
-                                                                        break;
-                                                                    } catch (const std::invalid_argument &e) {
-                                                                        // Handle invalid argument exception (e.g., when value1 is not a valid double)
-                                                                        send(clientSocket, dontResponse,
-                                                                             strlen(dontResponse), 0);
-                                                                        messageToSend = "Wrong value for double!!";
-                                                                        send(clientSocket, messageToSend,
-                                                                             strlen(messageToSend), 0);
-                                                                        continue;
-                                                                    } catch (const std::out_of_range &e) {
-                                                                        // Handle out-of-range exception (e.g., when the converted value is too large)
-                                                                        send(clientSocket, dontResponse,
-                                                                             strlen(dontResponse), 0);
-                                                                        messageToSend = "Value out of range for double!!";
-                                                                        send(clientSocket, messageToSend,
-                                                                             strlen(messageToSend), 0);
-                                                                        continue;
-                                                                    }
-                                                                } else if (type == "date") {
-                                                                    std::regex dateRegex(R"(\d{4}-\d{2}-\d{2})");
-                                                                    if (std::regex_match(value1, dateRegex)) {
-                                                                        values.push_back(value1);
-                                                                    } else {
-                                                                        send(clientSocket, dontResponse,
-                                                                             strlen(dontResponse), 0);
-                                                                        messageToSend = "Wrong value for type of this column!!";
-                                                                        send(clientSocket, messageToSend,
-                                                                             strlen(messageToSend), 0);
-                                                                    }
-                                                                } else if (type == "bool") {
-                                                                    if (value1 == "true" || value1 == "false") {
-                                                                        values.push_back(value1);
-                                                                        break;
-                                                                    } else {
-                                                                        send(clientSocket, dontResponse,
-                                                                             strlen(dontResponse), 0);
-                                                                        messageToSend = "Wrong value for bool!!";
-                                                                        send(clientSocket, messageToSend,
-                                                                             strlen(messageToSend), 0);
-                                                                        continue;
-                                                                    }
-                                                                } else {
-                                                                    send(clientSocket, dontResponse,
-                                                                         strlen(dontResponse), 0);
-                                                                    messageToSend = "Problem with getting type of column!!";
-                                                                    send(clientSocket, messageToSend,
-                                                                         strlen(messageToSend), 0);
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    break;
+                                                    continue;
+                                                } else {
+                                                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                    messageToSend = "Wrong option!!";
+                                                    send(clientSocket, messageToSend, strlen(messageToSend), 0);
                                                 }
-                                                if (odisiel) {
-                                                    break;
-                                                }
+
+
                                             }
-                                            database->addRow(tableName, values);
-                                            break;
+                                        }
+                                        else{
+                                            send(clientSocket, dontResponse, strlen(dontResponse),0);
+                                            messageToSend = "You dont have right to delete !!";
+                                            send(clientSocket, dontResponse, strlen(dontResponse),0);
                                         }
                                         continue;
                                     }
-                                    if (a == "5") {
-                                        while (!odpojilSa) {
-                                            messageToSend = "Choose one option:\n"
-                                                            "1. Select index of column\n"
-                                                            "2. Write index of columns\n"
-                                                            "Choose option: ";
-                                            send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                            bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
-                                            if (bytesRead <= 0) {
-                                                std::cout << "Client disconnected\n";
-                                                closeClient(clientSocket);
-                                                odpojilSa = true;
-                                                break;
-                                            }
-                                            if (std::string(buffer, bytesRead) == "@") {
-                                                break;
-                                            }
-                                            if (std::string(buffer, bytesRead) == "1") {
-                                                while (!odpojilSa) {
-                                                    messageToSend = "Select index: ";
-                                                    send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                                    bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
-                                                    if (bytesRead <= 0) {
-                                                        std::cout << "Client disconnected\n";
-                                                        closeClient(clientSocket);
-                                                        odpojilSa = true;
-                                                        break;
-                                                    }
-                                                    if (std::string(buffer, bytesRead) == "@") {
-                                                        break;
-                                                    }
-                                                    std::string valo(buffer, bytesRead);
-                                                    if (std::stoi(valo)) {
-                                                        int index = std::stoi(valo);
-                                                        while (!odpojilSa) {
-                                                            messageToSend = "Select value which you want remove: ";
-                                                            send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                                            bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
-                                                            if (bytesRead <= 0) {
-                                                                std::cout << "Client disconnected\n";
-                                                                closeClient(clientSocket);
-                                                                odpojilSa = true;
-                                                                break;
-                                                            }
-                                                            if (std::string(buffer, bytesRead) == "@") {
-                                                                break;
-                                                            }
-                                                            send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                                            std::string sd = "Deleted rows: " + std::to_string(
-                                                                    database->DeleteRow(tableName, index,
-                                                                                        std::string(buffer,
-                                                                                                    bytesRead)));
-                                                            messageToSend = sd.c_str();
-                                                            send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                                            break;
-                                                        }
-                                                    } else {
-                                                        send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                                        messageToSend = "Wrong value for index!!";
-                                                        send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                                    }
-                                                }
-                                            }
-                                            if (std::string(buffer, bytesRead) == "2") {
-                                                send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                                messageToSend = database->getColumnsIndexes(tableName).c_str();
-                                                send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                                continue;
-                                            } else {
-                                                send(clientSocket, dontResponse, strlen(dontResponse), 0);
-                                                messageToSend = "Wrong option!!";
-                                                send(clientSocket, messageToSend, strlen(messageToSend), 0);
-                                            }
-
-
-                                        }
-                                        continue;
+                                    else{
+                                        send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                        messageToSend = "Invalid option !!";
+                                        send(clientSocket, messageToSend, strlen(messageToSend), 0);
                                     }
                                 }
                                 continue;
@@ -987,6 +1057,39 @@ public:
                 }
                 //mazanie tabuliek
                 if (option == "3") {
+                    while(!odpojilSa){
+                        const char *messageToSend = "Select name of table: ";
+                        send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                        bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
+                        if (bytesRead <= 0) {
+                            std::cout << "Client disconnected\n";
+                            closeClient(clientSocket);
+                            odpojilSa = true;
+                            break;
+                        }
+                        if (std::string(buffer, bytesRead) == "@") {
+                            break;
+                        }
+                        send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                        std::string message2 = database->deleteTable(std::string(buffer,bytesRead),client);
+                        send(clientSocket, message2.c_str(), message2.size(), 0);
+                    }
+                    send(clientSocket, optionsMessage, strlen(optionsMessage), 0);
+                    continue;
+                }
+                // zobrazenie uzivovatelovych tabuliek
+                if(option == "4"){
+                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                    std::string message2 = database->getUserTables(client);
+                    send(clientSocket, message2.c_str(), message2.size(), 0);
+                    send(clientSocket, optionsMessage, strlen(optionsMessage), 0);
+                    continue;
+                }
+                //vypisanie vsetkych tabuliek ku ktorym mam prava
+                if(option == "5"){
+                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                    std::string message2 = database->getUserTablesWithRights(client);
+                    send(clientSocket, message2.c_str(), message2.size(), 0);
                     send(clientSocket, optionsMessage, strlen(optionsMessage), 0);
                     continue;
                 }
@@ -994,7 +1097,8 @@ public:
                     odpojilSa = true;
                     closeClient(clientSocket);
                     break;
-                } else {
+                }
+                else {
                     const char *invalidOptionMessage = "Invalid option\n"
                                                        "Select one option\n"
                                                        "1. ""Select table\n"
@@ -1002,6 +1106,7 @@ public:
                                                        "3. Delete table\n"
                                                        "4. Print all my Tables\n"
                                                        "5. Print tables with rights to me\n"
+                                                       "6. Add user right to table\n"
                                                        "9. Quit\n"
                                                        "Choose your option: ";
                     send(clientSocket, invalidOptionMessage, strlen(invalidOptionMessage), 0);
@@ -1009,7 +1114,7 @@ public:
             }
         }
         delete client;
-        std::cout << "Thread ended\n";
+        std::cout << "Thread ended/ClientDisconect\n";
     }
 
 
@@ -1051,7 +1156,7 @@ public:
                 }
             }
         }
-        // doplnenie zapisania udajov + zavolanie destruktora
+        // doplnenie zapisania udajov
 
         std::cout << "Server is not more running\n";
     }
@@ -1069,12 +1174,14 @@ public:
         for (SOCKET clientSocket : clientSockets) {
             closeClient(clientSocket);
         }
+        delete database;
 
 #ifdef _WIN32
         WSACleanup();
 #endif
     }
 };
+
 
 bool IsKeyPressed(int key) {
     return GetAsyncKeyState(key) & 0x8000;

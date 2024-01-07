@@ -105,3 +105,7 @@ std::string StringColumn::getTypea(){
     return "string";
 }
 
+StringColumn::~StringColumn() {
+    values.clear();
+}
+

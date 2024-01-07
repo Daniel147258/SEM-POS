@@ -109,4 +109,8 @@ std::string DateColumn::getTypea(){
     return "date";
 }
 
+DateColumn::~DateColumn() {
+    values.clear();
+}
+
 

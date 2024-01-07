@@ -16,6 +16,7 @@ public:
     std::string getName() const;
     bool isPrimaryKey();
     bool isNotNullColumn();
+
     virtual void printHeader() const = 0;
     virtual void printValue(size_t rowIndex) const = 0;
     virtual void addValue(const std::string& value) = 0;

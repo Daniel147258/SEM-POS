@@ -14,6 +14,7 @@ private:
 
 public:
     BoolColumn(const std::string& columnName, bool isNotNull);
+    ~BoolColumn() override;
 
     void printHeader() const override;
     void printValue(size_t rowIndex) const override;

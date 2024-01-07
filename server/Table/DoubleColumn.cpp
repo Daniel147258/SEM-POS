@@ -134,3 +134,7 @@ std::string DoubleColumn::getDescription(){
 std::string DoubleColumn::getTypea(){
     return "double";
 }
+
+DoubleColumn::~DoubleColumn() {
+    values.clear();
+}

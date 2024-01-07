@@ -10,12 +10,17 @@ class Table {
 private:
     std::string tableName;
     std::vector<TableColumnBase*> columns;
+    std::vector<User*> selecting;
+    std::vector<User*> updating;
+    std::vector<User*> adding;
+    std::vector<User*> deleting;
     int countRows;
     User* creator;
 
 public:
     Table(const std::string& name, User* creator);
     ~Table();
+
     void addColumn(TableColumnBase* column);
     bool containsPK(size_t columnIndex, const std::string& value);
     void addColumnValue(size_t columnIndex, const std::string& value);
@@ -41,8 +46,16 @@ public:
     std::string getColumnType(int index);
     bool existsInTablePrimaryKey();
     std::string getHeader();
-
     bool isColumnPrimaryKer(int index);
+    bool canUserSelect(User* client);
+    bool canUserUpdate(User* client);
+    bool canUserAdd(User* client);
+    bool canUserDelete(User* client);
+    std::string addRightSelect(User* client);
+    std::string addRightUpdate(User* client);
+    std::string addRightAdd(User* client);
+    std::string addRightDelete(User* client);
+    std::string getListOfUserRights(User* client);
 };
 
 #endif // TABLE_H

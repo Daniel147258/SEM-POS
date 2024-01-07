@@ -8,11 +8,15 @@ Table::Table(const std::string& name, User* creator) : tableName(name) {
     this->creator = creator;
 }
 
-// uprava zavolat desktruktor na zmazanie udajov v column
 Table::~Table() {
     for (auto column : columns) {
         delete column;
     }
+    columns.clear();
+    selecting.clear();
+    updating.clear();
+    adding.clear();
+    deleting.clear();
 }
 
 void Table::addColumn(TableColumnBase* column) {
@@ -236,7 +240,7 @@ std::string Table::getRow(int index){
 }
 
 std::string Table::getHeader(){
-    std::string a = "Table" + getName();
+    std::string a = "Table: " + getName() + "\n";
     for(auto col: columns) {
         a += col->getName() +  "\t\t";
     }
@@ -246,6 +250,112 @@ std::string Table::getHeader(){
 bool Table::isColumnPrimaryKer(int index){
     return columns[index]->isPrimaryKey();
 }
+
+bool Table::canUserSelect(User *client) {
+    if(client->getMeno() == creator->getMeno()){
+        return true;
+    }
+    for(auto clie : selecting){
+        if(client->getMeno() == clie->getMeno() ){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Table::canUserUpdate(User *client) {
+    if(client->getMeno() == creator->getMeno()){
+        return true;
+    }
+    for(auto clie : updating){
+        if(client->getMeno() == clie->getMeno() ){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Table::canUserAdd(User *client) {
+    if(client->getMeno() == creator->getMeno()){
+        return true;
+    }
+    for(auto clie : adding){
+        if(client->getMeno() == clie->getMeno() ){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Table::canUserDelete(User *client) {
+    if(client->getMeno() == creator->getMeno()){
+        return true;
+    }
+    for(auto clie : deleting){
+        if(client->getMeno() == clie->getMeno() ){
+            return true;
+        }
+    }
+    return false;
+}
+
+std::string Table::getListOfUserRights(User *client) {
+    std::string a = "Table " + getName() + ": You Dont have any right";
+    bool isSomething = false;
+    if(getCreator()->getMeno() == client->getMeno()){
+        a = "Table " + getName() + ": You are creator\n";
+        return a;
+    }
+    for(auto us : selecting){
+        if(us->getMeno() == client->getMeno()){
+                a = "Table " + getName() + "SELECT, ";
+                isSomething = true;
+            break;
+        }
+    }
+
+    for(auto us : updating){
+        if(us->getMeno() == client->getMeno()){
+            if(!isSomething){
+                a = "Table " + getName() + "UPDATE, ";
+                isSomething = true;
+            } else{
+                a += "UPDATE, ";
+            }
+            break;
+        }
+    }
+
+    for(auto us : adding){
+        if(us->getMeno() == client->getMeno()){
+            if(!isSomething){
+                a = "Table " + getName() + "ADD, ";
+                isSomething = true;
+            } else{
+                a += "ADD, ";
+            }
+            break;
+        }
+    }
+
+    for(auto us : deleting){
+        if(us->getMeno() == client->getMeno()){
+            if(!isSomething){
+                a = "Table " + getName() + "DELETE, ";
+                isSomething = true;
+            } else{
+                a += "DELETE, ";
+            }
+            break;
+        }
+    }
+
+    return a + "\n";
+}
+
+
+
+
 
 //int main(){
 //    User* usera = new User("Jozo", "12345");

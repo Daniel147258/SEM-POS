@@ -9,10 +9,13 @@
 #include <stdexcept>
 
 class DateColumn : public TableColumnBase {
-public:
+private:
     std::vector<std::string> values;
 
+public:
     DateColumn(const std::string& columnName, bool isNotNull);
+    ~DateColumn() override;
+
     void printHeader() const override;
     void printValue(size_t rowIndex) const override;
     void addValue(const std::string& value) override;

@@ -12,6 +12,7 @@ private:
 
 public:
     DoubleColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey);
+    ~DoubleColumn() override;
 
     void printHeader() const override;
     void printValue(size_t rowIndex) const override;

@@ -12,6 +12,7 @@ private:
 
 public:
     IntColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey);
+    ~IntColumn() override;
 
     void printHeader() const override;
     void printValue(size_t rowIndex) const override;

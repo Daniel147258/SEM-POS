@@ -131,3 +131,7 @@ std::string IntColumn::getDescription(){
 std::string IntColumn::getTypea(){
     return "int";
 }
+
+IntColumn::~IntColumn() {
+    values.clear();
+}

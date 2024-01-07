@@ -1,5 +1,6 @@
 #include "database.h"
 #include "thread"
+#include <algorithm>
 
 void Database::addTable(Table* table) {
     if (!existTable(table->getName())) {
@@ -121,5 +122,76 @@ int Database::DeleteRow(const std::string& tableName, int index, const std::stri
 
 void Database::addRow(const std::string& name, std::vector<std::string>& row){
     getTable(name)->addRow(row);
+}
+
+std::string Database::deleteTable(const std::string& name, User* client) {
+    std::unique_lock<std::mutex> lock(deleteTableMtx);
+    std::string a = "Table doesnt exists !!";
+    Table* table = getTable(name);
+    if(table){
+        if(table->getCreator()->getMeno() == client->getMeno()){
+            a = "Table successfully removed";
+            removeTableByName(name);
+            delete table;
+        } else{
+            a = "You don't have the right to delete the table !!";
+        }
+    }
+    lock.unlock();
+    return a;
+}
+
+void Database::removeTableByName(const std::string& name) {
+    auto it = std::remove_if(tables.begin(), tables.end(),
+                             [name](Table* table) {
+                                 return name == table->getName();
+                             });
+
+    tables.erase(it, tables.end());
+}
+
+Database::~Database() {
+    for(auto tab : tables){
+        if(tab != nullptr){
+            delete tab;
+        }
+    }
+    users.clear();
+}
+
+std::string Database::getUserTables(User *client) {
+    std::string a = "You dont have any Table\n";
+    bool first = false;
+    for(auto tab: tables){
+        if(tab->getCreator()->getMeno() == client->getMeno()){
+            if(!first){
+                first = true;
+                a = "Your Tables:\n" + tab->getName() + ", ";
+            }
+            else{
+                a += tab->getName() + ", ";
+            }
+        }
+    }
+    return a;
+}
+
+std::string Database::getUserTablesWithRights(User *client) {
+    std::unique_lock<std::mutex> lock(getUserTablesWithRightsMtx);
+    std::string a = "Tables with your rights:\n";
+    int i = 1;
+    if(tables.size() == 0){
+        a += "You dont have any right to table\n";
+        lock.unlock();
+        return a;
+    }
+    else{
+        for(auto tab : tables) {
+            a += std::to_string(i) + ". "+tab->getListOfUserRights(client);
+            i++;
+        }
+    }
+    lock.unlock();
+    return a;
 }
 

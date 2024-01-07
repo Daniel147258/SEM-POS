@@ -109,3 +109,7 @@ std::string BoolColumn::getDescription(){
 std::string BoolColumn::getTypea(){
     return "bool";
 }
+
+BoolColumn::~BoolColumn() {
+    values.clear();
+}
