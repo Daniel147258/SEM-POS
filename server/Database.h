@@ -35,7 +35,7 @@ public:
     bool isColumnNullAble(const std::string &tableName, int index);
     std::string getTypeOfColumn(const std::string &tableName, int index);
     int DeleteRow(const std::string &tableName, int index, const std::string &value);
-
+    void addRow(const std::string &name, std::vector<std::string> &row);
 };
 
 #endif // DATABASE_H

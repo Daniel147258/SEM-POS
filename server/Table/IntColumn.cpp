@@ -91,20 +91,30 @@ bool IntColumn::containsValue(const std::string& value) {
     return false;
 }
 
-void IntColumn::deleteValue(size_t rowIndex) {
-    if (rowIndex < values.size()) {
-        std::vector<std::optional<int>> tempValues;
-        for (size_t i = 0; i < values.size(); ++i) {
-            if (i != rowIndex) {
-                tempValues.push_back(values[i]);
+bool IntColumn::deleteValue(const std::string& value){
+    bool deleted = false;
+    try {
+        double number = std::stoi(value);
+        if (values.size() > 0) {
+            std::vector<std::optional<int>> tempValues;
+            for (size_t i = 0; i < values.size(); ++i) {
+                if (values[i] != number) {
+                    tempValues.push_back(values[i]);
+                }
+                else{
+                    deleted = true;
+                };
             }
+            values.clear();
+            values = tempValues;
+            tempValues.clear();
+
         }
-        values.clear();
-        values = tempValues;
-        tempValues.clear();
-    } else {
-        std::cerr << "Invalid row index." << std::endl;
     }
+    catch(const std::invalid_argument& e){
+        std::cerr << "Wrong value!!\n";
+    }
+    return deleted;
 }
 
 std::string IntColumn::getValue(size_t rowIndex) const {
@@ -115,7 +125,7 @@ std::string IntColumn::getValue(size_t rowIndex) const {
     }
 }
 std::string IntColumn::getDescription(){
-    return "Name: " + getName() + ", Type: (int)"+ " , nullable: " + std::to_string(isNotNullColumn());
+    return "Name: " + getName() + ", Type: (int)"+ " , is not Null: " + std::to_string(isNotNullColumn());
 }
 
 std::string IntColumn::getTypea(){

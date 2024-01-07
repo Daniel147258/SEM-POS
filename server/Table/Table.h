@@ -16,7 +16,6 @@ private:
 public:
     Table(const std::string& name, User* creator);
     ~Table();
-
     void addColumn(TableColumnBase* column);
     bool containsPK(size_t columnIndex, const std::string& value);
     void addColumnValue(size_t columnIndex, const std::string& value);
@@ -33,22 +32,17 @@ public:
     std::string getName();
     User* getCreator();
     std::string getRow(int index);
-
     std::string getAllRows();
-
     bool existsColumnIndex(int index);
-
     std::string getColumnsIndexes();
-
     int getNumberOfColumns();
-
     std::string getColumnDescription(int index);
-
     bool isColumnNullAble(int index);
-
     std::string getColumnType(int index);
-
     bool existsInTablePrimaryKey();
+    std::string getHeader();
+
+    bool isColumnPrimaryKer(int index);
 };
 
 #endif // TABLE_H

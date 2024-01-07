@@ -119,3 +119,7 @@ int Database::DeleteRow(const std::string& tableName, int index, const std::stri
     return getTable(tableName)->deleteRowsByValue(index, value);
 }
 
+void Database::addRow(const std::string& name, std::vector<std::string>& row){
+    getTable(name)->addRow(row);
+}
+
