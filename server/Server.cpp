@@ -28,6 +28,7 @@ private:
     std::mutex clienMutex;
     std::atomic<bool> running{true};
     Database* database;
+    std::mutex clnt;
 
 public:
     Server(int port) : running(true) {
@@ -209,8 +210,6 @@ public:
             }
         }
 
-        //Zvysok moznosti pre klienta
-        std::cout << client->getMeno()<<"\n";
         if(client != nullptr) {
             bool odpojilSa = false;
             const char *dontResponse = "Dont response";
@@ -805,9 +804,11 @@ public:
                             std::cout << "Client disconnected\n";
                             closeClient(clientSocket);
                             odpojilSa = true;
+                            delete table;
                             break;
                         }
                         if (std::string(buffer, bytesRead) == "@") {
+                            delete table;
                             break;
                         }
                         if (std::string(buffer, bytesRead) == "") {
@@ -1093,6 +1094,7 @@ public:
                     send(clientSocket, optionsMessage, strlen(optionsMessage), 0);
                     continue;
                 }
+
                 if (option == "9") {
                     odpojilSa = true;
                     closeClient(clientSocket);
@@ -1113,7 +1115,10 @@ public:
                 }
             }
         }
-        delete client;
+        // toto nemozem zmazat to je blbost delete client;
+        if(client == nullptr){
+            delete client;
+        }
         std::cout << "Thread ended/ClientDisconect\n";
     }
 

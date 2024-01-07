@@ -6,6 +6,7 @@
 #include "./TableColumnBase.h"
 #include "../User.h"
 
+
 class Table {
 private:
     std::string tableName;
@@ -16,6 +17,8 @@ private:
     std::vector<User*> deleting;
     int countRows;
     User* creator;
+    std::mutex getListOfUserRightsMtx;
+    std::mutex getCreatorMtx;
 
 public:
     Table(const std::string& name, User* creator);

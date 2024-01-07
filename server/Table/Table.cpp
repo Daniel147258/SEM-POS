@@ -240,7 +240,7 @@ std::string Table::getRow(int index){
 }
 
 std::string Table::getHeader(){
-    std::string a = "Table: " + getName() + "\n";
+    std::string a = "Table " + getName() + ":\n";
     for(auto col: columns) {
         a += col->getName() +  "\t\t";
     }
@@ -300,10 +300,12 @@ bool Table::canUserDelete(User *client) {
 }
 
 std::string Table::getListOfUserRights(User *client) {
+    std::unique_lock<std::mutex> lock(getListOfUserRightsMtx);
     std::string a = "Table " + getName() + ": You Dont have any right";
     bool isSomething = false;
     if(getCreator()->getMeno() == client->getMeno()){
         a = "Table " + getName() + ": You are creator\n";
+        lock.unlock();
         return a;
     }
     for(auto us : selecting){
@@ -349,7 +351,7 @@ std::string Table::getListOfUserRights(User *client) {
             break;
         }
     }
-
+    lock.unlock();
     return a + "\n";
 }
 
