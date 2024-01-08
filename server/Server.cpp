@@ -28,7 +28,6 @@ private:
     std::mutex clienMutex;
     std::atomic<bool> running{true};
     Database* database;
-    std::mutex clnt;
 
 public:
     Server(int port) : running(true) {
@@ -64,9 +63,21 @@ public:
         std::cout << "Server listening on port " << port << std::endl;
     }
 
+    ~Server() {
+        closesocket(serverSocket);
+        for (SOCKET clientSocket : clientSockets) {
+            closeClient(clientSocket);
+        }
+        delete database;
+
+#ifdef _WIN32
+        WSACleanup();
+#endif
+    }
 
     void handleClient(int clientSocket) {
         User* client = nullptr;
+
         //prihlasenie klienta
         while (client == nullptr) {
             const char* message = "For stepBack insert @\n"
@@ -363,7 +374,7 @@ public:
                                                         }
                                                         a = std::string(buffer, bytesRead);
 
-                                                        if (std::stoi(a)) {
+                                                        try{
                                                             int index = std::stoi(a) - 1;
                                                             if (database->existsColumnIndex(tableName, index)) {
                                                                 if (!database->getTable(tableName)->isColumnPrimaryKer(
@@ -436,6 +447,11 @@ public:
                                                                 send(clientSocket, messageToSend, strlen(messageToSend),
                                                                      0);
                                                             }
+                                                        }
+                                                        catch (const std::invalid_argument &e) {
+                                                            send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                            messageToSend = "Invalid input. Please enter a valid number.";
+                                                            send(clientSocket, messageToSend, strlen(messageToSend), 0);
                                                         }
                                                     }
                                                     continue;
@@ -717,7 +733,7 @@ public:
                                                             break;
                                                         }
                                                         std::string valo(buffer, bytesRead);
-                                                        if (std::stoi(valo)) {
+                                                        try {
                                                             int index = std::stoi(valo);
                                                             while (!odpojilSa) {
                                                                 messageToSend = "Select value which you want remove: ";
@@ -745,7 +761,7 @@ public:
                                                                      0);
                                                                 break;
                                                             }
-                                                        } else {
+                                                        } catch(const std::invalid_argument &e){
                                                             send(clientSocket, dontResponse, strlen(dontResponse), 0);
                                                             messageToSend = "Wrong value for index!!";
                                                             send(clientSocket, messageToSend, strlen(messageToSend), 0);
@@ -795,7 +811,6 @@ public:
                     while (!odpojilSa) {
                         Table *table = nullptr;
                         int numberColumns = 0;
-                        bool primaryKey = false;
                         std::string nameOfTable = "";
                         const char *messageToSend = "Give name to table: ";
                         send(clientSocket, messageToSend, strlen(messageToSend), 0);
@@ -855,7 +870,6 @@ public:
                                             odpojilSa = true;
                                             if (table != nullptr) {
                                                 delete table;
-                                                table = nullptr;
                                             }
                                             break;
                                         }
@@ -871,6 +885,7 @@ public:
                                             name = std::string(buffer, bytesRead);
                                             std::string primaryKeyText;
                                             while (!odpojilSa && !columnAdded) {
+                                                bool primaryKey = false;
                                                 messageToSend = "Select one option:\n"
                                                                 "1. Column is primary key\n"
                                                                 "2. Column is not primary key\n"
@@ -883,7 +898,6 @@ public:
                                                     odpojilSa = true;
                                                     if (table != nullptr) {
                                                         delete table;
-                                                        table = nullptr;
                                                     }
                                                     break;
                                                 }
@@ -919,7 +933,6 @@ public:
                                                             odpojilSa = true;
                                                             if (table != nullptr) {
                                                                 delete table;
-                                                                table = nullptr;
                                                             }
                                                             break;
                                                         }
@@ -960,7 +973,6 @@ public:
                                                         odpojilSa = true;
                                                         if (table != nullptr) {
                                                             delete table;
-                                                            table = nullptr;
                                                         }
                                                         break;
                                                     }
@@ -1094,7 +1106,110 @@ public:
                     send(clientSocket, optionsMessage, strlen(optionsMessage), 0);
                     continue;
                 }
+                //Pridavanie prav
+                if(option == "6"){
+                        while(!odpojilSa) {
+                            std::string tableName = " ";
+                            const char *messageToSend = "Select name of your table: ";
+                            send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                            bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
+                            if (bytesRead <= 0) {
+                                std::cout << "Client disconnected\n";
+                                closeClient(clientSocket);
+                                odpojilSa = true;
+                                break;
+                            }
+                            if (std::string(buffer, bytesRead) == "@") {
+                                break;
+                            }
+                            tableName = std::string(buffer,bytesRead);
+                            if(database->getTable(tableName)){
+                                if(database->isTableUser(tableName,client)){
+                                    while(!odpojilSa){
+                                        std::string userName;
+                                        messageToSend = "Select name of user: ";
+                                        send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                        bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
+                                        if (bytesRead <= 0) {
+                                            std::cout << "Client disconnected\n";
+                                            closeClient(clientSocket);
+                                            odpojilSa = true;
+                                            break;
+                                        }
+                                        if (std::string(buffer, bytesRead) == "@") {
+                                            break;
+                                        }
+                                        userName = std::string(buffer,bytesRead);
+                                        if(database->existUsername(userName)){
+                                            while (!odpojilSa){
+                                                messageToSend = "Select which right you want add user:\n"
+                                                                "1. SELECT\n"
+                                                                "2. UPDATE\n"
+                                                                "3. ADD\n"
+                                                                "4. DELETE\n"
+                                                                "Choose option: ";
+                                                send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                                bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
+                                                if (bytesRead <= 0) {
+                                                    std::cout << "Client disconnected\n";
+                                                    closeClient(clientSocket);
+                                                    odpojilSa = true;
+                                                    break;
+                                                }
+                                                if (std::string(buffer, bytesRead) == "@") {
+                                                    break;
+                                                }
+                                                std::string opt(buffer,bytesRead);
+                                                if(opt == "1"){
+                                                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                    std::string message2 = database->getTable(tableName)->addRightSelect(database->getUser(userName));
+                                                    send(clientSocket, message2.c_str(), message2.size(), 0);
+                                                    continue;
+                                                }if(opt == "2"){
+                                                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                    std::string message2 = database->getTable(tableName)->addRightUpdate(database->getUser(userName));
+                                                    send(clientSocket, message2.c_str(), message2.size(), 0);
+                                                    continue;
+                                                }
+                                                if(opt == "3"){
+                                                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                    std::string message2 = database->getTable(tableName)->addRightAdd(database->getUser(userName));
+                                                    send(clientSocket, message2.c_str(), message2.size(), 0);
+                                                    continue;
+                                                }
+                                                if(opt == "4"){
+                                                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                    std::string message2 = database->getTable(tableName)->addRightDelete(database->getUser(userName));
+                                                    send(clientSocket, message2.c_str(), message2.size(), 0);
+                                                    continue;
+                                                } else{
+                                                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                                    messageToSend = "Wrong option !!";
+                                                    send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                                }
+                                            }
+                                        }else{
+                                            send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                            messageToSend = "User doesnt exists !!";
+                                            send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                        }
+                                    }
+                                }
+                                else{
+                                    send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                    messageToSend = "Table is not yours !!";
+                                    send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                                    continue;
+                                }
+                            } else{
+                                send(clientSocket, dontResponse, strlen(dontResponse), 0);
+                                messageToSend = "Table dont exists !!";
+                                send(clientSocket, messageToSend, strlen(messageToSend), 0);
+                            }
+                        }
 
+                }
+                //Quit
                 if (option == "9") {
                     odpojilSa = true;
                     closeClient(clientSocket);
@@ -1115,13 +1230,13 @@ public:
                 }
             }
         }
-        // toto nemozem zmazat to je blbost delete client;
+
         if(client == nullptr){
             delete client;
         }
-        std::cout << "Thread ended/ClientDisconect\n";
-    }
 
+        std::cout << "Thread ended/ClientDisconect\n"; //Musim overit ci vlakno dojde do konca lebo je detachnute a ma svoj vlastny zivotny cyklus preto musi dojst sem a ukonict sa
+    }
 
     void closeClient(int clientSocket) {
         std::unique_lock<std::mutex> lock(clienMutex);
@@ -1161,7 +1276,7 @@ public:
                 }
             }
         }
-        // doplnenie zapisania udajov
+        database->writeData();
 
         std::cout << "Server is not more running\n";
     }
@@ -1174,17 +1289,6 @@ public:
         return running;
     }
 
-    ~Server() {
-       closesocket(serverSocket);
-        for (SOCKET clientSocket : clientSockets) {
-            closeClient(clientSocket);
-        }
-        delete database;
-
-#ifdef _WIN32
-        WSACleanup();
-#endif
-    }
 };
 
 

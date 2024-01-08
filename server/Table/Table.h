@@ -17,8 +17,33 @@ private:
     std::vector<User*> deleting;
     int countRows;
     User* creator;
+    std::mutex addColumnMtx;
+    std::mutex containsPKMtx;
+    std::mutex addColumnValueMtx;
+    std::mutex addRowMtx;
+    std::mutex uploadAllColumnValuesMtx;
+    std::mutex deleteRowMtx;
+    std::mutex deleteRowsByValueMtx;
+    std::mutex getRowMtx;
+    std::mutex getAllRowsMtx;
+    std::mutex existsColumnIndexMtx;
+    std::mutex getColumnsIndexesMtx;
+    std::mutex getNumberOfColumnsMtx;
+    std::mutex getColumnDescriptionMtx;
+    std::mutex isColumnNullAbleMtx;
+    std::mutex getColumnTypeMtx;
+    std::mutex existsInTablePrimaryKeyMtx;
+    std::mutex getHeaderMtx;
+    std::mutex isColumnPrimaryKerMtx;
+    std::mutex canUserSelectMtx;
+    std::mutex canUserUpdateMtx;
+    std::mutex canUserAddMtx;
+    std::mutex canUserDeleteMtx;
+    std::mutex addRightSelectMtx;
+    std::mutex addRightUpdateMtx;
+    std::mutex addRightAddMtx;
+    std::mutex addRightDeleteMtx;
     std::mutex getListOfUserRightsMtx;
-    std::mutex getCreatorMtx;
 
 public:
     Table(const std::string& name, User* creator);
@@ -29,14 +54,14 @@ public:
     void addColumnValue(size_t columnIndex, const std::string& value);
     void addRow(const std::vector<std::string>& row);
     void printHeader() const;
-    void printIndexingColumns() const;
-    void printRow(size_t rowIndex) const;
-    void pritnAllRows();
-    void uploadColumnValue(size_t columnIndex, size_t rowIndex, const std::string& value);
+//    void printIndexingColumns() const;
+//    void printRow(size_t rowIndex) const;
+//    void pritnAllRows();
+//    void uploadColumnValue(size_t columnIndex, size_t rowIndex, const std::string& value);
     int uploadAllColumnValues(size_t columnIndex, const std::string& oldValue, const std::string& newValue);
     void deleteRow(size_t rowIndex);
     int deleteRowsByValue(size_t columnIndex, const std::string& value);
-    int getCountRows();
+//    int getCountRows();
     std::string getName();
     User* getCreator();
     std::string getRow(int index);
@@ -59,6 +84,10 @@ public:
     std::string addRightAdd(User* client);
     std::string addRightDelete(User* client);
     std::string getListOfUserRights(User* client);
+    std::string getColumnToCsvFile();
+    std::string getRowsToCsvFile();
+    std::string  getRightsToCsvFile();
+    void setCountOfRows();
 };
 
 #endif // TABLE_H

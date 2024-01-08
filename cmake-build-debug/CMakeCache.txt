@@ -39,7 +39,7 @@ CMAKE_CXX_COMPILER_AR:FILEPATH=C:/Program Files/JetBrains/CLion 2023.2.2/bin/min
 CMAKE_CXX_COMPILER_RANLIB:FILEPATH=C:/Program Files/JetBrains/CLion 2023.2.2/bin/mingw/bin/gcc-ranlib.exe
 
 //Flags used by the CXX compiler during all build types.
-CMAKE_CXX_FLAGS:STRING=-Duser.language=sk -Duser.region=SK
+CMAKE_CXX_FLAGS:STRING=
 
 //Flags used by the CXX compiler during DEBUG builds.
 CMAKE_CXX_FLAGS_DEBUG:STRING=-g
@@ -333,8 +333,6 @@ CMAKE_GENERATOR_INSTANCE:INTERNAL=
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
-//Test CMAKE_HAVE_LIBC_PTHREAD
-CMAKE_HAVE_LIBC_PTHREAD:INTERNAL=1
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=C:/Users/Daniel/CLionProjects/Sem
@@ -407,8 +405,6 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 CMAKE_STRIP-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
-//Details about finding Threads
-FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //linker supports push/pop state
 _CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
 

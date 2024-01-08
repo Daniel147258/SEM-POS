@@ -64,8 +64,8 @@ bool StringColumn::containsValue(const std::string& value) {
     return false;
 }
 
-bool StringColumn::deleteValue(const std::string& value){
-    bool deleted = false;
+int StringColumn::deleteValue(const std::string& value){
+    int deleted = -1;
     try {
         std::string number = value;
         if (values.size() > 0) {
@@ -75,11 +75,14 @@ bool StringColumn::deleteValue(const std::string& value){
                     tempValues.push_back(values[i]);
                 }
                 else{
-                    deleted = true;
+                    deleted = i;
+                    break;
                 };
             }
             values.clear();
-            values = tempValues;
+            for (size_t i = 0; i < tempValues.size(); ++i) {
+                values.push_back(tempValues[i]);
+            }
             tempValues.clear();
         }
     }

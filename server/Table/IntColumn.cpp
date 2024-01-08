@@ -91,30 +91,32 @@ bool IntColumn::containsValue(const std::string& value) {
     return false;
 }
 
-bool IntColumn::deleteValue(const std::string& value){
-    bool deleted = false;
+int IntColumn::deleteValue(const std::string& value){
+    int deletedRow = -1;
     try {
-        double number = std::stoi(value);
+        int number = std::stoi(value);
         if (values.size() > 0) {
             std::vector<std::optional<int>> tempValues;
             for (size_t i = 0; i < values.size(); ++i) {
-                if (values[i] != number) {
+                if (values[i].has_value() && values[i].value() != number) {
                     tempValues.push_back(values[i]);
                 }
                 else{
-                    deleted = true;
+                    deletedRow = i;
+                    break;
                 };
             }
             values.clear();
-            values = tempValues;
+            for (size_t i = 0; i < tempValues.size(); ++i) {
+                values.push_back(tempValues[i]);
+            }
             tempValues.clear();
-
         }
     }
     catch(const std::invalid_argument& e){
         std::cerr << "Wrong value!!\n";
     }
-    return deleted;
+    return deletedRow;
 }
 
 std::string IntColumn::getValue(size_t rowIndex) const {
