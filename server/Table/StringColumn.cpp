@@ -1,5 +1,6 @@
 #include "StringColumn.h"
 #include <iostream>
+#include <algorithm>
 
 StringColumn::StringColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
         : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
@@ -70,7 +71,7 @@ int StringColumn::deleteValue(const std::string& value){
         std::string number = value;
         if (values.size() > 0) {
             std::vector<std::string> tempValues;
-            for (size_t i = 0; i < values.size(); ++i) {
+            for (int i = 0; i < values.size(); ++i) {
                 if (values[i] != number) {
                     tempValues.push_back(values[i]);
                 }
@@ -80,10 +81,14 @@ int StringColumn::deleteValue(const std::string& value){
                 };
             }
             values.clear();
-            for (size_t i = 0; i < tempValues.size(); ++i) {
+            for(auto o: values){
+                std::cout << o << "\n";
+            }
+            for (int i = 0; i < tempValues.size(); ++i) {
                 values.push_back(tempValues[i]);
             }
             tempValues.clear();
+
         }
     }
     catch(const std::invalid_argument& e){
@@ -92,7 +97,7 @@ int StringColumn::deleteValue(const std::string& value){
     return deleted;
 }
 
-std::string StringColumn::getValue(size_t rowIndex) const {
+std::string StringColumn::getValue(int rowIndex)  {
     if (!values[rowIndex].empty()) {
         return values[rowIndex];
     } else {

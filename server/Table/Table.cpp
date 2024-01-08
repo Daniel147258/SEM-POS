@@ -184,6 +184,7 @@ int Table::deleteRowsByValue(size_t columnIndex, const std::string& value) {
             int row = columns[columnIndex]->deleteValue(value);
             if (row > -1) {
                 numberOfDeleted++;
+                std::cout << row << "\n";
                 for (int j = 0; j < columns.size(); ++j) {
                     if (j != columnIndex) {
                         columns[j]->deleteValue(columns[j]->getValue(row));

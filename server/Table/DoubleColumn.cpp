@@ -99,7 +99,7 @@ int DoubleColumn::deleteValue(const std::string& value){
         double number = std::stod(value);
         if (values.size() > 0) {
             std::vector<std::optional<double>> tempValues;
-            for (size_t i = 0; i < values.size(); ++i) {
+            for (int i = 0; i < values.size(); ++i) {
                 if (values[i] != number) {
                     tempValues.push_back(values[i]);
                 }
@@ -109,7 +109,7 @@ int DoubleColumn::deleteValue(const std::string& value){
                 };
             }
             values.clear();
-            for (size_t i = 0; i < tempValues.size(); ++i) {
+            for (int i = 0; i < tempValues.size(); ++i) {
                 values.push_back(tempValues[i]);
             }
             tempValues.clear();
@@ -122,7 +122,7 @@ int DoubleColumn::deleteValue(const std::string& value){
     return deleted;
 }
 
-std::string DoubleColumn::getValue(size_t rowIndex) const {
+std::string DoubleColumn::getValue(int rowIndex)  {
     if (values[rowIndex].has_value()) {
         return std::to_string(values[rowIndex].value());
     } else {

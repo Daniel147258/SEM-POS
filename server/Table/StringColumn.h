@@ -22,7 +22,7 @@ public:
     int getSize() override;
     bool containsValue(const std::string& value) override;
     int deleteValue(const std::string& value) override;
-    std::string getValue(size_t rowIndex) const override;
+    std::string getValue(int rowIndex)  override;
     std::string getDescription() override;
     std::string getTypea() override;
 };

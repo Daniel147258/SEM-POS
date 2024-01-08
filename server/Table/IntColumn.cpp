@@ -1,5 +1,6 @@
 #include "IntColumn.h"
 #include <iostream>
+#include <algorithm>
 
 IntColumn::IntColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
         : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
@@ -92,34 +93,39 @@ bool IntColumn::containsValue(const std::string& value) {
 }
 
 int IntColumn::deleteValue(const std::string& value){
-    int deletedRow = -1;
+    int deleted = -1;
     try {
         int number = std::stoi(value);
         if (values.size() > 0) {
             std::vector<std::optional<int>> tempValues;
-            for (size_t i = 0; i < values.size(); ++i) {
-                if (values[i].has_value() && values[i].value() != number) {
+            for (int i = 0; i < values.size(); ++i) {
+                if (values[i] != number) {
                     tempValues.push_back(values[i]);
                 }
                 else{
-                    deletedRow = i;
+                    deleted = i;
                     break;
                 };
             }
             values.clear();
-            for (size_t i = 0; i < tempValues.size(); ++i) {
+            for(auto o: values){
+                std::cout << o.value_or(150.0) << "\n";
+            }
+            for (int i = 0; i < tempValues.size(); ++i) {
                 values.push_back(tempValues[i]);
+                std::cout << tempValues[i].value_or(150.0) << "\n";
             }
             tempValues.clear();
+
         }
     }
     catch(const std::invalid_argument& e){
         std::cerr << "Wrong value!!\n";
     }
-    return deletedRow;
+    return deleted;
 }
 
-std::string IntColumn::getValue(size_t rowIndex) const {
+std::string IntColumn::getValue(int rowIndex) {
     if (values[rowIndex].has_value()) {
         return std::to_string(values[rowIndex].value());
     } else {

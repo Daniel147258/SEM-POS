@@ -25,7 +25,7 @@ public:
     virtual int getSize() = 0;
     virtual bool containsValue(const std::string& value) = 0;
     virtual int deleteValue(const std::string& value) = 0;
-    virtual std::string getValue(size_t rowIndex) const = 0;
+    virtual std::string getValue(int rowIndex) = 0;
     virtual std::string getDescription() = 0;
     virtual std::string getTypea() = 0;
 };
