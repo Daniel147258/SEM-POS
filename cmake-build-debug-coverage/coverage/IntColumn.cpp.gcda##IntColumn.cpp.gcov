@@ -1,0 +1,622 @@
+        -:    0:Source:C:/Users/Daniel/CLionProjects/Sem/server/Table/IntColumn.cpp
+        -:    0:Graph:C:\Users\Daniel\CLionProjects\Sem\cmake-build-debug-coverage\CMakeFiles\Sem.dir\server\Table\IntColumn.cpp.gcno
+        -:    0:Data:C:\Users\Daniel\CLionProjects\Sem\cmake-build-debug-coverage\CMakeFiles\Sem.dir\server\Table\IntColumn.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "IntColumn.h"
+        -:    2:#include <iostream>
+        -:    3:
+function _ZN9IntColumnC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEbb called 1 returned 100% blocks executed 100%
+        1:    4:IntColumn::IntColumn(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
+        1:    5:        : TableColumnBase(columnName, isNotNull, isPrimaryKey), values() {}
+        1:    5-block  0
+call    0 returned 1
+call    1 returned 1
+        -:    6:
+function _ZNK9IntColumn11printHeaderEv called 0 returned 0% blocks executed 0%
+    #####:    7:void IntColumn::printHeader() const {
+    #####:    8:    std::cout << getName() << " (int)\t";
+    %%%%%:    8-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:    8-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:    8-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:    8-block  3
+call    9 never executed
+    $$$$$:    8-block  4
+call   10 never executed
+    #####:    9:}
+        -:   10:
+function _ZNK9IntColumn10printValueEy called 0 returned 0% blocks executed 0%
+    #####:   11:void IntColumn::printValue(size_t rowIndex) const {
+    #####:   12:    if (values[rowIndex].has_value()) {
+    %%%%%:   12-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    #####:   13:        std::cout << values[rowIndex].value() << "\t\t";
+    %%%%%:   13-block  0
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:   14:    } else {
+    #####:   15:        std::cout << "NULL\t\t";
+    %%%%%:   15-block  0
+call    0 never executed
+        -:   16:    }
+    #####:   17:}
+        -:   18:
+function _ZN9IntColumn8addValueERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   19:void IntColumn::addValue(const std::string& value) {
+    #####:   20:    if (value.empty() && isNotNullColumn()) {
+    %%%%%:   20-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   20-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    %%%%%:   20-block  2
+    %%%%%:   20-block  3
+    %%%%%:   20-block  4
+branch  6 never executed (fallthrough)
+branch  7 never executed
+    #####:   21:        throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
+    %%%%%:   21-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   21-block  1
+call    4 never executed
+    $$$$$:   21-block  2
+call    5 never executed
+        -:   22:    }
+    #####:   23:    if ((value.empty() && !isNotNullColumn()) || value.size() <= 0) {
+    %%%%%:   23-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   23-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    %%%%%:   23-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed
+    %%%%%:   23-block  3
+    %%%%%:   23-block  4
+    %%%%%:   23-block  5
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    #####:   24:        values.push_back(std::nullopt);
+    %%%%%:   24-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   24-block  1
+    $$$$$:   24-block  2
+call    4 never executed
+        -:   25:    } else {
+        -:   26:        try {
+    #####:   27:            int parsedValue = std::stoi(value);
+    %%%%%:   27-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   28:            values.push_back(parsedValue);
+    %%%%%:   28-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   28-block  1
+    $$$$$:   28-block  2
+    =====:   29:        } catch (const std::invalid_argument& e) {
+    $$$$$:   29-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+branch  2 never executed
+    $$$$$:   29-block  1
+call    3 never executed
+    =====:   30:            std::cerr << "Invalid argument: " << e.what() << std::endl;
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:   30-block  0
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    $$$$$:   30-block  1
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    =====:   31:        } catch (const std::out_of_range& e) {
+    $$$$$:   31-block  0
+call    0 never executed
+    $$$$$:   31-block  1
+call    1 never executed
+    $$$$$:   31-block  2
+call    2 never executed
+    =====:   32:            std::cerr << "Out of range: " << e.what() << std::endl;
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:   32-block  0
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    $$$$$:   32-block  1
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    =====:   33:        }
+    $$$$$:   33-block  0
+call    0 never executed
+    $$$$$:   33-block  1
+call    1 never executed
+        -:   34:    }
+    #####:   35:}
+    %%%%%:   35-block  0
+        -:   36:
+function _ZN9IntColumn11uploadValueEyRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   37:void IntColumn::uploadValue(size_t rowIndex, const std::string& value) {
+    #####:   38:    if (value.empty() && isNotNullColumn()) {
+    %%%%%:   38-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   38-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    %%%%%:   38-block  2
+    %%%%%:   38-block  3
+    %%%%%:   38-block  4
+branch  6 never executed (fallthrough)
+branch  7 never executed
+    #####:   39:        throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
+    %%%%%:   39-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   39-block  1
+call    4 never executed
+    $$$$$:   39-block  2
+call    5 never executed
+        -:   40:    }
+        -:   41:
+    #####:   42:    if ((value.empty() && !isNotNullColumn()) || value.size() <= 0) {
+    %%%%%:   42-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   42-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    %%%%%:   42-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed
+    %%%%%:   42-block  3
+    %%%%%:   42-block  4
+    %%%%%:   42-block  5
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    #####:   43:        values[rowIndex] = std::nullopt;
+    %%%%%:   43-block  0
+call    0 never executed
+call    1 never executed
+        -:   44:    } else {
+        -:   45:        try {
+    #####:   46:            int parsedValue = std::stoi(value);
+    %%%%%:   46-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   47:            values[rowIndex] = parsedValue;
+    %%%%%:   47-block  0
+call    0 never executed
+call    1 never executed
+    =====:   48:        } catch (const std::invalid_argument& e) {
+    $$$$$:   48-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+branch  2 never executed
+    $$$$$:   48-block  1
+call    3 never executed
+    =====:   49:            std::cerr << "Invalid argument: " << e.what() << std::endl;
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:   49-block  0
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    $$$$$:   49-block  1
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    =====:   50:        } catch (const std::out_of_range& e) {
+    $$$$$:   50-block  0
+call    0 never executed
+    $$$$$:   50-block  1
+call    1 never executed
+    $$$$$:   50-block  2
+call    2 never executed
+    =====:   51:            std::cerr << "Out of range: " << e.what() << std::endl;
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:   51-block  0
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    $$$$$:   51-block  1
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    =====:   52:        }
+    $$$$$:   52-block  0
+call    0 never executed
+    $$$$$:   52-block  1
+call    1 never executed
+        -:   53:    }
+    #####:   54:}
+    %%%%%:   54-block  0
+        -:   55:
+function _ZN9IntColumn15uploadAllValuesERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_ called 0 returned 0% blocks executed 0%
+    #####:   56:int IntColumn::uploadAllValues(const std::string& oldValue, const std::string& newValue) {
+    #####:   57:    if (oldValue.empty()) {
+    %%%%%:   57-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   58:        throw std::invalid_argument("Old value cannot be empty.");
+    %%%%%:   58-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   58-block  1
+call    4 never executed
+    $$$$$:   58-block  2
+call    5 never executed
+        -:   59:    }
+        -:   60:
+    #####:   61:    int uptadetRows = 0;
+    #####:   62:    for (size_t i = 0; i < values.size(); ++i) {
+    %%%%%:   62-block  0
+    %%%%%:   62-block  1
+    %%%%%:   62-block  2
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+        -:   63:        try {
+    #####:   64:            int parsedValue = std::stoi(oldValue);
+    %%%%%:   64-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   65:            int newValueParsed = std::stoi(newValue);
+    %%%%%:   65-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   66:            if (values[i].has_value() && values[i].value() == parsedValue) {
+    %%%%%:   66-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    %%%%%:   66-block  1
+call    4 never executed
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    %%%%%:   66-block  2
+branch  8 never executed (fallthrough)
+branch  9 never executed
+    %%%%%:   66-block  3
+    %%%%%:   66-block  4
+    %%%%%:   66-block  5
+branch 10 never executed (fallthrough)
+branch 11 never executed
+    #####:   67:                values[i] = newValueParsed;
+    %%%%%:   67-block  0
+call    0 never executed
+call    1 never executed
+    #####:   68:                uptadetRows++;
+        -:   69:            }
+        -:   70:        }
+    =====:   71:        catch (const std::invalid_argument& e) {
+    $$$$$:   71-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+branch  2 never executed
+    $$$$$:   71-block  1
+call    3 never executed
+    =====:   72:        std::cerr << "Invalid argument: " << e.what() << std::endl;
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:   72-block  0
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    $$$$$:   72-block  1
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    =====:   73:         } catch (const std::out_of_range& e) {
+    $$$$$:   73-block  0
+call    0 never executed
+    $$$$$:   73-block  1
+call    1 never executed
+    $$$$$:   73-block  2
+call    2 never executed
+    =====:   74:        std::cerr << "Out of range: " << e.what() << std::endl;
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:   74-block  0
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    $$$$$:   74-block  1
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    =====:   75:        }
+    $$$$$:   75-block  0
+call    0 never executed
+    $$$$$:   75-block  1
+call    1 never executed
+        -:   76:    }
+    #####:   77:    return uptadetRows;
+    %%%%%:   77-block  0
+    %%%%%:   77-block  1
+        -:   78:}
+        -:   79:
+function _ZN9IntColumn7getSizeEv called 0 returned 0% blocks executed 0%
+    #####:   80:int IntColumn::getSize() {
+    #####:   81:    return values.size();
+    %%%%%:   81-block  0
+call    0 never executed
+        -:   82:}
+        -:   83:
+function _ZN9IntColumn13containsValueERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   84:bool IntColumn::containsValue(const std::string& value) {
+    #####:   85:    int number = std::stoi(value);
+    %%%%%:   85-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   86:    for (const auto val : values) {
+    %%%%%:   86-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:   86-block  1
+call    2 never executed
+    %%%%%:   86-block  2
+call    3 never executed
+    %%%%%:   86-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:   87:        if (number == val) {
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   88:            return true;
+    %%%%%:   88-block  0
+        -:   89:        }
+        -:   90:    }
+    #####:   91:    return false;
+    %%%%%:   91-block  0
+        -:   92:}
+        -:   93:
+function _ZN9IntColumn11deleteValueERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   94:bool IntColumn::deleteValue(const std::string& value){
+    #####:   95:    bool deleted = false;
+        -:   96:    try {
+    #####:   97:        double number = std::stoi(value);
+    %%%%%:   97-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   98:        if (values.size() > 0) {
+    %%%%%:   98-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   99:            std::vector<std::optional<int>> tempValues;
+    #####:  100:            for (size_t i = 0; i < values.size(); ++i) {
+    %%%%%:  100-block  0
+    %%%%%:  100-block  1
+    %%%%%:  100-block  2
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+    #####:  101:                if (values[i] != number) {
+    %%%%%:  101-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    #####:  102:                    tempValues.push_back(values[i]);
+    %%%%%:  102-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+        -:  103:                }
+        -:  104:                else{
+    #####:  105:                    deleted = true;
+    %%%%%:  105-block  0
+        -:  106:                };
+        -:  107:            }
+    #####:  108:            values.clear();
+    %%%%%:  108-block  0
+call    0 never executed
+    #####:  109:            values = tempValues;
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  110:            tempValues.clear();
+    %%%%%:  110-block  0
+call    0 never executed
+        -:  111:
+    #####:  112:        }
+call    0 never executed
+    $$$$$:  112-block  0
+call    1 never executed
+        -:  113:    }
+    =====:  114:    catch(const std::invalid_argument& e){
+    $$$$$:  114-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    $$$$$:  114-block  1
+call    2 never executed
+    =====:  115:        std::cerr << "Wrong value!!\n";
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    =====:  116:    }
+    $$$$$:  116-block  0
+call    0 never executed
+    $$$$$:  116-block  1
+call    1 never executed
+    #####:  117:    return deleted;
+    %%%%%:  117-block  0
+    %%%%%:  117-block  1
+        -:  118:}
+        -:  119:
+function _ZNK9IntColumn8getValueB5cxx11Ey called 0 returned 0% blocks executed 0%
+    #####:  120:std::string IntColumn::getValue(size_t rowIndex) const {
+    #####:  121:    if (values[rowIndex].has_value()) {
+    %%%%%:  121-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    #####:  122:        return std::to_string(values[rowIndex].value());
+    %%%%%:  122-block  0
+call    0 never executed
+call    1 never executed
+call    2 never executed
+        -:  123:    } else {
+    #####:  124:        return "NULL";
+    %%%%%:  124-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  124-block  1
+        -:  125:    }
+        -:  126:}
+function _ZN9IntColumn14getDescriptionB5cxx11Ev called 0 returned 0% blocks executed 0%
+    #####:  127:std::string IntColumn::getDescription(){
+    #####:  128:    return "Name: " + getName() + ", Type: (int)"+ " , is not Null: " + std::to_string(isNotNullColumn());
+    %%%%%:  128-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  128-block  1
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  128-block  2
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    %%%%%:  128-block  3
+call   10 never executed
+branch 11 never executed (fallthrough)
+branch 12 never executed (throw)
+    %%%%%:  128-block  4
+call   13 never executed
+branch 14 never executed (fallthrough)
+branch 15 never executed (throw)
+    %%%%%:  128-block  5
+call   16 never executed
+branch 17 never executed (fallthrough)
+branch 18 never executed (throw)
+    %%%%%:  128-block  6
+    %%%%%:  128-block  7
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+    %%%%%:  128-block  8
+    $$$$$:  128-block  9
+call   24 never executed
+    $$$$$:  128-block 10
+call   25 never executed
+    $$$$$:  128-block 11
+call   26 never executed
+    $$$$$:  128-block 12
+call   27 never executed
+    $$$$$:  128-block 13
+    $$$$$:  128-block 14
+    $$$$$:  128-block 15
+    $$$$$:  128-block 16
+    $$$$$:  128-block 17
+call   28 never executed
+        -:  129:}
+        -:  130:
+function _ZN9IntColumn8getTypeaB5cxx11Ev called 0 returned 0% blocks executed 0%
+    #####:  131:std::string IntColumn::getTypea(){
+    %%%%%:  131-block  0
+    #####:  132:    return "int";
+    %%%%%:  132-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  132-block  1
+    %%%%%:  132-block  2
+        -:  133:}
+        -:  134:
+        2:  135:IntColumn::~IntColumn() {
+        1:  136:    values.clear();
+        2:  137:}
+------------------
+_ZN9IntColumnD0Ev:
+function _ZN9IntColumnD0Ev called 1 returned 100% blocks executed 100%
+        1:  135:IntColumn::~IntColumn() {
+        -:  136:    values.clear();
+        1:  137:}
+        1:  137-block  0
+call    0 returned 1
+call    1 returned 1
+------------------
+_ZN9IntColumnD2Ev:
+function _ZN9IntColumnD2Ev called 1 returned 100% blocks executed 100%
+        1:  135:IntColumn::~IntColumn() {
+        1:  136:    values.clear();
+        1:  136-block  0
+call    0 returned 1
+        1:  137:}
+call    0 returned 1
+call    1 returned 1
+------------------

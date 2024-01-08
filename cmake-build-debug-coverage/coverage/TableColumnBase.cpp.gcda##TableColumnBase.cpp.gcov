@@ -1,0 +1,53 @@
+        -:    0:Source:C:/Users/Daniel/CLionProjects/Sem/server/Table/TableColumnBase.cpp
+        -:    0:Graph:C:\Users\Daniel\CLionProjects\Sem\cmake-build-debug-coverage\CMakeFiles\Sem.dir\server\Table\TableColumnBase.cpp.gcno
+        -:    0:Data:C:\Users\Daniel\CLionProjects\Sem\cmake-build-debug-coverage\CMakeFiles\Sem.dir\server\Table\TableColumnBase.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "TableColumnBase.h"
+        -:    2:
+function _ZN15TableColumnBaseC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEbb called 1 returned 100% blocks executed 100%
+        1:    3:TableColumnBase::TableColumnBase(const std::string& columnName, bool isNotNull, bool isPrimaryKey)
+        1:    4:        : name(columnName), notNull(isNotNull), primaryKey(isPrimaryKey) {
+        1:    4-block  0
+call    0 returned 1
+        1:    5:    if (primaryKey) {
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:    6:        notNull = true;
+        1:    6-block  0
+        -:    7:    }
+        1:    8:}
+        -:    9:
+       1*:   10:TableColumnBase::~TableColumnBase() {}
+------------------
+_ZN15TableColumnBaseD0Ev:
+function _ZN15TableColumnBaseD0Ev called 0 returned 0% blocks executed 0%
+    #####:   10:TableColumnBase::~TableColumnBase() {}
+    %%%%%:   10-block  0
+call    0 never executed
+call    1 never executed
+------------------
+_ZN15TableColumnBaseD2Ev:
+function _ZN15TableColumnBaseD2Ev called 1 returned 100% blocks executed 100%
+        1:   10:TableColumnBase::~TableColumnBase() {}
+        1:   10-block  0
+call    0 returned 1
+------------------
+        -:   11:
+function _ZNK15TableColumnBase7getNameB5cxx11Ev called 0 returned 0% blocks executed 0%
+    #####:   12:std::string TableColumnBase::getName() const {
+    #####:   13:    return name;
+    %%%%%:   13-block  0
+call    0 never executed
+        -:   14:}
+        -:   15:
+function _ZN15TableColumnBase12isPrimaryKeyEv called 1 returned 100% blocks executed 100%
+        1:   16:bool TableColumnBase::isPrimaryKey() {
+        1:   17:    return primaryKey;
+        1:   17-block  0
+        -:   18:}
+        -:   19:
+function _ZN15TableColumnBase15isNotNullColumnEv called 0 returned 0% blocks executed 0%
+    #####:   20:bool TableColumnBase::isNotNullColumn() {
+    #####:   21:    return notNull;
+    %%%%%:   21-block  0
+        -:   22:}

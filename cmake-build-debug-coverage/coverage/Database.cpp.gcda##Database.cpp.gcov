@@ -1,0 +1,945 @@
+        -:    0:Source:C:/Users/Daniel/CLionProjects/Sem/server/Database.cpp
+        -:    0:Graph:C:\Users\Daniel\CLionProjects\Sem\cmake-build-debug-coverage\CMakeFiles\Sem.dir\server\Database.cpp.gcno
+        -:    0:Data:C:\Users\Daniel\CLionProjects\Sem\cmake-build-debug-coverage\CMakeFiles\Sem.dir\server\Database.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "database.h"
+        -:    2:#include "thread"
+        -:    3:#include <algorithm>
+        -:    4:
+function _ZN8DatabaseC2Ev called 1 returned 100% blocks executed 100%
+        1:    5:Database::Database() {
+        1:    5-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+call    3 returned 1
+call    4 returned 1
+call    5 returned 1
+call    6 returned 1
+call    7 returned 1
+call    8 returned 1
+call    9 returned 1
+call   10 returned 1
+call   11 returned 1
+        1:    6:}
+        -:    7:
+function _ZN8DatabaseD2Ev called 1 returned 100% blocks executed 100%
+        1:    8:Database::~Database() {
+        2:    9:    for(auto tab : tables){
+        1:    9-block  0
+call    0 returned 1
+call    1 returned 1
+        1:    9-block  1
+call    2 returned 1
+        1:    9-block  2
+call    3 returned 1
+        2:    9-block  3
+call    4 returned 2
+branch  5 taken 1
+branch  6 taken 1 (fallthrough)
+        1:   10:        if(tab != nullptr){
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:   11:            delete tab;
+        1:   11-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:   11-block  1
+call    2 returned 1
+call    3 returned 1
+        -:   12:        }
+        -:   13:    }
+        1:   14:    users.clear();
+        1:   14-block  0
+call    0 returned 1
+        1:   15:}
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+call    3 returned 1
+call    4 returned 1
+call    5 returned 1
+call    6 returned 1
+call    7 returned 1
+call    8 returned 1
+call    9 returned 1
+call   10 returned 1
+call   11 returned 1
+        -:   16:
+function _ZN8Database8addTableEP5Table called 1 returned 100% blocks executed 46%
+        1:   17:void Database::addTable(Table* table) {
+        1:   18:    if (!existTable(table->getName())) {
+        1:   18-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   18-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   18-block  2
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0
+    $$$$$:   18-block  3
+call    9 never executed
+    $$$$$:   18-block  4
+call   10 never executed
+        1:   19:        std::unique_lock<std::mutex> lock(addTableMtx);
+        1:   19-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   20:        tables.push_back(table);
+        1:   20-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   21:        lock.unlock();
+        1:   21-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   22:    }else{
+        1:   22-block  0
+call    0 returned 1
+    $$$$$:   22-block  1
+call    1 never executed
+    #####:   23:        std::unique_lock<std::mutex> lock(addTableMtx);
+    %%%%%:   23-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   24:        std::cerr << "Error with add table to database!!\n";
+    %%%%%:   24-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   25:        lock.unlock();
+    %%%%%:   25-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   26:    }
+    %%%%%:   26-block  0
+call    0 never executed
+    $$$$$:   26-block  1
+call    1 never executed
+        1:   27:}
+        1:   27-block  0
+        -:   28:
+function _ZN8Database10existTableERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 3 returned 100% blocks executed 48%
+        3:   29:bool Database::existTable(const std::string& name)  {
+        3:   30:    std::unique_lock<std::mutex> lock(existTableMtx);
+        3:   30-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+       3*:   31:    for (auto table : tables) {
+        3:   31-block  0
+call    0 returned 3
+call    1 returned 3
+    %%%%%:   31-block  1
+call    2 never executed
+    %%%%%:   31-block  2
+call    3 never executed
+        3:   31-block  3
+call    4 returned 3
+branch  5 taken 0
+branch  6 taken 3 (fallthrough)
+    #####:   32:        if (table->getName() == name) {
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   32-block  0
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed
+    $$$$$:   32-block  1
+    #####:   33:            lock.unlock();
+    %%%%%:   33-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   34:            return true;
+    %%%%%:   34-block  0
+        -:   35:        }
+        -:   36:    }
+        3:   37:    lock.unlock();
+        3:   37-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        3:   38:    return false;
+        3:   38-block  0
+        3:   39:}
+        3:   39-block  0
+call    0 returned 3
+    $$$$$:   39-block  1
+call    1 never executed
+        -:   40:
+function _ZN8Database7addUserERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_ called 1 returned 100% blocks executed 65%
+        1:   41:void Database::addUser(const std::string& name, const std::string& password) {
+        1:   42:    std::unique_lock<std::mutex> lock(existsUser);
+        1:   42-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   43:    if (!existUsername(name)) {
+        1:   43-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   43-block  1
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   44:        users.push_back(new User(name, password));
+        1:   44-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   44-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   44-block  2
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:   44-block  3
+    $$$$$:   44-block  4
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:   44-block  5
+call   11 never executed
+    $$$$$:   44-block  6
+        -:   45:    }
+        1:   46:    lock.unlock();
+        1:   46-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   47:}
+        1:   47-block  0
+call    0 returned 1
+    $$$$$:   47-block  1
+call    1 never executed
+        -:   48:
+function _ZN8Database13existUsernameERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 3 returned 100% blocks executed 48%
+        3:   49:bool Database::existUsername(const std::string& name) {
+        3:   50:    std::unique_lock<std::mutex> lock(addUsera);
+        3:   50-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+       3*:   51:    for (auto usera : users) {
+        3:   51-block  0
+call    0 returned 3
+call    1 returned 3
+    %%%%%:   51-block  1
+call    2 never executed
+    %%%%%:   51-block  2
+call    3 never executed
+        3:   51-block  3
+call    4 returned 3
+branch  5 taken 0
+branch  6 taken 3 (fallthrough)
+    #####:   52:        if (usera->getMeno() == name) {
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   52-block  0
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed
+    $$$$$:   52-block  1
+    #####:   53:            lock.unlock();
+    %%%%%:   53-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   54:            return true;
+    %%%%%:   54-block  0
+        -:   55:        }
+        -:   56:    }
+        3:   57:    lock.unlock();
+        3:   57-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        3:   58:    return false;
+        3:   58-block  0
+        3:   59:}
+        3:   59-block  0
+call    0 returned 3
+    $$$$$:   59-block  1
+call    1 never executed
+        -:   60:
+function _ZN8Database7getUserERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   61:User* Database::getUser(const std::string& name) {
+    #####:   62:    std::unique_lock<std::mutex> lock(getUserMtx);
+    %%%%%:   62-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   63:    for (auto usera : users) {
+    %%%%%:   63-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:   63-block  1
+call    2 never executed
+    %%%%%:   63-block  2
+call    3 never executed
+    %%%%%:   63-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:   64:        if (usera->getMeno() == name) {
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   64-block  0
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed
+    $$$$$:   64-block  1
+    #####:   65:            lock.unlock();
+    %%%%%:   65-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   66:            return usera;
+    %%%%%:   66-block  0
+        -:   67:        }
+        -:   68:    }
+    #####:   69:    lock.unlock();
+    %%%%%:   69-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   70:    return nullptr;
+    %%%%%:   70-block  0
+    #####:   71:}
+    %%%%%:   71-block  0
+call    0 never executed
+    $$$$$:   71-block  1
+call    1 never executed
+        -:   72:
+function _ZN8Database9getTablesB5cxx11Ev called 0 returned 0% blocks executed 0%
+    #####:   73:std::string Database::getTables(){
+    #####:   74:    std::unique_lock<std::mutex> lock(getTablesMtx);
+    %%%%%:   74-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   75:    std::string a = "Not tabels yet";
+    %%%%%:   75-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:   75-block  1
+    #####:   76:    int i = 0;
+    #####:   77:    if(!tables.empty()) {
+    %%%%%:   77-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   78:        a = "";
+    %%%%%:   78-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   79:        for (auto tab: tables) {
+    %%%%%:   79-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:   79-block  1
+call    2 never executed
+    %%%%%:   79-block  2
+call    3 never executed
+branch  4 never executed
+branch  5 never executed (fallthrough)
+    #####:   80:            if (i % 10 == 0) {
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   81:                a += tab->getName() + ",\n";
+    %%%%%:   81-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   81-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   81-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:   81-block  3
+call    9 never executed
+call   10 never executed
+    $$$$$:   81-block  4
+call   11 never executed
+    $$$$$:   81-block  5
+call   12 never executed
+    $$$$$:   81-block  6
+    $$$$$:   81-block  7
+        -:   82:            } else {
+    #####:   83:                a += tab->getName() + ", ";
+    %%%%%:   83-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   83-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   83-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:   83-block  3
+call    9 never executed
+call   10 never executed
+    $$$$$:   83-block  4
+call   11 never executed
+    $$$$$:   83-block  5
+call   12 never executed
+    $$$$$:   83-block  6
+    $$$$$:   83-block  7
+        -:   84:            }
+    #####:   85:            ++i;
+    %%%%%:   85-block  0
+call    0 never executed
+        -:   86:        }
+        -:   87:    }
+    #####:   88:    lock.unlock();
+    %%%%%:   88-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   89:    return a;
+    %%%%%:   89-block  0
+    %%%%%:   89-block  1
+    #####:   90:}
+    %%%%%:   90-block  0
+call    0 never executed
+    $$$$$:   90-block  1
+call    1 never executed
+    $$$$$:   90-block  2
+call    2 never executed
+        -:   91:
+function _ZN8Database8getTableERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   92:Table* Database::getTable(const std::string& name){
+    #####:   93:    std::unique_lock<std::mutex> lock(getTableMtx);
+    %%%%%:   93-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   94:    for(auto tab : tables){
+    %%%%%:   94-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:   94-block  1
+call    2 never executed
+    %%%%%:   94-block  2
+call    3 never executed
+    %%%%%:   94-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:   95:        if(tab->getName() == name){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   95-block  0
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed
+    $$$$$:   95-block  1
+    #####:   96:            lock.unlock();
+    %%%%%:   96-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   97:            return tab;
+    %%%%%:   97-block  0
+        -:   98:        }
+        -:   99:    }
+    #####:  100:    lock.unlock();
+    %%%%%:  100-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  101:    return nullptr;
+    %%%%%:  101-block  0
+    #####:  102:}
+    %%%%%:  102-block  0
+call    0 never executed
+    $$$$$:  102-block  1
+call    1 never executed
+        -:  103:
+function _ZN8Database13getRowByIndexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEi called 0 returned 0% blocks executed 0%
+    #####:  104:std::string Database::getRowByIndex(const std::string& name, int indexOfRow){
+    #####:  105:    return getTable(name)->getRow(indexOfRow);
+    %%%%%:  105-block  0
+call    0 never executed
+call    1 never executed
+        -:  106:}
+        -:  107:
+function _ZN8Database10getAllRowsERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:  108:std::string Database::getAllRows(const std::string& nameTable){
+    #####:  109:    return getTable(nameTable)->getAllRows();
+    %%%%%:  109-block  0
+call    0 never executed
+call    1 never executed
+        -:  110:}
+        -:  111:
+function _ZN8Database17existsColumnIndexERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEi called 0 returned 0% blocks executed 0%
+    #####:  112:bool Database::existsColumnIndex(const std::string& nameTable, int index){
+    #####:  113:    return getTable(nameTable)->existsColumnIndex(index);
+    %%%%%:  113-block  0
+call    0 never executed
+call    1 never executed
+        -:  114:}
+        -:  115:
+function _ZN8Database17getColumnsIndexesERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:  116:std::string Database::getColumnsIndexes(const std::string& tableName){
+    #####:  117:    return getTable(tableName)->getColumnsIndexes();
+    %%%%%:  117-block  0
+call    0 never executed
+call    1 never executed
+        -:  118:}
+        -:  119:
+function _ZN8Database18getNumberOfColumnsERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:  120:int Database::getNumberOfColumns(const std::string& tableName){
+    #####:  121:    return getTable(tableName)->getNumberOfColumns();
+    %%%%%:  121-block  0
+call    0 never executed
+call    1 never executed
+        -:  122:}
+        -:  123:
+function _ZN8Database20getColumnDescriptionERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEi called 0 returned 0% blocks executed 0%
+    #####:  124:std::string Database::getColumnDescription(const std::string& tableName, int index){
+    #####:  125:    return getTable(tableName)->getColumnDescription(index);
+    %%%%%:  125-block  0
+call    0 never executed
+call    1 never executed
+        -:  126:}
+        -:  127:
+function _ZN8Database16isColumnNullAbleERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEi called 0 returned 0% blocks executed 0%
+    #####:  128:bool Database::isColumnNullAble(const std::string& tableName, int index){
+    #####:  129:    return getTable(tableName)->isColumnNullAble(index);
+    %%%%%:  129-block  0
+call    0 never executed
+call    1 never executed
+        -:  130:}
+        -:  131:
+function _ZN8Database15getTypeOfColumnERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEi called 0 returned 0% blocks executed 0%
+    #####:  132:std::string Database::getTypeOfColumn(const std::string& tableName, int index){
+    #####:  133:    return getTable(tableName)->getColumnType(index);
+    %%%%%:  133-block  0
+call    0 never executed
+call    1 never executed
+        -:  134:}
+        -:  135:
+function _ZN8Database9DeleteRowERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiS7_ called 0 returned 0% blocks executed 0%
+    #####:  136:int Database::DeleteRow(const std::string& tableName, int index, const std::string& value){
+    #####:  137:    return getTable(tableName)->deleteRowsByValue(index, value);
+    %%%%%:  137-block  0
+call    0 never executed
+call    1 never executed
+        -:  138:}
+        -:  139:
+function _ZN8Database6addRowERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERSt6vectorIS5_SaIS5_EE called 0 returned 0% blocks executed 0%
+    #####:  140:void Database::addRow(const std::string& name, std::vector<std::string>& row){
+    #####:  141:    getTable(name)->addRow(row);
+    %%%%%:  141-block  0
+call    0 never executed
+call    1 never executed
+    #####:  142:}
+        -:  143:
+function _ZN8Database11deleteTableERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEP4User called 0 returned 0% blocks executed 0%
+    #####:  144:std::string Database::deleteTable(const std::string& name, User* client) {
+    #####:  145:    std::unique_lock<std::mutex> lock(deleteTableMtx);
+    %%%%%:  145-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  146:    std::string a = "Table doesnt exists !!";
+    %%%%%:  146-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:  146-block  1
+    #####:  147:    Table* table = getTable(name);
+    %%%%%:  147-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  148:    if(table){
+    %%%%%:  148-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  149:        if(table->getCreator()->getMeno() == client->getMeno()){
+    %%%%%:  149-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  149-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  149-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  149-block  3
+call    9 never executed
+call   10 never executed
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed
+    $$$$$:  149-block  4
+    $$$$$:  149-block  5
+call   14 never executed
+    $$$$$:  149-block  6
+    #####:  150:            a = "Table successfully removed";
+    %%%%%:  150-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  151:            removeTableByName(name);
+    %%%%%:  151-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  152:            delete table;
+    %%%%%:  152-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  152-block  1
+call    2 never executed
+call    3 never executed
+        -:  153:        } else{
+    #####:  154:            a = "You don't have the right to delete the table !!";
+    %%%%%:  154-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  155:        }
+        -:  156:    }
+    #####:  157:    lock.unlock();
+    %%%%%:  157-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  158:    return a;
+    %%%%%:  158-block  0
+    %%%%%:  158-block  1
+    #####:  159:}
+    %%%%%:  159-block  0
+call    0 never executed
+    $$$$$:  159-block  1
+call    1 never executed
+    $$$$$:  159-block  2
+call    2 never executed
+        -:  160:
+        -:  161://nemusi mat mutex vola sa s triedy o mutexovanej
+function _ZN8Database17removeTableByNameERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:  162:void Database::removeTableByName(const std::string& name) {
+    #####:  163:    auto it = std::remove_if(tables.begin(), tables.end(),
+    %%%%%:  163-block  0
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed (fallthrough)
+branch  4 never executed (throw)
+function _ZZN8Database17removeTableByNameERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEENKUlP5TableE_clES9_ called 0 returned 0% blocks executed 0%
+    #####:  164:                             [name](Table* table) {
+    %%%%%:  164-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  164-block  1
+call    3 never executed
+    $$$$$:  164-block  2
+call    4 never executed
+    $$$$$:  164-block  3
+    #####:  165:                                 return name == table->getName();
+    %%%%%:  165-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  165-block  1
+call    3 never executed
+call    4 never executed
+    %%%%%:  165-block  2
+        -:  166:                             });
+        -:  167:
+    #####:  168:    tables.erase(it, tables.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    $$$$$:  168-block  0
+    $$$$$:  168-block  1
+    $$$$$:  168-block  2
+    #####:  169:}
+    %%%%%:  169-block  0
+        -:  170:
+function _ZN8Database13getUserTablesB5cxx11EP4User called 1 returned 100% blocks executed 52%
+        1:  171:std::string Database::getUserTables(User *client) {
+        1:  172:    std::unique_lock<std::mutex> lock(getUserTablesMtx);
+        1:  172-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  173:    std::string a = "You dont have any Table\n";
+        1:  173-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+    $$$$$:  173-block  1
+        1:  174:    bool first = false;
+        2:  175:    for(auto tab: tables){
+        1:  175-block  0
+call    0 returned 1
+call    1 returned 1
+        1:  175-block  1
+call    2 returned 1
+        1:  175-block  2
+call    3 returned 1
+        2:  175-block  3
+call    4 returned 2
+branch  5 taken 1
+branch  6 taken 1 (fallthrough)
+        1:  176:        if(tab->getCreator()->getMeno() == client->getMeno()){
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  176-block  0
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:  176-block  1
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:  176-block  2
+call    9 returned 1
+call   10 returned 1
+call   11 returned 1
+branch 12 taken 1 (fallthrough)
+branch 13 taken 0
+    $$$$$:  176-block  3
+    $$$$$:  176-block  4
+call   14 never executed
+    $$$$$:  176-block  5
+        1:  177:            if(!first){
+        1:  177-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  178:                first = true;
+        1:  179:                a = "Your Tables:\n" + tab->getName() + ", ";
+        1:  179-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  179-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:  179-block  2
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:  179-block  3
+call    9 returned 1
+call   10 returned 1
+call   11 returned 1
+call   12 returned 1
+    $$$$$:  179-block  4
+call   13 never executed
+    $$$$$:  179-block  5
+call   14 never executed
+    $$$$$:  179-block  6
+    $$$$$:  179-block  7
+    $$$$$:  179-block  8
+        -:  180:            }
+        -:  181:            else{
+    #####:  182:                a += tab->getName() + ", ";
+    %%%%%:  182-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  182-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  182-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  182-block  3
+call    9 never executed
+call   10 never executed
+    $$$$$:  182-block  4
+call   11 never executed
+    $$$$$:  182-block  5
+call   12 never executed
+    $$$$$:  182-block  6
+    $$$$$:  182-block  7
+        -:  183:            }
+        -:  184:        }
+        -:  185:    }
+        1:  186:    lock.unlock();
+        1:  186-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        2:  187:    return a;
+        1:  187-block  0
+        1:  187-block  1
+        1:  188:}
+        1:  188-block  0
+call    0 returned 1
+    $$$$$:  188-block  1
+call    1 never executed
+    $$$$$:  188-block  2
+call    2 never executed
+        -:  189:
+function _ZN8Database23getUserTablesWithRightsB5cxx11EP4User called 1 returned 100% blocks executed 55%
+        1:  190:std::string Database::getUserTablesWithRights(User *client) {
+        1:  191:    std::unique_lock<std::mutex> lock(getUserTablesWithRightsMtx);
+        1:  191-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  192:    std::string a = "Tables with your rights:\n";
+        1:  192-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+    $$$$$:  192-block  1
+        1:  193:    int i = 1;
+        1:  194:    if(tables.size() == 0){
+        1:  194-block  0
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    #####:  195:        a += "You dont have any right to table\n";
+    %%%%%:  195-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  196:        lock.unlock();
+    %%%%%:  196-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  197:        return a;
+    %%%%%:  197-block  0
+        -:  198:    }
+        -:  199:    else{
+        2:  200:        for(auto tab : tables) {
+        1:  200-block  0
+call    0 returned 1
+call    1 returned 1
+        1:  200-block  1
+call    2 returned 1
+        2:  200-block  2
+call    3 returned 2
+branch  4 taken 1
+branch  5 taken 1 (fallthrough)
+        1:  201:            a += std::to_string(i) + ". "+tab->getListOfUserRights(client);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  201-block  0
+call    3 returned 1
+call    4 returned 1
+branch  5 taken 1 (fallthrough)
+branch  6 taken 0 (throw)
+        1:  201-block  1
+call    7 returned 1
+branch  8 taken 1 (fallthrough)
+branch  9 taken 0 (throw)
+        1:  201-block  2
+call   10 returned 1
+branch 11 taken 1 (fallthrough)
+branch 12 taken 0 (throw)
+        1:  201-block  3
+call   13 returned 1
+call   14 returned 1
+call   15 returned 1
+call   16 returned 1
+    $$$$$:  201-block  4
+call   17 never executed
+    $$$$$:  201-block  5
+call   18 never executed
+    $$$$$:  201-block  6
+call   19 never executed
+    $$$$$:  201-block  7
+    $$$$$:  201-block  8
+    $$$$$:  201-block  9
+call   20 never executed
+    $$$$$:  201-block 10
+    $$$$$:  201-block 11
+        1:  202:            i++;
+call    0 returned 1
+        -:  203:        }
+        -:  204:    }
+        1:  205:    lock.unlock();
+        1:  205-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  206:    return a;
+        1:  206-block  0
+        1:  207:}
+        1:  207-block  0
+call    0 returned 1
+    $$$$$:  207-block  1
+call    1 never executed
+    $$$$$:  207-block  2
+call    2 never executed
+        -:  208:
+        -:  209://moze ostat bez mutexu
+function _ZN8Database11isTableUserERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEP4User called 0 returned 0% blocks executed 0%
+    #####:  210:bool Database::isTableUser(const std::string &tableName, User *client) {
+    #####:  211:    return getTable(tableName)->getCreator()->getMeno() == client->getMeno();
+    %%%%%:  211-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  211-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  211-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  211-block  3
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:  211-block  4
+call   12 never executed
+call   13 never executed
+call   14 never executed
+    %%%%%:  211-block  5
+    $$$$$:  211-block  6
+    $$$$$:  211-block  7
+call   15 never executed
+        -:  212:}
+        -:  213:
+        -:  214:
+        -:  215:

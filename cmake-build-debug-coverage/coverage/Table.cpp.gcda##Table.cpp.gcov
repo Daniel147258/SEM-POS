@@ -1,0 +1,2355 @@
+        -:    0:Source:C:/Users/Daniel/CLionProjects/Sem/server/Table/Table.cpp
+        -:    0:Graph:C:\Users\Daniel\CLionProjects\Sem\cmake-build-debug-coverage\CMakeFiles\Sem.dir\server\Table\Table.cpp.gcno
+        -:    0:Data:C:\Users\Daniel\CLionProjects\Sem\cmake-build-debug-coverage\CMakeFiles\Sem.dir\server\Table\Table.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "Table.h"
+        -:    2:#include "StringColumn.h"
+        -:    3:#include "DoubleColumn.h"
+        -:    4:
+function _ZN5TableC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEP4User called 1 returned 100% blocks executed 100%
+        1:    5:Table::Table(const std::string& name, User* creator) : tableName(name) {
+        1:    5-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+call    3 returned 1
+call    4 returned 1
+call    5 returned 1
+call    6 returned 1
+call    7 returned 1
+call    8 returned 1
+call    9 returned 1
+call   10 returned 1
+call   11 returned 1
+call   12 returned 1
+call   13 returned 1
+call   14 returned 1
+call   15 returned 1
+call   16 returned 1
+call   17 returned 1
+call   18 returned 1
+call   19 returned 1
+call   20 returned 1
+call   21 returned 1
+call   22 returned 1
+call   23 returned 1
+call   24 returned 1
+call   25 returned 1
+call   26 returned 1
+call   27 returned 1
+call   28 returned 1
+call   29 returned 1
+call   30 returned 1
+call   31 returned 1
+call   32 returned 1
+        1:    6:    countRows = 0;
+        1:    7:    this->creator = creator;
+        1:    8:}
+        -:    9:
+function _ZN5TableD2Ev called 1 returned 100% blocks executed 100%
+        1:   10:Table::~Table() {
+        2:   11:    for (auto column : columns) {
+        1:   11-block  0
+call    0 returned 1
+call    1 returned 1
+        1:   11-block  1
+call    2 returned 1
+        1:   11-block  2
+call    3 returned 1
+        2:   11-block  3
+call    4 returned 2
+branch  5 taken 1
+branch  6 taken 1 (fallthrough)
+        1:   12:        delete column;
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:   12-block  0
+call    2 returned 1
+        -:   13:    }
+        1:   14:    columns.clear();
+        1:   14-block  0
+call    0 returned 1
+        1:   15:    selecting.clear();
+call    0 returned 1
+        1:   16:    updating.clear();
+call    0 returned 1
+        1:   17:    adding.clear();
+call    0 returned 1
+        1:   18:    deleting.clear();
+call    0 returned 1
+        1:   19:}
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+call    3 returned 1
+call    4 returned 1
+call    5 returned 1
+call    6 returned 1
+call    7 returned 1
+call    8 returned 1
+call    9 returned 1
+call   10 returned 1
+call   11 returned 1
+call   12 returned 1
+call   13 returned 1
+call   14 returned 1
+call   15 returned 1
+call   16 returned 1
+call   17 returned 1
+call   18 returned 1
+call   19 returned 1
+call   20 returned 1
+call   21 returned 1
+call   22 returned 1
+call   23 returned 1
+call   24 returned 1
+call   25 returned 1
+call   26 returned 1
+call   27 returned 1
+call   28 returned 1
+call   29 returned 1
+call   30 returned 1
+call   31 returned 1
+call   32 returned 1
+        -:   20:
+function _ZN5Table9addColumnEP15TableColumnBase called 1 returned 100% blocks executed 75%
+        1:   21:void Table::addColumn(TableColumnBase* column) {
+        1:   22:    std::unique_lock<std::mutex> lock(addColumnMtx);
+        1:   22-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   23:    columns.push_back(column);
+        1:   23-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   24:    lock.unlock();
+        1:   24-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   25:}
+        1:   25-block  0
+call    0 returned 1
+    $$$$$:   25-block  1
+call    1 never executed
+        -:   26:
+function _ZN5Table10containsPKEyRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   27:bool Table::containsPK(size_t columnIndex, const std::string& value) {
+    #####:   28:    std::unique_lock<std::mutex> lock(containsPKMtx);
+    %%%%%:   28-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   29:    if (columns[columnIndex]->isPrimaryKey()) {
+    %%%%%:   29-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   29-block  1
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    #####:   30:        lock.unlock();
+    %%%%%:   30-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   31:        return columns[columnIndex]->containsValue(value);
+    %%%%%:   31-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   31-block  1
+        -:   32:    }
+    #####:   33:    lock.unlock();
+    %%%%%:   33-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   34:    return false;
+    %%%%%:   34-block  0
+    #####:   35:}
+    %%%%%:   35-block  0
+call    0 never executed
+    $$$$$:   35-block  1
+call    1 never executed
+        -:   36:
+function _ZN5Table14addColumnValueEyRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   37:void Table::addColumnValue(size_t columnIndex, const std::string& value) {
+    #####:   38:    std::unique_lock<std::mutex> lock(addColumnValueMtx);
+    %%%%%:   38-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   39:    if (columnIndex < columns.size()) {
+    %%%%%:   39-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   40:        columns[columnIndex]->addValue(value);
+    %%%%%:   40-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+        -:   41:    } else {
+    #####:   42:        std::cerr << "Invalid column index." << std::endl;
+    %%%%%:   42-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   42-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+        -:   43:    }
+    #####:   44:    lock.unlock();
+    %%%%%:   44-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   45:}
+    %%%%%:   45-block  0
+call    0 never executed
+    $$$$$:   45-block  1
+call    1 never executed
+        -:   46:
+function _ZN5Table6addRowERKSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS6_EE called 0 returned 0% blocks executed 0%
+    #####:   47:void Table::addRow(const std::vector<std::string>& row) {
+    #####:   48:    std::unique_lock<std::mutex> lock(addRowMtx);
+    %%%%%:   48-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   49:    if (row.size() > columns.size()) {
+    %%%%%:   49-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    #####:   50:        std::cerr << "Too many elements in the row. Ignoring extra values." << std::endl;
+    %%%%%:   50-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   50-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+        -:   51:    }
+    #####:   52:    bool containPK = false;
+        -:   53:
+    #####:   54:    for (size_t i = 0; i < columns.size(); ++i) {
+    %%%%%:   54-block  0
+    %%%%%:   54-block  1
+    %%%%%:   54-block  2
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+    #####:   55:        if (i >= row.size()) {
+    %%%%%:   55-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   56:            addColumnValue(i, "");
+    %%%%%:   56-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   56-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   56-block  2
+call    6 never executed
+    %%%%%:   56-block  3
+    $$$$$:   56-block  4
+call    7 never executed
+    $$$$$:   56-block  5
+    $$$$$:   56-block  6
+        -:   57:        } else {
+    #####:   58:            if (containsPK(i, row[i])) {
+    %%%%%:   58-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   58-block  1
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    #####:   59:                std::cout << "Primary key with this value " << row[i] << " exists!!!" << std::endl;
+    %%%%%:   59-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   59-block  1
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:   59-block  2
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    %%%%%:   59-block  3
+call   10 never executed
+branch 11 never executed (fallthrough)
+branch 12 never executed (throw)
+    #####:   60:                containPK = true;
+    #####:   61:                break;
+    %%%%%:   61-block  0
+        -:   62:            }
+        -:   63:        }
+        -:   64:    }
+    #####:   65:    if (!containPK) {
+    %%%%%:   65-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   66:        ++countRows;
+    #####:   67:        for (size_t i = 0; i < columns.size(); ++i) {
+    %%%%%:   67-block  0
+    %%%%%:   67-block  1
+    %%%%%:   67-block  2
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+    #####:   68:            if (i >= row.size()) {
+    %%%%%:   68-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   69:                addColumnValue(i, "");
+    %%%%%:   69-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   69-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   69-block  2
+call    6 never executed
+    %%%%%:   69-block  3
+    $$$$$:   69-block  4
+call    7 never executed
+    $$$$$:   69-block  5
+    $$$$$:   69-block  6
+        -:   70:            } else {
+    #####:   71:                addColumnValue(i, row[i]);
+    %%%%%:   71-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+        -:   72:            }
+        -:   73:        }
+        -:   74:    }
+    #####:   75:    lock.unlock();
+    %%%%%:   75-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   76:}
+    %%%%%:   76-block  0
+call    0 never executed
+    $$$$$:   76-block  1
+call    1 never executed
+        -:   77:
+function _ZNK5Table11printHeaderEv called 0 returned 0% blocks executed 0%
+    #####:   78:void Table::printHeader() const {
+    #####:   79:    for (const auto& column : columns) {
+    %%%%%:   79-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:   79-block  1
+call    2 never executed
+    %%%%%:   79-block  2
+call    3 never executed
+    %%%%%:   79-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:   80:        column->printHeader();
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   81:    }
+    #####:   82:    std::cout << std::endl;
+    %%%%%:   82-block  0
+call    0 never executed
+    #####:   83:}
+        -:   84:
+function _ZN5Table21uploadAllColumnValuesEyRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_ called 0 returned 0% blocks executed 0%
+    #####:   85:int Table::uploadAllColumnValues(size_t columnIndex, const std::string& oldValue, const std::string& newValue) {
+    #####:   86:    std::unique_lock<std::mutex> lock(uploadAllColumnValuesMtx);
+    %%%%%:   86-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   87:    int uptadetRows = 0;
+    #####:   88:    if (columnIndex <= columns.size() && columnIndex >= 0) {
+    %%%%%:   88-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   88-block  1
+    %%%%%:   88-block  2
+    %%%%%:   88-block  3
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    #####:   89:        uptadetRows = columns[columnIndex]->uploadAllValues(oldValue, newValue);
+    %%%%%:   89-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   89-block  1
+        -:   90:    } else {
+    #####:   91:        std::cerr << "Invalid column index." << std::endl;
+    %%%%%:   91-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   91-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+        -:   92:    }
+    #####:   93:    lock.unlock();
+    %%%%%:   93-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   94:    return uptadetRows;
+    %%%%%:   94-block  0
+    #####:   95:}
+    %%%%%:   95-block  0
+call    0 never executed
+    $$$$$:   95-block  1
+call    1 never executed
+        -:   96:
+function _ZN5Table17deleteRowsByValueEyRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   97:int Table::deleteRowsByValue(size_t columnIndex, const std::string& value) {
+    #####:   98:    std::unique_lock<std::mutex> lock(deleteRowsByValueMtx);
+    %%%%%:   98-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   99:    columnIndex -= 1;
+    #####:  100:    int numberOfDeleted = 0;
+    #####:  101:    if (columnIndex < columns.size() && columnIndex >= 0) {
+    %%%%%:  101-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:  101-block  1
+    %%%%%:  101-block  2
+    %%%%%:  101-block  3
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    #####:  102:        for (size_t rowIndex = 0; rowIndex < columns[columnIndex]->getSize(); ++rowIndex) {
+    %%%%%:  102-block  0
+    %%%%%:  102-block  1
+    %%%%%:  102-block  2
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  102-block  3
+branch  4 never executed
+branch  5 never executed (fallthrough)
+    #####:  103:            if (columns[columnIndex]->deleteValue(value)) {
+    %%%%%:  103-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  103-block  1
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    #####:  104:                numberOfDeleted++;
+    %%%%%:  104-block  0
+        -:  105:            }
+        -:  106:        }
+        -:  107:
+    #####:  108:        std::cout << numberOfDeleted << " rows deleted where value in column " << columnIndex + 1 << " is '" << value << "'." << std::endl;
+    %%%%%:  108-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  108-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  108-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  108-block  3
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:  108-block  4
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+    %%%%%:  108-block  5
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed (throw)
+    %%%%%:  108-block  6
+call   18 never executed
+branch 19 never executed (fallthrough)
+branch 20 never executed (throw)
+        -:  109:    } else {
+    #####:  110:        std::cerr << "Invalid column index." << std::endl;
+    %%%%%:  110-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  110-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+        -:  111:    }
+    #####:  112:    lock.unlock();
+    %%%%%:  112-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  113:    return numberOfDeleted;
+    %%%%%:  113-block  0
+    #####:  114:}
+    %%%%%:  114-block  0
+call    0 never executed
+    $$$$$:  114-block  1
+call    1 never executed
+        -:  115:
+function _ZN5Table7getNameB5cxx11Ev called 5 returned 100% blocks executed 100%
+        5:  116:std::string Table::getName() {
+        5:  117:    return tableName;
+        5:  117-block  0
+call    0 returned 5
+        -:  118:}
+        -:  119:
+function _ZN5Table10getCreatorEv called 2 returned 100% blocks executed 100%
+        2:  120:User* Table::getCreator() {
+        2:  121:    return creator;
+        2:  121-block  0
+        -:  122:}
+        -:  123:
+function _ZN5Table10getAllRowsB5cxx11Ev called 0 returned 0% blocks executed 0%
+    #####:  124:std::string Table::getAllRows(){
+    #####:  125:    std::unique_lock<std::mutex> lock(getAllRowsMtx);
+    %%%%%:  125-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  126:    std::string a = "No rows in this table";
+    %%%%%:  126-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:  126-block  1
+    #####:  127:    if(columns[0]->getSize() != 0){
+    %%%%%:  127-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  127-block  1
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    #####:  128:        a = "";
+    %%%%%:  128-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  129:        for (size_t i = 0; i < countRows; ++i) {
+    %%%%%:  129-block  0
+    %%%%%:  129-block  1
+    %%%%%:  129-block  2
+branch  0 never executed
+branch  1 never executed (fallthrough)
+    #####:  130:            for (const auto& column : columns) {
+    %%%%%:  130-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  130-block  1
+call    2 never executed
+    %%%%%:  130-block  2
+call    3 never executed
+    %%%%%:  130-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  131:                if (i < column->getSize()) {
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  131-block  0
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    #####:  132:                    a += "| "+column->getValue(i) + " |\t\t";
+    %%%%%:  132-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  132-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  132-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  132-block  3
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:  132-block  4
+call   12 never executed
+call   13 never executed
+call   14 never executed
+    $$$$$:  132-block  5
+call   15 never executed
+    $$$$$:  132-block  6
+call   16 never executed
+    $$$$$:  132-block  7
+call   17 never executed
+    $$$$$:  132-block  8
+    $$$$$:  132-block  9
+    $$$$$:  132-block 10
+        -:  133:                }
+        -:  134:            }
+    #####:  135:            a += "\n";
+    %%%%%:  135-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  136:        }
+        -:  137:    }
+    #####:  138:    lock.unlock();
+    %%%%%:  138-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  139:    return getHeader() + "\n" + a + "\n";
+    %%%%%:  139-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  139-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  139-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  139-block  3
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:  139-block  4
+    %%%%%:  139-block  5
+call   12 never executed
+call   13 never executed
+call   14 never executed
+    %%%%%:  139-block  6
+    $$$$$:  139-block  7
+call   15 never executed
+    $$$$$:  139-block  8
+call   16 never executed
+    $$$$$:  139-block  9
+call   17 never executed
+    $$$$$:  139-block 10
+    $$$$$:  139-block 11
+    $$$$$:  139-block 12
+    #####:  140:}
+call    0 never executed
+call    1 never executed
+    $$$$$:  140-block  0
+call    2 never executed
+    $$$$$:  140-block  1
+call    3 never executed
+        -:  141:
+function _ZN5Table17existsColumnIndexEi called 0 returned 0% blocks executed 0%
+    #####:  142:bool Table::existsColumnIndex(int index){
+    #####:  143:    std::unique_lock<std::mutex> lock(existsColumnIndexMtx);
+    %%%%%:  143-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  144:    if(index >= 0 && index < columns.size()){
+    %%%%%:  144-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  144-block  1
+call    2 never executed
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    %%%%%:  144-block  2
+    %%%%%:  144-block  3
+    %%%%%:  144-block  4
+branch  5 never executed (fallthrough)
+branch  6 never executed
+    #####:  145:        lock.unlock();
+    %%%%%:  145-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  146:     return true;
+    %%%%%:  146-block  0
+        -:  147:    }
+    #####:  148:    lock.unlock();
+    %%%%%:  148-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  149:    return false;
+    %%%%%:  149-block  0
+    #####:  150:};
+    %%%%%:  150-block  0
+call    0 never executed
+    $$$$$:  150-block  1
+call    1 never executed
+        -:  151:
+function _ZN5Table17getColumnsIndexesB5cxx11Ev called 0 returned 0% blocks executed 0%
+    #####:  152:std::string Table::getColumnsIndexes(){
+    #####:  153:    std::unique_lock<std::mutex> lock(getColumnsIndexesMtx);
+    %%%%%:  153-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  154:    int i = 0;
+    %%%%%:  154-block  0
+    #####:  155:    std::string a = "None index";
+    %%%%%:  155-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:  155-block  1
+    #####:  156:    if(!columns.empty()) {
+    %%%%%:  156-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:  157:        a = "";
+    %%%%%:  157-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  158:        for (const auto &column: columns) {
+    %%%%%:  158-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  158-block  1
+call    2 never executed
+    %%%%%:  158-block  2
+call    3 never executed
+branch  4 never executed
+branch  5 never executed (fallthrough)
+    #####:  159:            a += column->getName() + ": Index " + std::to_string(i+1) + "\n";
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  159-block  0
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  159-block  1
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    %%%%%:  159-block  2
+call   10 never executed
+branch 11 never executed (fallthrough)
+branch 12 never executed (throw)
+    %%%%%:  159-block  3
+call   13 never executed
+branch 14 never executed (fallthrough)
+branch 15 never executed (throw)
+    %%%%%:  159-block  4
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+    $$$$$:  159-block  5
+call   21 never executed
+    $$$$$:  159-block  6
+call   22 never executed
+    $$$$$:  159-block  7
+call   23 never executed
+    $$$$$:  159-block  8
+call   24 never executed
+    $$$$$:  159-block  9
+    $$$$$:  159-block 10
+    $$$$$:  159-block 11
+call   25 never executed
+    $$$$$:  159-block 12
+    $$$$$:  159-block 13
+    $$$$$:  159-block 14
+    #####:  160:            ++i;
+call    0 never executed
+        -:  161:        }
+        -:  162:    }
+    #####:  163:    lock.unlock();
+    %%%%%:  163-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  164:    return a;
+    %%%%%:  164-block  0
+    %%%%%:  164-block  1
+    #####:  165:}
+    %%%%%:  165-block  0
+call    0 never executed
+    $$$$$:  165-block  1
+call    1 never executed
+    $$$$$:  165-block  2
+call    2 never executed
+        -:  166:
+function _ZN5Table18getNumberOfColumnsEv called 1 returned 100% blocks executed 100%
+        1:  167:int Table::getNumberOfColumns(){
+        1:  168:    return columns.size();
+        1:  168-block  0
+call    0 returned 1
+        -:  169:}
+        -:  170:
+function _ZN5Table20getColumnDescriptionB5cxx11Ei called 0 returned 0% blocks executed 0%
+    #####:  171:std::string Table::getColumnDescription(int index){
+    #####:  172:    std::unique_lock<std::mutex> lock(getColumnDescriptionMtx);
+    %%%%%:  172-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  173:    std::string a = "This column dont exist!!";
+    %%%%%:  173-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:  173-block  1
+    #####:  174:    if(index > -1 && index <= columns.size()){
+    %%%%%:  174-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  174-block  1
+call    2 never executed
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    %%%%%:  174-block  2
+    %%%%%:  174-block  3
+    %%%%%:  174-block  4
+branch  5 never executed (fallthrough)
+branch  6 never executed
+    #####:  175:        a = columns[index]->getDescription();
+    %%%%%:  175-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  175-block  1
+call    4 never executed
+call    5 never executed
+    $$$$$:  175-block  2
+        -:  176:    }
+    #####:  177:    lock.unlock();
+    %%%%%:  177-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  178:    return a;
+    %%%%%:  178-block  0
+    %%%%%:  178-block  1
+    #####:  179:}
+    %%%%%:  179-block  0
+call    0 never executed
+    $$$$$:  179-block  1
+call    1 never executed
+    $$$$$:  179-block  2
+call    2 never executed
+        -:  180:
+function _ZN5Table16isColumnNullAbleEi called 0 returned 0% blocks executed 0%
+    #####:  181:bool Table::isColumnNullAble(int index){
+    #####:  182:    std::unique_lock<std::mutex> lock(isColumnNullAbleMtx);
+    %%%%%:  182-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  183:    if(index >= 0 && index <= columns.size()){
+    %%%%%:  183-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  183-block  1
+call    2 never executed
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    %%%%%:  183-block  2
+    %%%%%:  183-block  3
+    %%%%%:  183-block  4
+branch  5 never executed (fallthrough)
+branch  6 never executed
+    #####:  184:        return columns[index]->isNotNullColumn();
+    %%%%%:  184-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  184-block  1
+        -:  185:    }
+    #####:  186:    lock.unlock();
+    %%%%%:  186-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  187:    return false;
+    %%%%%:  187-block  0
+    #####:  188:}
+    %%%%%:  188-block  0
+call    0 never executed
+    $$$$$:  188-block  1
+call    1 never executed
+        -:  189:
+function _ZN5Table13getColumnTypeB5cxx11Ei called 0 returned 0% blocks executed 0%
+    #####:  190:std::string Table::getColumnType(int index){
+    #####:  191:    std::unique_lock<std::mutex> lock(getColumnTypeMtx);
+    %%%%%:  191-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  192:    if(index >= 0 && index <= columns.size()){
+    %%%%%:  192-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  192-block  1
+call    2 never executed
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    %%%%%:  192-block  2
+    %%%%%:  192-block  3
+    %%%%%:  192-block  4
+branch  5 never executed (fallthrough)
+branch  6 never executed
+    #####:  193:        lock.unlock();
+    %%%%%:  193-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  194:        return columns[index]->getTypea();
+    %%%%%:  194-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  194-block  1
+        -:  195:    }
+    #####:  196:    lock.unlock();
+    %%%%%:  196-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  197:    return "";
+    %%%%%:  197-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  197-block  1
+    $$$$$:  197-block  2
+    #####:  198:}
+    %%%%%:  198-block  0
+call    0 never executed
+    $$$$$:  198-block  1
+call    1 never executed
+        -:  199:
+function _ZN5Table23existsInTablePrimaryKeyEv called 1 returned 100% blocks executed 70%
+        1:  200:bool Table::existsInTablePrimaryKey(){
+        1:  201:    std::unique_lock<std::mutex> lock(existsInTablePrimaryKeyMtx);
+        1:  201-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+       1*:  202:    for(const auto& column : columns) {
+        1:  202-block  0
+call    0 returned 1
+call    1 returned 1
+        1:  202-block  1
+call    2 returned 1
+    %%%%%:  202-block  2
+call    3 never executed
+        1:  202-block  3
+call    4 returned 1
+branch  5 taken 1
+branch  6 taken 0 (fallthrough)
+        1:  203:        if(column->isPrimaryKey()) {
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  203-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:  204:            lock.unlock();
+        1:  204-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  205:            return true;
+        1:  205-block  0
+        -:  206:        }
+        -:  207:    }
+    #####:  208:    lock.unlock();
+    %%%%%:  208-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  209:    return false;
+    %%%%%:  209-block  0
+        1:  210:}
+        1:  210-block  0
+call    0 returned 1
+    $$$$$:  210-block  1
+call    1 never executed
+        -:  211:
+function _ZN5Table6getRowB5cxx11Ei called 0 returned 0% blocks executed 0%
+    #####:  212:std::string Table::getRow(int index){
+    #####:  213:    std::unique_lock<std::mutex> lock(getRowMtx);
+    %%%%%:  213-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  214:    std::string a;
+    %%%%%:  214-block  0
+call    0 never executed
+    #####:  215:    for(auto col: columns) {
+call    0 never executed
+call    1 never executed
+    %%%%%:  215-block  0
+call    2 never executed
+    %%%%%:  215-block  1
+call    3 never executed
+branch  4 never executed
+branch  5 never executed (fallthrough)
+    #####:  216:        if(col->getSize() == 0){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  216-block  0
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    #####:  217:            a = "Wrong size of index!!";
+    %%%%%:  217-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  218:            break;
+    %%%%%:  218-block  0
+        -:  219:        }
+        -:  220:        else {
+    #####:  221:            a += "|"+ col->getValue(index - 1) + "|\t\t";
+    %%%%%:  221-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  221-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  221-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  221-block  3
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:  221-block  4
+call   12 never executed
+call   13 never executed
+call   14 never executed
+call   15 never executed
+    $$$$$:  221-block  5
+call   16 never executed
+    $$$$$:  221-block  6
+call   17 never executed
+    $$$$$:  221-block  7
+call   18 never executed
+    $$$$$:  221-block  8
+    $$$$$:  221-block  9
+    $$$$$:  221-block 10
+        -:  222:        }
+        -:  223:    }
+    #####:  224:    lock.unlock();
+    %%%%%:  224-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  225:    return getHeader() + "\n" + a + "\n";
+    %%%%%:  225-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  225-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  225-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  225-block  3
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:  225-block  4
+    %%%%%:  225-block  5
+call   12 never executed
+call   13 never executed
+call   14 never executed
+    %%%%%:  225-block  6
+    $$$$$:  225-block  7
+call   15 never executed
+    $$$$$:  225-block  8
+call   16 never executed
+    $$$$$:  225-block  9
+call   17 never executed
+    $$$$$:  225-block 10
+    $$$$$:  225-block 11
+    $$$$$:  225-block 12
+    #####:  226:}
+call    0 never executed
+call    1 never executed
+    $$$$$:  226-block  0
+call    2 never executed
+    $$$$$:  226-block  1
+call    3 never executed
+        -:  227:
+function _ZN5Table9getHeaderB5cxx11Ev called 0 returned 0% blocks executed 0%
+    #####:  228:std::string Table::getHeader(){
+    #####:  229:    std::unique_lock<std::mutex> lock(getHeaderMtx);
+    %%%%%:  229-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  230:    std::string a = "Table " + getName() + ":\n";
+    %%%%%:  230-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  230-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  230-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  230-block  3
+call    9 never executed
+call   10 never executed
+    $$$$$:  230-block  4
+call   11 never executed
+    $$$$$:  230-block  5
+call   12 never executed
+    $$$$$:  230-block  6
+    $$$$$:  230-block  7
+    #####:  231:    for(auto col: columns) {
+call    0 never executed
+call    1 never executed
+    %%%%%:  231-block  0
+call    2 never executed
+    %%%%%:  231-block  1
+call    3 never executed
+branch  4 never executed
+branch  5 never executed (fallthrough)
+    #####:  232:        a += col->getName() +  "\t\t";
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  232-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  232-block  1
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  232-block  2
+call    9 never executed
+call   10 never executed
+call   11 never executed
+    $$$$$:  232-block  3
+call   12 never executed
+    $$$$$:  232-block  4
+call   13 never executed
+    $$$$$:  232-block  5
+    $$$$$:  232-block  6
+        -:  233:    }
+    #####:  234:    lock.unlock();
+    %%%%%:  234-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  235:    return a;
+    %%%%%:  235-block  0
+    %%%%%:  235-block  1
+    #####:  236:}
+    %%%%%:  236-block  0
+call    0 never executed
+    $$$$$:  236-block  1
+call    1 never executed
+    $$$$$:  236-block  2
+call    2 never executed
+        -:  237:
+function _ZN5Table18isColumnPrimaryKerEi called 0 returned 0% blocks executed 0%
+    #####:  238:bool Table::isColumnPrimaryKer(int index){
+    #####:  239:    std::unique_lock<std::mutex> lock(isColumnPrimaryKerMtx);
+    %%%%%:  239-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  240:    bool a = columns[index]->isPrimaryKey();
+    %%%%%:  240-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    #####:  241:    lock.unlock();
+    %%%%%:  241-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  242:    return columns[index]->isPrimaryKey();
+    %%%%%:  242-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  242-block  1
+    %%%%%:  242-block  2
+    #####:  243:}
+    %%%%%:  243-block  0
+call    0 never executed
+    $$$$$:  243-block  1
+call    1 never executed
+        -:  244:
+function _ZN5Table13canUserSelectEP4User called 0 returned 0% blocks executed 0%
+    #####:  245:bool Table::canUserSelect(User *client) {
+    #####:  246:    std::unique_lock<std::mutex> lock(canUserSelectMtx);
+    %%%%%:  246-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  247:    if(client->getMeno() == creator->getMeno()){
+    %%%%%:  247-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  247-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  247-block  2
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  247-block  3
+    $$$$$:  247-block  4
+call   11 never executed
+    $$$$$:  247-block  5
+    #####:  248:        lock.unlock();
+    %%%%%:  248-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  249:        return true;
+    %%%%%:  249-block  0
+        -:  250:    }
+    #####:  251:    for(auto clie : selecting){
+    %%%%%:  251-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  251-block  1
+call    2 never executed
+    %%%%%:  251-block  2
+call    3 never executed
+    %%%%%:  251-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  252:        if(client->getMeno() == clie->getMeno() ){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  252-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  252-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  252-block  2
+    $$$$$:  252-block  3
+call   11 never executed
+    $$$$$:  252-block  4
+    #####:  253:            lock.unlock();
+    %%%%%:  253-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  254:            return true;
+    %%%%%:  254-block  0
+        -:  255:        }
+        -:  256:    }
+    #####:  257:    lock.unlock();
+    %%%%%:  257-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  258:    return false;
+    %%%%%:  258-block  0
+    #####:  259:}
+    %%%%%:  259-block  0
+call    0 never executed
+    $$$$$:  259-block  1
+call    1 never executed
+        -:  260:
+function _ZN5Table13canUserUpdateEP4User called 0 returned 0% blocks executed 0%
+    #####:  261:bool Table::canUserUpdate(User *client) {
+    #####:  262:    std::unique_lock<std::mutex> lock(canUserUpdateMtx);
+    %%%%%:  262-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  263:    if(client->getMeno() == creator->getMeno()){
+    %%%%%:  263-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  263-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  263-block  2
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  263-block  3
+    $$$$$:  263-block  4
+call   11 never executed
+    $$$$$:  263-block  5
+    #####:  264:        lock.unlock();
+    %%%%%:  264-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  265:        return true;
+    %%%%%:  265-block  0
+        -:  266:    }
+    #####:  267:    for(auto clie : updating){
+    %%%%%:  267-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  267-block  1
+call    2 never executed
+    %%%%%:  267-block  2
+call    3 never executed
+    %%%%%:  267-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  268:        if(client->getMeno() == clie->getMeno() ){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  268-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  268-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  268-block  2
+    $$$$$:  268-block  3
+call   11 never executed
+    $$$$$:  268-block  4
+    #####:  269:            lock.unlock();
+    %%%%%:  269-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  270:            return true;
+    %%%%%:  270-block  0
+        -:  271:        }
+        -:  272:    }
+    #####:  273:    lock.unlock();
+    %%%%%:  273-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  274:    return false;
+    %%%%%:  274-block  0
+    #####:  275:}
+    %%%%%:  275-block  0
+call    0 never executed
+    $$$$$:  275-block  1
+call    1 never executed
+        -:  276:
+function _ZN5Table10canUserAddEP4User called 0 returned 0% blocks executed 0%
+    #####:  277:bool Table::canUserAdd(User *client) {
+    #####:  278:    std::unique_lock<std::mutex> lock(canUserAddMtx);
+    %%%%%:  278-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  279:    if(client->getMeno() == creator->getMeno()){
+    %%%%%:  279-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  279-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  279-block  2
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  279-block  3
+    $$$$$:  279-block  4
+call   11 never executed
+    $$$$$:  279-block  5
+    #####:  280:        lock.unlock();
+    %%%%%:  280-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  281:        return true;
+    %%%%%:  281-block  0
+        -:  282:    }
+    #####:  283:    for(auto clie : adding){
+    %%%%%:  283-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  283-block  1
+call    2 never executed
+    %%%%%:  283-block  2
+call    3 never executed
+    %%%%%:  283-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  284:        if(client->getMeno() == clie->getMeno() ){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  284-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  284-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  284-block  2
+    $$$$$:  284-block  3
+call   11 never executed
+    $$$$$:  284-block  4
+    #####:  285:            lock.unlock();
+    %%%%%:  285-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  286:            return true;
+    %%%%%:  286-block  0
+        -:  287:        }
+        -:  288:    }
+    #####:  289:    lock.unlock();
+    %%%%%:  289-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  290:    return false;
+    %%%%%:  290-block  0
+    #####:  291:}
+    %%%%%:  291-block  0
+call    0 never executed
+    $$$$$:  291-block  1
+call    1 never executed
+        -:  292:
+function _ZN5Table13canUserDeleteEP4User called 0 returned 0% blocks executed 0%
+    #####:  293:bool Table::canUserDelete(User *client) {
+    #####:  294:    std::unique_lock<std::mutex> lock(canUserDeleteMtx);
+    %%%%%:  294-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  295:    if(client->getMeno() == creator->getMeno()){
+    %%%%%:  295-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  295-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  295-block  2
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  295-block  3
+    $$$$$:  295-block  4
+call   11 never executed
+    $$$$$:  295-block  5
+    #####:  296:        lock.unlock();
+    %%%%%:  296-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  297:        return true;
+    %%%%%:  297-block  0
+        -:  298:    }
+    #####:  299:    for(auto clie : deleting){
+    %%%%%:  299-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  299-block  1
+call    2 never executed
+    %%%%%:  299-block  2
+call    3 never executed
+    %%%%%:  299-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  300:        if(client->getMeno() == clie->getMeno() ){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  300-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  300-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  300-block  2
+    $$$$$:  300-block  3
+call   11 never executed
+    $$$$$:  300-block  4
+    #####:  301:            lock.unlock();
+    %%%%%:  301-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  302:            return true;
+    %%%%%:  302-block  0
+        -:  303:        }
+        -:  304:    }
+    #####:  305:    lock.unlock();
+    %%%%%:  305-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  306:    return false;
+    %%%%%:  306-block  0
+    #####:  307:}
+    %%%%%:  307-block  0
+call    0 never executed
+    $$$$$:  307-block  1
+call    1 never executed
+        -:  308:
+function _ZN5Table19getListOfUserRightsB5cxx11EP4User called 1 returned 100% blocks executed 14%
+        1:  309:std::string Table::getListOfUserRights(User *client) {
+        1:  310:    std::unique_lock<std::mutex> lock(getListOfUserRightsMtx);
+        1:  310-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  311:    std::string a = "Table " + getName() + ": You Dont have any right";
+        1:  311-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  311-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:  311-block  2
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:  311-block  3
+call    9 returned 1
+call   10 returned 1
+    $$$$$:  311-block  4
+call   11 never executed
+    $$$$$:  311-block  5
+call   12 never executed
+    $$$$$:  311-block  6
+    $$$$$:  311-block  7
+        1:  312:    bool isSomething = false;
+        1:  313:    if(getCreator()->getMeno() == client->getMeno()){
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  313-block  0
+call    3 returned 1
+call    4 returned 1
+branch  5 taken 1 (fallthrough)
+branch  6 taken 0 (throw)
+        1:  313-block  1
+call    7 returned 1
+call    8 returned 1
+call    9 returned 1
+branch 10 taken 1 (fallthrough)
+branch 11 taken 0
+    $$$$$:  313-block  2
+    $$$$$:  313-block  3
+call   12 never executed
+    $$$$$:  313-block  4
+        1:  314:        a = "Table " + getName() + ": You are creator\n";
+        1:  314-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  314-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:  314-block  2
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:  314-block  3
+call    9 returned 1
+call   10 returned 1
+call   11 returned 1
+call   12 returned 1
+    $$$$$:  314-block  4
+call   13 never executed
+    $$$$$:  314-block  5
+call   14 never executed
+    $$$$$:  314-block  6
+    $$$$$:  314-block  7
+    $$$$$:  314-block  8
+        1:  315:        lock.unlock();
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  316:        return a;
+        1:  316-block  0
+call    0 returned 1
+        -:  317:    }
+    #####:  318:    for(auto us : selecting){
+    %%%%%:  318-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  318-block  1
+call    2 never executed
+    %%%%%:  318-block  2
+call    3 never executed
+    %%%%%:  318-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  319:        if(us->getMeno() == client->getMeno()){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  319-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  319-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  319-block  2
+    $$$$$:  319-block  3
+call   11 never executed
+    $$$$$:  319-block  4
+    #####:  320:                a = "Table " + getName() + ": SELECT, ";
+    %%%%%:  320-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  320-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  320-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  320-block  3
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+    $$$$$:  320-block  4
+call   13 never executed
+    $$$$$:  320-block  5
+call   14 never executed
+    $$$$$:  320-block  6
+    $$$$$:  320-block  7
+    $$$$$:  320-block  8
+    #####:  321:                isSomething = true;
+    #####:  322:            break;
+        -:  323:        }
+        -:  324:    }
+        -:  325:
+    #####:  326:    for(auto us : updating){
+    %%%%%:  326-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  326-block  1
+call    2 never executed
+    %%%%%:  326-block  2
+call    3 never executed
+    %%%%%:  326-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  327:        if(us->getMeno() == client->getMeno()){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  327-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  327-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  327-block  2
+    $$$$$:  327-block  3
+call   11 never executed
+    $$$$$:  327-block  4
+    #####:  328:            if(!isSomething){
+    %%%%%:  328-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  329:                a = "Table " + getName() + ": UPDATE, ";
+    %%%%%:  329-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  329-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  329-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  329-block  3
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+    $$$$$:  329-block  4
+call   13 never executed
+    $$$$$:  329-block  5
+call   14 never executed
+    $$$$$:  329-block  6
+    $$$$$:  329-block  7
+    $$$$$:  329-block  8
+    #####:  330:                isSomething = true;
+        -:  331:            } else{
+    #####:  332:                a += "UPDATE, ";
+    %%%%%:  332-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  333:            }
+    #####:  334:            break;
+    %%%%%:  334-block  0
+        -:  335:        }
+        -:  336:    }
+        -:  337:
+    #####:  338:    for(auto us : adding){
+    %%%%%:  338-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  338-block  1
+call    2 never executed
+    %%%%%:  338-block  2
+call    3 never executed
+    %%%%%:  338-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  339:        if(us->getMeno() == client->getMeno()){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  339-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  339-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  339-block  2
+    $$$$$:  339-block  3
+call   11 never executed
+    $$$$$:  339-block  4
+    #####:  340:            if(!isSomething){
+    %%%%%:  340-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  341:                a = "Table " + getName() + ": ADD, ";
+    %%%%%:  341-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  341-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  341-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  341-block  3
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+    $$$$$:  341-block  4
+call   13 never executed
+    $$$$$:  341-block  5
+call   14 never executed
+    $$$$$:  341-block  6
+    $$$$$:  341-block  7
+    $$$$$:  341-block  8
+    #####:  342:                isSomething = true;
+        -:  343:            } else{
+    #####:  344:                a += "ADD, ";
+    %%%%%:  344-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  345:            }
+    #####:  346:            break;
+    %%%%%:  346-block  0
+        -:  347:        }
+        -:  348:    }
+        -:  349:
+    #####:  350:    for(auto us : deleting){
+    %%%%%:  350-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  350-block  1
+call    2 never executed
+    %%%%%:  350-block  2
+call    3 never executed
+    %%%%%:  350-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  351:        if(us->getMeno() == client->getMeno()){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  351-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  351-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  351-block  2
+    $$$$$:  351-block  3
+call   11 never executed
+    $$$$$:  351-block  4
+    #####:  352:            if(!isSomething){
+    %%%%%:  352-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  353:                a = "Table " + getName() + ": DELETE, ";
+    %%%%%:  353-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  353-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  353-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:  353-block  3
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+    $$$$$:  353-block  4
+call   13 never executed
+    $$$$$:  353-block  5
+call   14 never executed
+    $$$$$:  353-block  6
+    $$$$$:  353-block  7
+    $$$$$:  353-block  8
+    #####:  354:                isSomething = true;
+        -:  355:            } else{
+    #####:  356:                a += "DELETE, ";
+    %%%%%:  356-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  357:            }
+    #####:  358:            break;
+    %%%%%:  358-block  0
+        -:  359:        }
+        -:  360:    }
+    #####:  361:    lock.unlock();
+    %%%%%:  361-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  362:    return a + "\n";
+    %%%%%:  362-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        1:  363:}
+        1:  363-block  0
+call    0 returned 1
+call    1 returned 1
+    $$$$$:  363-block  1
+call    2 never executed
+    $$$$$:  363-block  2
+call    3 never executed
+        -:  364:
+function _ZN5Table14addRightSelectB5cxx11EP4User called 0 returned 0% blocks executed 0%
+    #####:  365:std::string Table::addRightSelect(User *client) {
+    #####:  366:    std::unique_lock<std::mutex> lock(addRightSelectMtx);
+    %%%%%:  366-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  367:    std::string a = "The problem is that the rights are not applied!!";
+    %%%%%:  367-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:  367-block  1
+    #####:  368:    if(!client){
+    %%%%%:  368-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  369:        a = "Client dont exists !!";
+    %%%%%:  369-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  370:        lock.unlock();
+    %%%%%:  370-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  371:        return a;
+    %%%%%:  371-block  0
+        -:  372:    }
+    #####:  373:    for(auto u : selecting){
+    %%%%%:  373-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  373-block  1
+call    2 never executed
+    %%%%%:  373-block  2
+call    3 never executed
+    %%%%%:  373-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  374:        if(u->getMeno() == client->getMeno()){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  374-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  374-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  374-block  2
+    $$$$$:  374-block  3
+call   11 never executed
+    $$$$$:  374-block  4
+    #####:  375:            a = "User already have this right";
+    %%%%%:  375-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  376:            lock.unlock();
+    %%%%%:  376-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  377:            return a;
+    %%%%%:  377-block  0
+        -:  378:        }
+        -:  379:    }
+    #####:  380:    selecting.push_back(client);
+    %%%%%:  380-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  381:    a = "Right successfully added\n";
+    %%%%%:  381-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  382:    lock.unlock();
+    %%%%%:  382-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  383:    return a;
+    %%%%%:  383-block  0
+    #####:  384:}
+    %%%%%:  384-block  0
+call    0 never executed
+    $$$$$:  384-block  1
+call    1 never executed
+    $$$$$:  384-block  2
+call    2 never executed
+        -:  385:
+function _ZN5Table14addRightUpdateB5cxx11EP4User called 0 returned 0% blocks executed 0%
+    #####:  386:std::string Table::addRightUpdate(User *client) {
+    #####:  387:    std::unique_lock<std::mutex> lock(addRightUpdateMtx);
+    %%%%%:  387-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  388:    std::string a = "The problem is that the rights are not applied!!";
+    %%%%%:  388-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:  388-block  1
+    #####:  389:    if(!client){
+    %%%%%:  389-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  390:        a = "Client dont exists !!";
+    %%%%%:  390-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  391:        lock.unlock();
+    %%%%%:  391-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  392:        return a;
+    %%%%%:  392-block  0
+        -:  393:    }
+    #####:  394:    for(auto u : updating){
+    %%%%%:  394-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  394-block  1
+call    2 never executed
+    %%%%%:  394-block  2
+call    3 never executed
+    %%%%%:  394-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  395:        if(u->getMeno() == client->getMeno()){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  395-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  395-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  395-block  2
+    $$$$$:  395-block  3
+call   11 never executed
+    $$$$$:  395-block  4
+    #####:  396:            a = "User already have this right";
+    %%%%%:  396-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  397:            lock.unlock();
+    %%%%%:  397-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  398:            return a;
+    %%%%%:  398-block  0
+        -:  399:        }
+        -:  400:    }
+    #####:  401:    updating.push_back(client);
+    %%%%%:  401-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  402:    a = "Right successfully added\n";
+    %%%%%:  402-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  403:    lock.unlock();
+    %%%%%:  403-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  404:    return a;
+    %%%%%:  404-block  0
+    #####:  405:}
+    %%%%%:  405-block  0
+call    0 never executed
+    $$$$$:  405-block  1
+call    1 never executed
+    $$$$$:  405-block  2
+call    2 never executed
+        -:  406:
+function _ZN5Table11addRightAddB5cxx11EP4User called 0 returned 0% blocks executed 0%
+    #####:  407:std::string Table::addRightAdd(User *client) {
+    #####:  408:    std::unique_lock<std::mutex> lock(addRightAddMtx);
+    %%%%%:  408-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  409:    std::string a = "The problem is that the rights are not applied!!";
+    %%%%%:  409-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:  409-block  1
+    #####:  410:    if(!client){
+    %%%%%:  410-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  411:        a = "Client dont exists !!";
+    %%%%%:  411-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  412:        lock.unlock();
+    %%%%%:  412-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  413:        return a;
+    %%%%%:  413-block  0
+        -:  414:    }
+    #####:  415:    for(auto u : adding){
+    %%%%%:  415-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  415-block  1
+call    2 never executed
+    %%%%%:  415-block  2
+call    3 never executed
+    %%%%%:  415-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  416:        if(u->getMeno() == client->getMeno()){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  416-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  416-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  416-block  2
+    $$$$$:  416-block  3
+call   11 never executed
+    $$$$$:  416-block  4
+    #####:  417:            a = "User already have this right";
+    %%%%%:  417-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  418:            lock.unlock();
+    %%%%%:  418-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  419:            return a;
+    %%%%%:  419-block  0
+        -:  420:        }
+        -:  421:    }
+    #####:  422:    adding.push_back(client);
+    %%%%%:  422-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  423:    a = "Right successfully added\n";
+    %%%%%:  423-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  424:    lock.unlock();
+    %%%%%:  424-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  425:    return a;
+    %%%%%:  425-block  0
+    #####:  426:}
+    %%%%%:  426-block  0
+call    0 never executed
+    $$$$$:  426-block  1
+call    1 never executed
+    $$$$$:  426-block  2
+call    2 never executed
+        -:  427:
+function _ZN5Table14addRightDeleteB5cxx11EP4User called 0 returned 0% blocks executed 0%
+    #####:  428:std::string Table::addRightDelete(User *client) {
+    #####:  429:    std::unique_lock<std::mutex> lock(addRightDeleteMtx);
+    %%%%%:  429-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  430:    std::string a = "The problem is that the rights are not applied!!";
+    %%%%%:  430-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:  430-block  1
+    #####:  431:    if(!client){
+    %%%%%:  431-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  432:        a = "Client dont exists !!";
+    %%%%%:  432-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  433:        lock.unlock();
+    %%%%%:  433-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  434:        return a;
+    %%%%%:  434-block  0
+        -:  435:    }
+    #####:  436:    for(auto u : deleting){
+    %%%%%:  436-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  436-block  1
+call    2 never executed
+    %%%%%:  436-block  2
+call    3 never executed
+    %%%%%:  436-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  437:        if(u->getMeno() == client->getMeno()){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  437-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  437-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:  437-block  2
+    $$$$$:  437-block  3
+call   11 never executed
+    $$$$$:  437-block  4
+    #####:  438:            a = "User already have this right";
+    %%%%%:  438-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  439:            lock.unlock();
+    %%%%%:  439-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  440:            return a;
+    %%%%%:  440-block  0
+        -:  441:        }
+        -:  442:    }
+    #####:  443:    deleting.push_back(client);
+    %%%%%:  443-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  444:    a = "Right successfully added\n";
+    %%%%%:  444-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  445:    lock.unlock();
+    %%%%%:  445-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  446:    return a;
+    %%%%%:  446-block  0
+    #####:  447:}
+    %%%%%:  447-block  0
+call    0 never executed
+    $$$$$:  447-block  1
+call    1 never executed
+    $$$$$:  447-block  2
+call    2 never executed
+        -:  448:

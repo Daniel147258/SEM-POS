@@ -1,0 +1,80 @@
+        -:    0:Source:C:/Users/Daniel/CLionProjects/Sem/server/User.cpp
+        -:    0:Graph:C:\Users\Daniel\CLionProjects\Sem\cmake-build-debug-coverage\CMakeFiles\Sem.dir\server\User.cpp.gcno
+        -:    0:Data:C:\Users\Daniel\CLionProjects\Sem\cmake-build-debug-coverage\CMakeFiles\Sem.dir\server\User.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "User.h"
+        -:    2:
+function _ZN4UserC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_ called 2 returned 100% blocks executed 53%
+        2:    3:User::User(const std::string& name, const std::string& password) {
+        2:    3-block  0
+call    0 returned 2
+call    1 returned 2
+call    2 returned 2
+call    3 returned 2
+        2:    4:    this->name = name;
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:    5:    this->password = password;
+        2:    5-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:    6:}
+        2:    6-block  0
+    $$$$$:    6-block  1
+call    0 never executed
+    $$$$$:    6-block  2
+call    1 never executed
+    $$$$$:    6-block  3
+call    2 never executed
+    $$$$$:    6-block  4
+call    3 never executed
+        -:    7:
+function _ZN4User8getHesloB5cxx11Ev called 0 returned 0% blocks executed 0%
+    #####:    8:std::string User::getHeslo() { //mutexovanie
+    #####:    9:    std::unique_lock<std::mutex> lock(passwordMutex);
+    %%%%%:    9-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   10:    lock.unlock();
+    %%%%%:   10-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   11:    return password;
+    %%%%%:   11-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   11-block  1
+    #####:   12:}
+    %%%%%:   12-block  0
+call    0 never executed
+    $$$$$:   12-block  1
+call    1 never executed
+        -:   13:
+function _ZN4User7getMenoB5cxx11Ev called 4 returned 100% blocks executed 80%
+        4:   14:std::string User::getMeno() { //mutexovanie
+        4:   15:    std::unique_lock<std::mutex> lock(nameMutex);
+        4:   15-block  0
+call    0 returned 4
+branch  1 taken 4 (fallthrough)
+branch  2 taken 0 (throw)
+        4:   16:    lock.unlock();
+        4:   16-block  0
+call    0 returned 4
+branch  1 taken 4 (fallthrough)
+branch  2 taken 0 (throw)
+        8:   17:    return name;
+        4:   17-block  0
+call    0 returned 4
+branch  1 taken 4 (fallthrough)
+branch  2 taken 0 (throw)
+        4:   17-block  1
+        4:   18:}
+        4:   18-block  0
+call    0 returned 4
+    $$$$$:   18-block  1
+call    1 never executed

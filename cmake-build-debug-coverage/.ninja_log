@@ -1,0 +1,13 @@
+# ninja log v5
+0	362	7264094862060146	CMakeFiles/Sem.dir/main.cpp.obj	ef6db247932a473c
+257	3822	7264094896681340	CMakeFiles/Sem.dir/server/Table/TableColumnBase.cpp.obj	c999e0810acc1bdc
+10	5260	7264094911034491	CMakeFiles/Sem.dir/server/User.cpp.obj	d4daf0872ab68f1
+129	7061	7264094929055199	CMakeFiles/Sem.dir/server/Table/StringColumn.cpp.obj	74b4bc37acdda6c
+30	7282	7264094931135912	CMakeFiles/Sem.dir/server/Table/IntColumn.cpp.obj	f00fac229bd98605
+79	7328	7264094931665579	CMakeFiles/Sem.dir/server/Table/DateColumn.cpp.obj	d9ceab8710a81c5f
+106	7375	7264094932144944	CMakeFiles/Sem.dir/server/Table/BoolColumn.cpp.obj	6e1033d75c6a59ac
+54	7468	7264094933117399	CMakeFiles/Sem.dir/server/Table/DoubleColumn.cpp.obj	182015448bff6c94
+45	8682	7264094945212126	CMakeFiles/Sem.dir/server/Table/Table.cpp.obj	7bd6a844e3952ed4
+185	9331	7264094952004647	CMakeFiles/Sem.dir/server/Database.cpp.obj	1a487cf0b0529dfb
+5	14173	7264095000318752	CMakeFiles/Sem.dir/server/Server.cpp.obj	b20bf7eeed01cdde
+14174	15881	7264095017458852	Sem.exe	5a33aa016b150f3e

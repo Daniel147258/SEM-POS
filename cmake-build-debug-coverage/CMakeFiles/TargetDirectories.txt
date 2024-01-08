@@ -1,0 +1,3 @@
+C:/Users/Daniel/CLionProjects/Sem/cmake-build-debug-coverage/CMakeFiles/Sem.dir
+C:/Users/Daniel/CLionProjects/Sem/cmake-build-debug-coverage/CMakeFiles/edit_cache.dir
+C:/Users/Daniel/CLionProjects/Sem/cmake-build-debug-coverage/CMakeFiles/rebuild_cache.dir

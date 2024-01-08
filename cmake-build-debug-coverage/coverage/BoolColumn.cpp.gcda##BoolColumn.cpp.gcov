@@ -1,0 +1,493 @@
+        -:    0:Source:C:/Users/Daniel/CLionProjects/Sem/server/Table/BoolColumn.cpp
+        -:    0:Graph:C:\Users\Daniel\CLionProjects\Sem\cmake-build-debug-coverage\CMakeFiles\Sem.dir\server\Table\BoolColumn.cpp.gcno
+        -:    0:Data:C:\Users\Daniel\CLionProjects\Sem\cmake-build-debug-coverage\CMakeFiles\Sem.dir\server\Table\BoolColumn.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "BoolColumn.h"
+        -:    2:
+function _ZN10BoolColumnC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEb called 0 returned 0% blocks executed 0%
+    #####:    3:BoolColumn::BoolColumn(const std::string& columnName, bool isNotNull)
+    #####:    4:        : TableColumnBase(columnName, isNotNull, false), values() {
+    %%%%%:    4-block  0
+call    0 never executed
+call    1 never executed
+    #####:    5:}
+        -:    6:
+function _ZNK10BoolColumn11printHeaderEv called 0 returned 0% blocks executed 0%
+    #####:    7:void BoolColumn::printHeader() const {
+    #####:    8:    std::cout << getName() << " (bool)\t";
+    %%%%%:    8-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:    8-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:    8-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:    8-block  3
+call    9 never executed
+    $$$$$:    8-block  4
+call   10 never executed
+    #####:    9:}
+        -:   10:
+function _ZNK10BoolColumn10printValueEy called 0 returned 0% blocks executed 0%
+    #####:   11:void BoolColumn::printValue(size_t rowIndex) const {
+    #####:   12:    if (values[rowIndex].has_value()) {
+    %%%%%:   12-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    #####:   13:        std::cout << (values[rowIndex] == true ? "true" : "false") << "\t\t";
+    %%%%%:   13-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    %%%%%:   13-block  1
+    %%%%%:   13-block  2
+    %%%%%:   13-block  3
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:   13-block  4
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    %%%%%:   13-block  5
+        -:   14:    } else {
+    #####:   15:        std::cout << "NULL\t\t";
+    %%%%%:   15-block  0
+call    0 never executed
+        -:   16:    }
+    #####:   17:}
+    %%%%%:   17-block  0
+        -:   18:
+function _ZN10BoolColumn8addValueERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   19:void BoolColumn::addValue(const std::string& value) {
+    #####:   20:    if (value.empty() && isNotNullColumn()) {
+    %%%%%:   20-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   20-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    %%%%%:   20-block  2
+    %%%%%:   20-block  3
+    %%%%%:   20-block  4
+branch  6 never executed (fallthrough)
+branch  7 never executed
+    #####:   21:        throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
+    %%%%%:   21-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   21-block  1
+call    4 never executed
+    $$$$$:   21-block  2
+call    5 never executed
+        -:   22:    }
+    #####:   23:    if ((value.empty() && !isNotNullColumn()) || value == "NULL") {
+    %%%%%:   23-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   23-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    %%%%%:   23-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed
+    %%%%%:   23-block  3
+    %%%%%:   23-block  4
+    %%%%%:   23-block  5
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    #####:   24:        values.push_back(std::nullopt);
+    %%%%%:   24-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   24-block  1
+    $$$$$:   24-block  2
+call    4 never executed
+        -:   25:    } else {
+    #####:   26:        values.push_back(value == "true" ? true : false);
+    %%%%%:   26-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   26-block  1
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:   26-block  2
+    $$$$$:   26-block  3
+        -:   27:    }
+    #####:   28:}
+    %%%%%:   28-block  0
+        -:   29:
+function _ZN10BoolColumn11uploadValueEyRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   30:void BoolColumn::uploadValue(size_t rowIndex, const std::string& value) {
+    #####:   31:    if (value.empty() && isNotNullColumn()) {
+    %%%%%:   31-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   31-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    %%%%%:   31-block  2
+    %%%%%:   31-block  3
+    %%%%%:   31-block  4
+branch  6 never executed (fallthrough)
+branch  7 never executed
+    #####:   32:        throw std::invalid_argument("NULL value not allowed for NOT NULL column.");
+    %%%%%:   32-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   32-block  1
+call    4 never executed
+    $$$$$:   32-block  2
+call    5 never executed
+        -:   33:    }
+        -:   34:
+    #####:   35:    if ((value.empty() && !isNotNullColumn()) || value == "NULL") {
+    %%%%%:   35-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   35-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    %%%%%:   35-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed
+    %%%%%:   35-block  3
+    %%%%%:   35-block  4
+    %%%%%:   35-block  5
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    #####:   36:        values[rowIndex] = std::nullopt;
+    %%%%%:   36-block  0
+call    0 never executed
+call    1 never executed
+        -:   37:    } else {
+    #####:   38:        values[rowIndex] = (value == "true");
+    %%%%%:   38-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   38-block  1
+call    3 never executed
+call    4 never executed
+    $$$$$:   38-block  2
+        -:   39:    }
+    #####:   40:}
+    %%%%%:   40-block  0
+        -:   41:
+function _ZN10BoolColumn15uploadAllValuesERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_ called 0 returned 0% blocks executed 0%
+    #####:   42:int BoolColumn::uploadAllValues(const std::string& oldValue, const std::string& newValue) {
+    #####:   43:    if (oldValue.empty()) {
+    %%%%%:   43-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   44:        throw std::invalid_argument("Old value cannot be empty.");
+    %%%%%:   44-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   44-block  1
+call    4 never executed
+    $$$$$:   44-block  2
+call    5 never executed
+        -:   45:    }
+    #####:   46:    int updatedRows = 0;
+    #####:   47:    bool newValue2 = (newValue == "true");
+    %%%%%:   47-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   48:    bool oldValue2 = (oldValue == "true");
+    %%%%%:   48-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   49:    for (size_t i = 0; i < values.size(); ++i) {
+    %%%%%:   49-block  0
+    %%%%%:   49-block  1
+    %%%%%:   49-block  2
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+    #####:   50:        if (values[i].has_value() && values[i].value() == oldValue2) {
+    %%%%%:   50-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    %%%%%:   50-block  1
+call    4 never executed
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    %%%%%:   50-block  2
+branch  8 never executed (fallthrough)
+branch  9 never executed
+    %%%%%:   50-block  3
+    %%%%%:   50-block  4
+    %%%%%:   50-block  5
+branch 10 never executed (fallthrough)
+branch 11 never executed
+    #####:   51:            values[i] = newValue2;
+    %%%%%:   51-block  0
+call    0 never executed
+call    1 never executed
+    #####:   52:            updatedRows++;
+        -:   53:        }
+        -:   54:    }
+    #####:   55:    return updatedRows;
+    %%%%%:   55-block  0
+    %%%%%:   55-block  1
+        -:   56:}
+        -:   57:
+function _ZN10BoolColumn7getSizeEv called 0 returned 0% blocks executed 0%
+    #####:   58:int BoolColumn::getSize() {
+    #####:   59:    return values.size();
+    %%%%%:   59-block  0
+call    0 never executed
+        -:   60:}
+        -:   61:
+function _ZN10BoolColumn13containsValueERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   62:bool BoolColumn::containsValue(const std::string& value) {
+    #####:   63:    bool number = (value == "true");
+    %%%%%:   63-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   64:    for (const auto val : values) {
+    %%%%%:   64-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:   64-block  1
+call    2 never executed
+    %%%%%:   64-block  2
+call    3 never executed
+    %%%%%:   64-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:   65:        if (number == val) {
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   66:            return true;
+    %%%%%:   66-block  0
+        -:   67:        }
+        -:   68:    }
+    #####:   69:    return false;
+    %%%%%:   69-block  0
+        -:   70:}
+        -:   71:
+function _ZN10BoolColumn11deleteValueERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   72:bool BoolColumn::deleteValue(const std::string& value){
+    #####:   73:    bool deleted = false;
+        -:   74:    try {
+    #####:   75:        bool number = (value == "true");
+    %%%%%:   75-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   76:        if (values.size() > 0) {
+    %%%%%:   76-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   77:            std::vector<std::optional<bool>> tempValues;
+    #####:   78:            for (size_t i = 0; i < values.size(); ++i) {
+    %%%%%:   78-block  0
+    %%%%%:   78-block  1
+    %%%%%:   78-block  2
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+    #####:   79:                if (values[i] != number) {
+    %%%%%:   79-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    #####:   80:                    tempValues.push_back(values[i]);
+    %%%%%:   80-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+        -:   81:                }
+        -:   82:                else{
+    #####:   83:                    deleted = true;
+    %%%%%:   83-block  0
+        -:   84:                };
+        -:   85:            }
+    #####:   86:            values.clear();
+    %%%%%:   86-block  0
+call    0 never executed
+    #####:   87:            values = tempValues;
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   88:            tempValues.clear();
+    %%%%%:   88-block  0
+call    0 never executed
+    #####:   89:        }
+call    0 never executed
+    $$$$$:   89-block  0
+call    1 never executed
+        -:   90:    }
+    =====:   91:    catch(const std::invalid_argument& e){
+    $$$$$:   91-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    $$$$$:   91-block  1
+call    2 never executed
+    =====:   92:        std::cerr << "Wrong value!!\n";
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    =====:   93:    }
+    $$$$$:   93-block  0
+call    0 never executed
+    $$$$$:   93-block  1
+call    1 never executed
+    #####:   94:    return deleted;
+    %%%%%:   94-block  0
+    %%%%%:   94-block  1
+        -:   95:}
+        -:   96:
+function _ZNK10BoolColumn8getValueB5cxx11Ey called 0 returned 0% blocks executed 0%
+    #####:   97:std::string BoolColumn::getValue(size_t rowIndex) const {
+    #####:   98:    if (values[rowIndex].has_value()) {
+    %%%%%:   98-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    #####:   99:        return std::to_string(values[rowIndex].value());
+    %%%%%:   99-block  0
+call    0 never executed
+call    1 never executed
+call    2 never executed
+        -:  100:    } else {
+    #####:  101:        return "NULL";
+    %%%%%:  101-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  101-block  1
+        -:  102:    }
+        -:  103:}
+        -:  104:
+function _ZN10BoolColumn14getDescriptionB5cxx11Ev called 0 returned 0% blocks executed 0%
+    #####:  105:std::string BoolColumn::getDescription(){
+    #####:  106:    return "Name: " + getName() + ", Type: (bool)" + " , is not Null: " + std::to_string(isNotNullColumn());
+    %%%%%:  106-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  106-block  1
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  106-block  2
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    %%%%%:  106-block  3
+call   10 never executed
+branch 11 never executed (fallthrough)
+branch 12 never executed (throw)
+    %%%%%:  106-block  4
+call   13 never executed
+branch 14 never executed (fallthrough)
+branch 15 never executed (throw)
+    %%%%%:  106-block  5
+call   16 never executed
+branch 17 never executed (fallthrough)
+branch 18 never executed (throw)
+    %%%%%:  106-block  6
+    %%%%%:  106-block  7
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+    %%%%%:  106-block  8
+    $$$$$:  106-block  9
+call   24 never executed
+    $$$$$:  106-block 10
+call   25 never executed
+    $$$$$:  106-block 11
+call   26 never executed
+    $$$$$:  106-block 12
+call   27 never executed
+    $$$$$:  106-block 13
+    $$$$$:  106-block 14
+    $$$$$:  106-block 15
+    $$$$$:  106-block 16
+    $$$$$:  106-block 17
+call   28 never executed
+        -:  107:}
+        -:  108:
+function _ZN10BoolColumn8getTypeaB5cxx11Ev called 0 returned 0% blocks executed 0%
+    #####:  109:std::string BoolColumn::getTypea(){
+    %%%%%:  109-block  0
+    #####:  110:    return "bool";
+    %%%%%:  110-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  110-block  1
+    %%%%%:  110-block  2
+        -:  111:}
+        -:  112:
+    #####:  113:BoolColumn::~BoolColumn() {
+    #####:  114:    values.clear();
+    #####:  115:}
+------------------
+_ZN10BoolColumnD0Ev:
+function _ZN10BoolColumnD0Ev called 0 returned 0% blocks executed 0%
+    #####:  113:BoolColumn::~BoolColumn() {
+        -:  114:    values.clear();
+    #####:  115:}
+    %%%%%:  115-block  0
+call    0 never executed
+call    1 never executed
+------------------
+_ZN10BoolColumnD2Ev:
+function _ZN10BoolColumnD2Ev called 0 returned 0% blocks executed 0%
+    #####:  113:BoolColumn::~BoolColumn() {
+    #####:  114:    values.clear();
+    %%%%%:  114-block  0
+call    0 never executed
+    #####:  115:}
+call    0 never executed
+call    1 never executed
+------------------
